@@ -220,6 +220,59 @@ a {
   text-decoration: underline;
 }
 
+/* Footer Styles */
+.footer-bar {
+  background: #f7f7f7;
+  color: #222;
+  font-size: 0.95rem;
+  border-top: 1px solid #e5e5e5;
+}
+.footer-left {
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+.footer-right {
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+.footer-link {
+  color: #222;
+  text-decoration: none;
+  margin-right: 0.5rem;
+  font-weight: 500;
+}
+.footer-link:hover {
+  text-decoration: underline;
+  color: #3622e6;
+}
+.footer-copyright {
+  font-weight: 400;
+}
+.footer-lang, .footer-currency {
+  font-weight: 500;
+  color: #222;
+}
+.footer-icon {
+  color: #222;
+  font-size: 1.2rem;
+  text-decoration: none;
+  margin-right: 0.25rem;
+}
+.footer-icon:hover {
+  color: #3622e6;
+}
+
+@media (max-width: 768px) {
+  .footer-bar .container-fluid {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  .footer-right {
+    margin-top: 0.5rem;
+  }
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .registration-card {
@@ -264,9 +317,4 @@ a {
     height: 40px;
     width: 100px;
   }
-}
-
-/* Smooth transitions for all interactive elements */
-* {
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
