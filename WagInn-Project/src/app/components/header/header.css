@@ -1,0 +1,99 @@
+/* Importing Modern Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap');
+
+/* Navigation Bar Styles */
+.navbar {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  padding: 0.75rem 2rem;
+  /* background-color: #d81161 !important; */
+  background-color: #11a08d !important;
+}
+
+/* Logo Styles */
+.logo-brand {
+  color: white !important;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-right: auto;
+  padding: 0.5rem 1rem;
+  text-decoration: none !important;
+  letter-spacing: 0.01em;
+}
+
+.logo-brand:hover {
+  text-decoration: none;
+}
+
+/* Right Side Menu */
+.navbar-nav.ms-auto {
+    gap: 1rem;
+}
+
+.custom-nav-link {
+  color: white !important;
+  font-weight: 500 !important;
+  font-size: 0.95rem;
+  padding: 0.5rem 1rem !important;
+  margin: 0 0.25rem;
+  border-radius: 6px;
+  transition: all 0.2s ease; /* makes all css property changes (color, background, transform, etc) animate smoothly over 0.2 secs with an 'ease' timing function. */
+}
+
+.custom-nav-link:hover {
+  color: #f8f9fa !important;
+  background-color: rgba(255, 255, 255, 0.1);
+  text-decoration: none !important;
+}
+
+.custom-nav-link:focus {
+  color: white !important;
+}
+
+/* Become A Host Button */
+.become-host-btn {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 0.5rem 1.25rem;
+  border: 2px solid white;
+  color: white !important;
+  background-color: transparent;
+  border-radius: 25px;
+  transition: all 0.3s ease; 
+  white-space: nowrap;  /* prevents text from wrapping onto multiple lines. */
+}
+
+.become-host-btn:hover {
+  background-color: white;
+  color: #212529 !important;
+  border-color: white;
+}
+
+.become-host-btn:focus {
+  box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.3);
+  color: white !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 767px) {
+  .navbar-nav.ms-auto {
+    margin-top: 1rem;
+    gap: 0.5rem;
+  }
+  
+  .logo-brand {
+    font-size: 1.25rem;
+    padding: 0.5rem;
+  }
+  
+  .become-host-btn {
+    margin-top: 0.5rem;
+    width: 100%;
+    text-align: center;
+  }
+  
+  .custom-nav-link {
+    padding: 0.75rem 1rem !important;
+    text-align: center;
+  }
+}
