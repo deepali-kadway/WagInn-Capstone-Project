@@ -6,6 +6,7 @@ import { App } from './app';
 import { HostRegistration } from './components/host-registration/host-registration';
 import { Header } from './components/header/header';
 import { Footer } from './components/footer/footer';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { Footer } from './components/footer/footer';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    ReactiveFormsModule
   ],
   providers: [
     provideBrowserGlobalErrorListeners()

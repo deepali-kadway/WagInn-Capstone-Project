@@ -1,13 +1,88 @@
 /* Importing Modern Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap');
 
-.main-content {
-  padding-top: 140px !important;
+/* Progress Indicator Styles */
+.progress-container {
+  margin-top: 0.5rem;
 }
+
+.progress-steps {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.progress-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+}
+
+/* creating connecting lines. Only applies to steps that aren't the last one */
+.progress-step:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 15px;
+  left: 100%;
+  width: 2rem;
+  height: 2px;
+  background-color: #ddd;
+}
+
+.progress-step.completed:not(:last-child)::after {
+  background-color: #e61e4d;
+}
+
+.step-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: #ddd;
+  color: #666;
+  font-weight: 600;
+  font-size: 0.875rem;
+  margin-bottom: 0.5rem;
+}
+
+.progress-step.active .step-number {
+  background-color: #e61e4d;
+  color: white;
+}
+
+.progress-step.completed .step-number {
+  background-color: #28a745;
+  color: white;
+}
+
+.step-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #666;
+  white-space: nowrap;
+}
+
+.progress-step.active .step-label {
+  color: #e61e4d;
+  font-weight: 600;
+}
+
+.progress-step.completed .step-label {
+  color: #28a745;
+  font-weight: 600;
+}
+
+
 
 /* Main Container Styles */
 .main-content {
-  padding: 2rem 1rem;
+  padding-top: 120px !important;
 }
 
 /* Registration Card */
@@ -83,9 +158,10 @@
   transition: border-color 0.2s ease;
 }
 
-.custom-select:focus {
+.custom-select:hover {
   border-color: #11a08d;
   box-shadow: none;
+  outline: none;
 }
 
 /* Info Icon */
@@ -111,6 +187,24 @@
 
 .submit-btn:hover {
   background: linear-gradient(to right, #11a08d 0%, #25b9a6 50%, #04a58f 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* Back Button */
+.back-btn{
+    background: linear-gradient(to right, #717474fa 0%, #626362 50%, #5e5f5f 100%);
+    border: none;
+    border-radius: 8px;
+    padding: 1rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: white;
+    transition: all 0.2s ease;
+}
+
+.back-btn:hover {
+  background: linear-gradient(to right, #717474fa 0%, #626362 50%, #5e5f5f 100%);
   transform: translateY(-1px);
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }

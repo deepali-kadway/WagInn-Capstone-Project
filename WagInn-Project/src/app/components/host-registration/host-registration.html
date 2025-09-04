@@ -1,186 +1,241 @@
 <app-header></app-header>
 
-<!-- Registrations -->
+<!-- Progress Indicator -->
 <div class="container-fluid main-content">
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-8 col-lg-6">
+      <div class="progress-container mb-4">
+        <div class="progress-steps">
+          <div
+            class="progress-step"
+            [class.active]="currentStep >= 1"
+            [class.completed]="currentStep > 1"
+          >
+            <span class="step-number">1</span>
+            <span class="step-label">Personal Info</span>
+          </div>
+          <div
+            class="progress-step"
+            [class.active]="currentStep >= 2"
+            [class.completed]="currentStep > 2"
+          >
+            <span class="step-number">2</span>
+            <span class="step-label">Address Details</span>
+          </div>
+          <div
+            class="progress-step"
+            [class.active]="currentStep >= 3"
+            [class.completed]="currentStep > 3"
+          >
+            <span class="step-number">3</span>
+            <span class="step-label">Pet Info</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step Content -->
   <div class="row justify-content-center min-vh-100 align-items-center">
     <div class="col-12 col-md-6 col-lg-4">
-      <!-- Responsive grid columns. col-12(extra small screens) takes up 12 grid units, col-nd-6(medium screens) takes up 6 grid units, col-lg-4(large screens) takes up 4 grid units -->
       <!-- Registration Card -->
       <div class="registration-card shadow-sm">
-        <div class="text-center mb-4">
-          <h2 class="registration-title">Finish Signing Up</h2>
-        </div>
-
-        <!-- Registration Form -->
-        <form>
-          <div class="mb-4">
-            <label class="form-label section-label">Legal name</label>
-
-            <div class="mb-3">
-              <input
-                type="text"
-                class="form-control custom-input"
-                id="firstName"
-                placeholder="First name on ID"
-                required
-              />
-            </div>
-
-            <div class="mb-3">
-              <input
-                type="text"
-                class="form-control custom-input"
-                id="lastName"
-                placeholder="Last name on ID"
-                required
-              />
-            </div>
-
-            <p class="form-text text-muted small-text">
-              Make sure this matches the name on your government-issued ID.
-            </p>
+        <!-- Step 1: Personal Information -->
+        <div *ngIf="currentStep === 1">
+          <div class="text-center mb-4">
+            <h2 class="registration-title">Personal Information</h2>
           </div>
 
-          <div class="mb-4">
-            <label class="form-label section-label">Date of birth</label>
+          <form [formGroup]="registrationForm">
+            <!-- Legal Name Section -->
+            <div class="mb-4">
+              <label class="form-label section-label">Legal name</label>
+              <div class="mb-3">
+                <input
+                  type="text"
+                  class="form-control custom-input"
+                  formControlName="firstName"
+                  placeholder="First name on ID"
+                  required
+                />
+              </div>
 
-            <div class="mb-2">
-              <label class="form-label small-label"
-                >Birthday
-                <span
-                  class="info-icon"
-                  title="To sign up, you need to be at least 18."
-                  >ⓘ</span
-                >
-              </label>
+              <div class="mb-3">
+                <input
+                  type="text"
+                  class="form-control custom-input"
+                  formControlName="lastName"
+                  placeholder="Last name on ID"
+                  required
+                />
+              </div>
+
+              <p class="form-text text-muted small-text">
+                Make sure this matches the name on your government-issued ID.
+              </p>
             </div>
+
+            <!-- Date of Birth Section -->
+            <div class="mb-4">
+              <label class="form-label section-label">Date of birth</label>
+              <div class="mb-2">
+                <label class="form-label small-label"
+                  >Birthday</label>
+              </div>
 
             <div class="row g-2">
-              <!-- create horizontal group of columns. g-2: adds a gutter(spacing) of 2 units between columns -->
-              <div class="col-4">
-                <!-- col-4: each column takes up 4 grid units, so 3 columns fit in a row, since 4+4+4=12-->
-                <select class="form-select custom-select" required>
-                  <option value="">Month</option>
-                  <option value="1">January</option>
-                  <option value="2">February</option>
-                  <option value="3">March</option>
-                  <option value="4">April</option>
-                  <option value="5">May</option>
-                  <option value="6">June</option>
-                  <option value="7">July</option>
-                  <option value="8">August</option>
-                  <option value="9">September</option>
-                  <option value="10">October</option>
-                  <option value="11">November</option>
-                  <option value="12">December</option>
-                </select>
-              </div>
-              <div class="col-4">
-                <select class="form-select custom-select" required>
-                  <option value="">Day</option>
-                  <!-- Days 1-31 -->
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
-                  <option value="4">4</option>
-                  <option value="5">5</option>
-                  <option value="6">6</option>
-                  <option value="7">7</option>
-                  <option value="8">8</option>
-                  <option value="9">9</option>
-                  <option value="10">10</option>
-                  <option value="11">11</option>
-                  <option value="12">12</option>
-                  <option value="13">13</option>
-                  <option value="14">14</option>
-                  <option value="15">15</option>
-                  <option value="16">16</option>
-                  <option value="17">17</option>
-                  <option value="18">18</option>
-                  <option value="19">19</option>
-                  <option value="20">20</option>
-                  <option value="21">21</option>
-                  <option value="22">22</option>
-                  <option value="23">23</option>
-                  <option value="24">24</option>
-                  <option value="25">25</option>
-                  <option value="26">26</option>
-                  <option value="27">27</option>
-                  <option value="28">28</option>
-                  <option value="29">29</option>
-                  <option value="30">30</option>
-                  <option value="31">31</option>
-                </select>
-              </div>
-              <div class="col-4">
-                <select class="form-select custom-select" required>
-                  <option value="">Year</option>
-                  <!-- Years from current year back to 1920 -->
-                  <option value="2006">2006</option>
-                  <option value="2005">2005</option>
-                  <option value="2004">2004</option>
-                  <option value="2003">2003</option>
-                  <option value="2002">2002</option>
-                  <option value="2001">2001</option>
-                  <option value="2000">2000</option>
-                  <option value="1999">1999</option>
-                  <option value="1998">1998</option>
-                  <option value="1997">1997</option>
-                  <option value="1996">1996</option>
-                  <option value="1995">1995</option>
-                  <option value="1994">1994</option>
-                  <option value="1993">1993</option>
-                  <option value="1992">1992</option>
-                  <option value="1991">1991</option>
-                  <option value="1990">1990</option>
-                  <option value="1989">1989</option>
-                  <option value="1988">1988</option>
-                  <option value="1987">1987</option>
-                  <option value="1986">1986</option>
-                  <option value="1985">1985</option>
-                  <option value="1984">1984</option>
-                  <option value="1983">1983</option>
-                  <option value="1982">1982</option>
-                  <option value="1981">1981</option>
-                  <option value="1980">1980</option>
-                  <option value="1979">1979</option>
-                  <option value="1978">1978</option>
-                  <option value="1977">1977</option>
-                  <option value="1976">1976</option>
-                  <option value="1975">1975</option>
-                  <option value="1974">1974</option>
-                  <option value="1973">1973</option>
-                  <option value="1972">1972</option>
-                  <option value="1971">1971</option>
-                  <option value="1970">1970</option>
-                </select>
+                <div class="col-4">
+                  <select
+                    class="form-select custom-select"
+                    formControlName="birthMonth"
+                    required
+                  >
+                    <option value="">Month</option>
+                    <option value="1">January</option>
+                    <option value="2">February</option>
+                    <option value="3">March</option>
+                    <option value="4">April</option>
+                    <option value="5">May</option>
+                    <option value="6">June</option>
+                    <option value="7">July</option>
+                    <option value="8">August</option>
+                    <option value="9">September</option>
+                    <option value="10">October</option>
+                    <option value="11">November</option>
+                    <option value="12">December</option>
+                  </select>
+                </div>
+                <div class="col-4">
+                  <select
+                    class="form-select custom-select"
+                    formControlName="birthDay"
+                    required
+                  >
+                    </select>
+                </div>
+                <div class="col-4">
+                  <select
+                    class="form-select custom-select"
+                    formControlName="birthYear"
+                    required
+                  >
+                  </select>
+                </div>
               </div>
             </div>
+
+            <!-- Contact Info Section -->
+            <div class="mb-4">
+              <label class="form-label section-label">Contact info</label>
+              <div class="mb-3">
+                <label class="form-label small-label">Email</label>
+                <input
+                  type="email"
+                  class="form-control custom-input"
+                  formControlName="email"
+                  placeholder="Email Id"
+                  required
+                />
+              </div>
+            </div>
+
+            <!-- Navigation Buttons -->
+            <div class="d-grid">
+              <button
+                type="button"
+                class="btn btn-primary submit-btn"
+                (click)="nextStep()"
+              >
+                Continue to Address
+              </button>
+            </div>
+          </form>
+        </div>
+
+
+        <!-- Step 3: Address Details -->
+        <div *ngIf="currentStep === 2">
+          <div class="text-center mb-4">
+            <h2 class="registration-title">Address Details</h2>
+            <p class="text-muted">Confirm your property address</p>
           </div>
 
-          <div class="mb-4">
-            <label class="form-label section-label">Contact info</label>
-
+          <form [formGroup]="registrationForm">
             <div class="mb-3">
-              <label class="form-label small-label">Email</label>
+              <label class="form-label section-label">Street Address</label>
               <input
-                type="email"
+                type="text"
                 class="form-control custom-input"
-                id="email"
-                placeholder="Email Id"
-                required
+                formControlName="streetAddress"
+                placeholder="Street address"
               />
             </div>
-          </div>
 
-          <!-- Submit Button -->
-          <div class="d-grid">
-            <!-- Applies CSS Grid layout to the div. -->
-            <button type="submit" class="btn btn-primary submit-btn">
-              Continue to Property Details
-            </button>
-          </div>
-        </form>
+            <div class="row g-2 mb-3">
+              <div class="col-6">
+                <label class="form-label section-label">City</label>
+                <input
+                  type="text"
+                  class="form-control custom-input"
+                  formControlName="city"
+                  placeholder="City"
+                />
+              </div>
+              <div class="col-6">
+                <label class="form-label section-label">State</label>
+                <input
+                  type="text"
+                  class="form-control custom-input"
+                  formControlName="state"
+                  placeholder="State"
+                />
+              </div>
+            </div>
+
+            <div class="row g-2 mb-4">
+              <div class="col-6">
+                <label class="form-label section-label">ZIP Code</label>
+                <input
+                  type="text"
+                  class="form-control custom-input"
+                  formControlName="zipCode"
+                  placeholder="ZIP Code"
+                />
+              </div>
+              <div class="col-6">
+                <label class="form-label section-label">Country</label>
+                <input
+                  type="text"
+                  class="form-control custom-input"
+                  formControlName="country"
+                  placeholder="Country"
+                />
+              </div>
+            </div>
+
+            <!-- Navigation Buttons -->
+            <div class="row g-2 mb-4">
+              <div class="col-6">
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary back-btn w-100 h-100"
+                  (click)="prevStep()"
+                >
+                  Back
+                </button>
+              </div>
+              <div class="col-6">
+                <button
+                  type="button"
+                  class="btn btn-primary submit-btn w-100 h-100"
+                  (click)="onSubmit()"
+                >
+                  Next
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   </div>
