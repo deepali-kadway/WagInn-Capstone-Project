@@ -8,10 +8,41 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
   styleUrl: './host-registration.css',
 })
 export class HostRegistration implements OnInit {
+  months: string[] = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ];
+  days: number[] = Array.from({ length: 31 }, (_, i) => i + 1); // _ means ignoring the elements (since the 31 slots are anyways empty)
+  years: number[];
+
+  get firstName() {return this.registrationForm.get('firstName')}
+  get lastName() {return this.registrationForm.get('lastName')}
+  get birthMonth() {return this.registrationForm.get('birthMonth')}
+  get birthDay() {return this.registrationForm.get('birthDay')}
+  get birthYear() {return this.registrationForm.get('birthYear')}
+  get email() {return this.registrationForm.get('email')}
+
   currentStep = 1;
   registrationForm!: FormGroup;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder) {
+    const currentYear = new Date().getFullYear();
+    const startYear = 1900;
+    this.years = [];
+    for (let y = currentYear; y >= startYear; y--) {
+      this.years.push(y);
+    }
+  }
 
   ngOnInit() {
     this.initializeForm();

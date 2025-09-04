@@ -59,6 +59,10 @@
                   required
                 />
               </div>
+              <div class="validation-error" *ngIf="firstName?.invalid && firstName?.touched">
+                <div *ngIf="firstName?.errors?.['required']">First Name is required</div>
+              </div>
+
 
               <div class="mb-3">
                 <input
@@ -68,6 +72,9 @@
                   placeholder="Last name on ID"
                   required
                 />
+              </div>
+              <div class="validation-error" *ngIf="lastName?.invalid && lastName?.touched">
+                <div *ngIf="lastName?.errors?.['required']">Last Name is required</div>
               </div>
 
               <p class="form-text text-muted small-text">
@@ -91,26 +98,18 @@
                     required
                   >
                     <option value="">Month</option>
-                    <option value="1">January</option>
-                    <option value="2">February</option>
-                    <option value="3">March</option>
-                    <option value="4">April</option>
-                    <option value="5">May</option>
-                    <option value="6">June</option>
-                    <option value="7">July</option>
-                    <option value="8">August</option>
-                    <option value="9">September</option>
-                    <option value="10">October</option>
-                    <option value="11">November</option>
-                    <option value="12">December</option>
+                    <option *ngFor="let month of months" [value]="month">{{month}}</option>
                   </select>
                 </div>
+
                 <div class="col-4">
                   <select
                     class="form-select custom-select"
                     formControlName="birthDay"
                     required
                   >
+                    <option value="">Day</option>
+                    <option *ngFor="let day of days" [value]="day">{{day}}</option>
                     </select>
                 </div>
                 <div class="col-4">
@@ -119,9 +118,20 @@
                     formControlName="birthYear"
                     required
                   >
+                    <option value="">Year</option>
+                    <option *ngFor="let year of years" [value]="year">{{year}}</option>
                   </select>
                 </div>
               </div>
+            </div>
+            <div class="validation-error" *ngIf="birthMonth?.invalid && birthMonth?.touched">
+                <div *ngIf="birthMonth?.errors?.['required']">Birth Month is required</div>
+            </div>
+            <div class="validation-error" *ngIf="birthDay?.invalid && birthDay?.touched">
+                <div *ngIf="birthDay?.errors?.['required']">Birth Date is required</div>
+            </div>
+            <div class="validation-error" *ngIf="birthYear?.invalid && birthYear?.touched">
+                <div *ngIf="birthYear?.errors?.['required']">Birth Year is required</div>
             </div>
 
             <!-- Contact Info Section -->
@@ -137,6 +147,10 @@
                   required
                 />
               </div>
+            </div>
+            <div class="validation-error" *ngIf="email?.invalid && email?.touched">
+                <div *ngIf="email?.errors?.['required']">Email is required</div>
+                <div *ngIf="email?.errors?.['email']">Enter a valid email</div>
             </div>
 
             <!-- Navigation Buttons -->
