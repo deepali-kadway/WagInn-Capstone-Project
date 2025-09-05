@@ -1,5 +1,3 @@
-/* Importing Modern Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap');
 
 /* Progress Indicator Styles */
 .progress-container {
@@ -33,8 +31,12 @@
   background-color: #ddd;
 }
 
-.progress-step.completed:not(:last-child)::after {
+.progress-step.active:not(:last-child)::after {
   background-color: #e61e4d;
+}
+
+.progress-step.completed:not(:last-child)::after {
+  background-color: #28a745;
 }
 
 .step-number {
@@ -59,6 +61,7 @@
 .progress-step.completed .step-number {
   background-color: #28a745;
   color: white;
+  content: '';
 }
 
 .step-label {
@@ -269,4 +272,65 @@ a {
   margin-bottom: 8px;
   font-size: 800;
   font-weight: bold;
+}
+
+/*Pet Info Style*/
+.pet-info-section {
+  background: #fff;
+  border-radius: 12px;
+  padding: 2rem;
+  border: 1px solid #ddd;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.section-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #222;
+  margin-bottom: 1rem;
+}
+
+.form-label {
+  font-weight: 500;
+  color: #222;
+}
+
+.form-control,
+.form-select {
+  border-radius: 8px;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+textarea.form-control {
+  resize: vertical;
+}
+
+.btn-group .btn {
+  min-width: 90px;
+}
+
+hr.my-4 {
+  margin: 2rem 0;
+}
+
+@media (max-width: 576px) {
+  .pet-info-section {
+    padding: 1rem;
+    margin: 0.5rem;
+  }
+  .section-title {
+    font-size: 1rem;
+  }
+}
+
+/* Change selected button color to blueish-green */
+.btn-check:checked + .btn-outline-secondary,
+.btn-outline-secondary.active,
+.btn-outline-secondary:active,
+.btn-outline-secondary:focus {
+  background-color: #11a08d; 
+  color: #fff;
+  border-color: #11a08d;
 }

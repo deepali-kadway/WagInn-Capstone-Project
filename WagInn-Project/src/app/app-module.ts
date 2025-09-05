@@ -9,20 +9,9 @@ import { Footer } from './components/footer/footer';
 import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
-  declarations: [
-    App,
-    HostRegistration,
-    Header,
-    Footer
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    ReactiveFormsModule
-  ],
-  providers: [
-    provideBrowserGlobalErrorListeners()
-  ],
-  bootstrap: [App]
+  declarations: [App, HostRegistration, Header, Footer],
+  imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule],
+  providers: [provideBrowserGlobalErrorListeners()],
+  bootstrap: [App],
 })
-export class AppModule { }
+export class AppModule {}

@@ -5,7 +5,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
   selector: 'app-host-registration',
   standalone: false,
   templateUrl: './host-registration.html',
-  styleUrl: './host-registration.css',
+  styleUrls: ['./host-registration.css'],
 })
 export class HostRegistration implements OnInit {
   months: string[] = [
@@ -25,14 +25,32 @@ export class HostRegistration implements OnInit {
   days: number[] = Array.from({ length: 31 }, (_, i) => i + 1); // _ means ignoring the elements (since the 31 slots are anyways empty)
   years: number[];
 
-  get firstName() {return this.registrationForm.get('firstName')}
-  get lastName() {return this.registrationForm.get('lastName')}
-  get birthMonth() {return this.registrationForm.get('birthMonth')}
-  get birthDay() {return this.registrationForm.get('birthDay')}
-  get birthYear() {return this.registrationForm.get('birthYear')}
-  get email() {return this.registrationForm.get('email')}
+  vaccinationsName: string[] = ['Rabies', 'Parovirus']
 
-  currentStep = 1;
+
+  get firstName() {
+    return this.registrationForm.get('firstName');
+  }
+  get lastName() {
+    return this.registrationForm.get('lastName');
+  }
+  get birthMonth() {
+    return this.registrationForm.get('birthMonth');
+  }
+  get birthDay() {
+    return this.registrationForm.get('birthDay');
+  }
+  get birthYear() {
+    return this.registrationForm.get('birthYear');
+  }
+  get email() {
+    return this.registrationForm.get('email');
+  }
+  get vaccinations() {
+    return this.registrationForm.get('vaccinations')
+  }
+
+  currentStep: number = 1;
   registrationForm!: FormGroup;
 
   constructor(private fb: FormBuilder) {
@@ -46,6 +64,7 @@ export class HostRegistration implements OnInit {
 
   ngOnInit() {
     this.initializeForm();
+    console.log('Vaccinations array:', this.vaccinationsName);
   }
 
   initializeForm() {
@@ -64,11 +83,15 @@ export class HostRegistration implements OnInit {
       state: ['', Validators.required],
       zipCode: ['', Validators.required],
       country: ['', Validators.required],
+
+      vaccinationsName: [['Rabies', 'Parovirus']],
     });
   }
 
+  // *ngIf conditional execution based on output of this.currentStep++ or this.currentStep--
+
   nextStep() {
-    if (this.currentStep < 3) {
+    if (this.currentStep < 5) {
       this.currentStep++;
     }
   }
