@@ -8,6 +8,7 @@ import { Header } from './components/header/header';
 import { Footer } from './components/footer/footer';
 import { ReactiveFormsModule } from '@angular/forms';
 
+
 @NgModule({
   declarations: [App, HostRegistration, Header, Footer],
   imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule],

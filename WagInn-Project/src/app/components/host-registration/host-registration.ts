@@ -28,6 +28,7 @@ export class HostRegistration implements OnInit {
   vaccinationsName: string[] = ['Rabies', 'Parovirus']
 
 
+
   get firstName() {
     return this.registrationForm.get('firstName');
   }
