@@ -1,0 +1,97 @@
+<app-header></app-header>
+
+<div class="row justify-content-center min-vh-100 align-items-center">
+  <!-- col-12: for mobile(< 768px), fullwidth(12/12 columns)-->
+  <!-- col-md-10: medium screens (768px+), 10/12 columns -->
+  <!-- col-lg=8: Large screens (992px +), 8/12 columns-->
+  <div class="col-12 col-md-10 col-lg-8">
+    <!-- Registration Card -->
+    <div class="registration-card shadow-sm">
+      <!-- Step 2: Address Details -->
+      <div>
+        <div class="text-center mb-4">
+          <h2 class="registration-title">Address Details</h2>
+          <p class="text-muted">Confirm your property address</p>
+        </div>
+
+        <form [formGroup]="registrationForm">
+          <div class="mb-3">
+            <label class="form-label section-label">Street Address</label>
+            <input
+              type="text"
+              class="form-control custom-input"
+              formControlName="streetAddress"
+              placeholder="Street address"
+            />
+          </div>
+
+          <div class="row g-2 mb-3">
+            <div class="col-6">
+              <label class="form-label section-label">City</label>
+              <input
+                type="text"
+                class="form-control custom-input"
+                formControlName="city"
+                placeholder="City"
+              />
+            </div>
+            <div class="col-6">
+              <label class="form-label section-label">State</label>
+              <input
+                type="text"
+                class="form-control custom-input"
+                formControlName="state"
+                placeholder="State"
+              />
+            </div>
+          </div>
+
+          <div class="row g-2 mb-4">
+            <div class="col-6">
+              <label class="form-label section-label">ZIP Code</label>
+              <input
+                type="text"
+                class="form-control custom-input"
+                formControlName="zipCode"
+                placeholder="ZIP Code"
+              />
+            </div>
+            <div class="col-6">
+              <label class="form-label section-label">Country</label>
+              <input
+                type="text"
+                class="form-control custom-input"
+                formControlName="country"
+                placeholder="Country"
+              />
+            </div>
+          </div>
+
+          <!-- Navigation Buttons -->
+          <div class="row g-2 mb-4">
+            <div class="col-6">
+              <button
+                type="button"
+                class="btn btn-outline-secondary back-btn w-100 h-100"
+                (click)="prevStep()"
+              >
+                Back
+              </button>
+            </div>
+            <div class="col-6">
+              <button
+                type="button"
+                class="btn btn-primary submit-btn w-100 h-100"
+                (click)="nextStep()"
+              >
+                Next
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-footer></app-footer>

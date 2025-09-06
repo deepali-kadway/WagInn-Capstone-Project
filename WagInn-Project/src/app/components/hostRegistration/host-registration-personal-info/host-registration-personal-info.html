@@ -1,0 +1,180 @@
+<app-header></app-header>
+
+<div class="main-content">
+  <div class="row justify-content-center min-vh-100 align-items-center">
+    <!-- col-12: for mobile(< 768px), fullwidth(12/12 columns)-->
+    <!-- col-md-10: medium screens (768px+), 10/12 columns -->
+    <!-- col-lg=8: Large screens (992px +), 8/12 columns-->
+    <div class="col-12 col-md-10 col-lg-8">
+      <!-- Registration Card -->
+      <div class="registration-card shadow-sm">
+        <!-- Step 1: Personal Information -->
+        <div>
+          <div class="text-center mb-4">
+            <h2 class="registration-title">Personal Information</h2>
+            <p class="text-muted">Confirm your basic details</p>
+          </div>
+
+          <form [formGroup]="registrationForm">
+            <!-- Legal Name Section -->
+            <div class="mb-4">
+              <label class="form-label section-label">Legal name</label>
+              <div class="mb-3">
+                <input
+                  type="text"
+                  class="form-control custom-input"
+                  formControlName="firstName"
+                  placeholder="First name on ID"
+                  required
+                />
+              </div>
+              <div
+                class="validation-error"
+                *ngIf="firstName?.invalid && firstName?.touched"
+              >
+                <div *ngIf="firstName?.errors?.['required']">
+                  First Name is required
+                </div>
+                <div *ngIf="firstName?.errors?.['minlength']">
+                  First Name must be at least 2 characters long
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <input
+                  type="text"
+                  class="form-control custom-input"
+                  formControlName="lastName"
+                  placeholder="Last name on ID"
+                  required
+                />
+              </div>
+              <div
+                class="validation-error"
+                *ngIf="lastName?.invalid && lastName?.touched"
+              >
+                <div *ngIf="lastName?.errors?.['required']">
+                  Last Name is required
+                </div>
+                <div *ngIf="lastName?.errors?.['minlength']">
+                  Last Name must be at least 2 characters long
+                </div>
+              </div>
+
+              <p class="form-text text-muted small-text">
+                Make sure this matches the name on your government-issued ID.
+              </p>
+            </div>
+
+            <!-- Date of Birth Section -->
+            <div class="mb-4">
+              <label class="form-label section-label">Date of birth</label>
+              <div class="mb-2">
+                <label class="form-label small-label">Birthday</label>
+              </div>
+
+              <div class="row g-2">
+                <div class="col-4">
+                  <select
+                    class="form-select custom-select"
+                    formControlName="birthMonth"
+                    required
+                  >
+                    <option value="">Month</option>
+                    <option *ngFor="let month of months" [value]="month">
+                      {{ month }}
+                    </option>
+                  </select>
+                </div>
+
+                <div class="col-4">
+                  <select
+                    class="form-select custom-select"
+                    formControlName="birthDay"
+                    required
+                  >
+                    <option value="">Day</option>
+                    <option *ngFor="let day of days" [value]="day">
+                      {{ day }}
+                    </option>
+                  </select>
+                </div>
+                <div class="col-4">
+                  <select
+                    class="form-select custom-select"
+                    formControlName="birthYear"
+                    required
+                  >
+                    <option value="">Year</option>
+                    <option *ngFor="let year of years" [value]="year">
+                      {{ year }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div
+              class="validation-error"
+              *ngIf="birthMonth?.invalid && birthMonth?.touched"
+            >
+              <div *ngIf="birthMonth?.errors?.['required']">
+                Birth Month is required
+              </div>
+            </div>
+            <div
+              class="validation-error"
+              *ngIf="birthDay?.invalid && birthDay?.touched"
+            >
+              <div *ngIf="birthDay?.errors?.['required']">
+                Birth Date is required
+              </div>
+            </div>
+            <div
+              class="validation-error"
+              *ngIf="birthYear?.invalid && birthYear?.touched"
+            >
+              <div *ngIf="birthYear?.errors?.['required']">
+                Birth Year is required
+              </div>
+            </div>
+
+            <!-- Contact Info Section -->
+            <div class="mb-4">
+              <label class="form-label section-label">Contact info</label>
+              <div class="mb-3">
+                <label class="form-label small-label">Email</label>
+                <input
+                  type="email"
+                  class="form-control custom-input"
+                  formControlName="email"
+                  placeholder="Email Id"
+                  required
+                />
+              </div>
+            </div>
+            <div
+              class="validation-error"
+              *ngIf="email?.invalid && email?.touched"
+            >
+              <div *ngIf="email?.errors?.['required']">Email is required</div>
+              <div *ngIf="email?.errors?.['email']">Enter a valid email</div>
+            </div>
+
+            <!-- Navigation Buttons -->
+            <div class="d-grid">
+              <button
+                type="button"
+                class="btn btn-primary submit-btn"
+                (click)="nextStep()"
+              >
+                Continue to Address
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-footer></app-footer>

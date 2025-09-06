@@ -3,14 +3,24 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing-module';
 import { App } from './app';
-import { HostRegistration } from './components/host-registration/host-registration';
 import { Header } from './components/header/header';
 import { Footer } from './components/footer/footer';
 import { ReactiveFormsModule } from '@angular/forms';
-
+import { HostRegistrationPersonalInfo } from './components/hostRegistration/host-registration-personal-info/host-registration-personal-info';
+import { HostRegistrationAddressDetails } from './components/hostRegistration/host-registration-address-details/host-registration-address-details';
+import { HostRegistrationPetInfo } from './components/hostRegistration/host-registration-pet-info/host-registration-pet-info';
+import { HostRegistrationPropertyDetails } from './components/hostRegistration/host-registration-property-details/host-registration-property-details';
 
 @NgModule({
-  declarations: [App, HostRegistration, Header, Footer],
+  declarations: [
+    App,
+    Header,
+    Footer,
+    HostRegistrationPersonalInfo,
+    HostRegistrationAddressDetails,
+    HostRegistrationPetInfo,
+    HostRegistrationPropertyDetails,
+  ],
   imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule],
   providers: [provideBrowserGlobalErrorListeners()],
   bootstrap: [App],

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { HostRegistration } from './host-registration';
+import { HostRegistrationPetInfo } from './host-registration-pet-info';
 
-describe('HostRegistration', () => {
-  let component: HostRegistration;
-  let fixture: ComponentFixture<HostRegistration>;
+describe('HostRegistrationPetInfo', () => {
+  let component: HostRegistrationPetInfo;
+  let fixture: ComponentFixture<HostRegistrationPetInfo>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [HostRegistration]
+      declarations: [HostRegistrationPetInfo]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(HostRegistration);
+    fixture = TestBed.createComponent(HostRegistrationPetInfo);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

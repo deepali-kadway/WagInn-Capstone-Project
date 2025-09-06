@@ -1,0 +1,319 @@
+<app-header></app-header>
+
+<div class="main-content">
+<div class="row justify-content-center min-vh-100 align-items-center">
+  <!-- col-12: for mobile(< 768px), fullwidth(12/12 columns)-->
+  <!-- col-md-10: medium screens (768px+), 10/12 columns -->
+  <!-- col-lg=8: Large screens (992px +), 8/12 columns-->
+  <div class="col-12 col-md-10 col-lg-8">
+    <!-- Registration Card -->
+    <div class="registration-card shadow-sm">
+      <!-- Step 4: Property Details -->
+      <div>
+        <div class="text-center mb-4">
+          <h2 class="registration-title">Property Details</h2>
+          <p class="text-muted">Tell us about your property</p>
+        </div>
+
+        <form [formGroup]="registrationForm">
+          <!-- Section A: Property Basics -->
+          <div class="property-section mb-5">
+            <h3 class="section-title">Property Basics</h3>
+
+            <!-- Property Name/Title -->
+            <div class="mb-4">
+              <label class="form-label section-label"
+                >Property Name/Title</label
+              >
+              <input
+                type="text"
+                class="form-control custom-input"
+                formControlName="propertyTitle"
+                placeholder="e.g., 2bed 1bath 1pet room in Banff"
+              />
+              <small class="form-text text-muted"
+                >Give your property a catchy, descriptive name</small
+              >
+            </div>
+
+            <!-- Property Type -->
+            <div class="mb-4">
+              <label class="form-label section-label">Property Type</label>
+              <div class="property-type-cards">
+                <div class="property-card">
+                  <div class="property-icon">🏠</div>
+                  <span class="property-label">House</span>
+                </div>
+                <div class="property-card">
+                  <div class="property-icon">🏢</div>
+                  <span class="property-label">Apartment</span>
+                </div>
+                <div class="property-card">
+                  <div class="property-icon">🚜</div>
+                  <span class="property-label">FarmStay</span>
+                </div>
+                <div class="property-card">
+                  <div class="property-icon">🏠</div>
+                  <span class="property-label">Basement</span>
+                </div>
+                <div class="property-card">
+                  <div class="property-icon">🏡</div>
+                  <span class="property-label">Cottage</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Guest Amenities -->
+            <div class="mb-4">
+              <label class="form-label section-label">Guest Amenities</label>
+              <div class="amenity-cards">
+                <div class="amenity-card">
+                  <div class="amenity-icon">🌐</div>
+                  <span class="amenity-label">WiFi</span>
+                </div>
+                <div class="amenity-card">
+                  <div class="amenity-icon">📺</div>
+                  <span class="amenity-label">TV</span>
+                </div>
+                <div class="amenity-card">
+                  <div class="amenity-icon">❄️</div>
+                  <span class="amenity-label">AC</span>
+                </div>
+                <div class="amenity-card">
+                  <div class="amenity-icon">🔥</div>
+                  <span class="amenity-label">Heating</span>
+                </div>
+                <div class="amenity-card">
+                  <div class="amenity-icon">🍳</div>
+                  <span class="amenity-label">Kitchen</span>
+                </div>
+                <div class="amenity-card">
+                  <div class="amenity-icon">🅿</div>
+                  <span class="amenity-label">Parking</span>
+                </div>
+                <div class="amenity-card">
+                  <div class="amenity-icon">🏊</div>
+                  <span class="amenity-label">Pool</span>
+                </div>
+                <div class="amenity-card">
+                  <div class="amenity-icon">🎛️</div>
+                  <span class="amenity-label">Washing Machine</span>
+                </div>
+                <div class="amenity-card">
+                  <div class="amenity-icon">🚿</div>
+                  <span class="amenity-label">Bathroom</span>
+                </div>
+                <div class="amenity-card">
+                  <div class="amenity-icon">🧰</div>
+                  <span class="amenity-label">First Aid Kit</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Number of Rooms -->
+            <div class="mb-4">
+              <label class="form-label section-label">Number of Rooms</label>
+              <div class="room-counters">
+                <div class="counter-item">
+                  <span class="counter-label">Guests</span>
+                  <div class="counter-controls">
+                    <button type="button" class="counter-btn minus">−</button>
+                    <span class="counter-value">1</span>
+                    <button type="button" class="counter-btn plus">+</button>
+                  </div>
+                </div>
+                <div class="counter-item">
+                  <span class="counter-label">Bedrooms</span>
+                  <div class="counter-controls">
+                    <button type="button" class="counter-btn minus">−</button>
+                    <span class="counter-value">1</span>
+                    <button type="button" class="counter-btn plus">+</button>
+                  </div>
+                </div>
+                <div class="counter-item">
+                  <span class="counter-label">Beds</span>
+                  <div class="counter-controls">
+                    <button type="button" class="counter-btn minus">−</button>
+                    <span class="counter-value">1</span>
+                    <button type="button" class="counter-btn plus">+</button>
+                  </div>
+                </div>
+                <div class="counter-item">
+                  <span class="counter-label">Bathrooms</span>
+                  <div class="counter-controls">
+                    <button type="button" class="counter-btn minus">−</button>
+                    <span class="counter-value">1</span>
+                    <button type="button" class="counter-btn plus">+</button>
+                  </div>
+                </div>
+                <div class="counter-item">
+                  <span class="counter-label">Pets Allowed</span>
+                  <div class="counter-controls">
+                    <button type="button" class="counter-btn minus">−</button>
+                    <span class="counter-value">1</span>
+                    <button type="button" class="counter-btn plus">+</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section B: Pet-Specific Info -->
+          <div class="property-section mb-5">
+            <h3 class="section-title">Pet-Specific Amenities</h3>
+
+            <div class="mb-4">
+              <label class="form-label section-label">Pet Amenities</label>
+              <div class="amenity-cards">
+                <div class="amenity-card">
+                  <div class="amenity-icon">🛏️</div>
+                  <span class="amenity-label">Pet Bed</span>
+                </div>
+                <div class="amenity-card">
+                  <div class="amenity-icon">🥣</div>
+                  <span class="amenity-label">Food/Water Bowls</span>
+                </div>
+                <div class="amenity-card">
+                  <div class="amenity-icon">🧸</div>
+                  <span class="amenity-label">Toys</span>
+                </div>
+                <div class="amenity-card">
+                  <div class="amenity-icon">🥾</div>
+                  <span class="amenity-label">Walking Trails</span>
+                </div>
+                <div class="amenity-card">
+                  <div class="amenity-icon">🏃</div>
+                  <span class="amenity-label">Exercise Area</span>
+                </div>
+                <div class="amenity-card">
+                  <div class="amenity-icon">🚿</div>
+                  <span class="amenity-label">Pet Wash Station</span>
+                </div>
+                <div class="amenity-card">
+                  <div class="amenity-icon">🔒</div>
+                  <span class="amenity-label">Fenced Yard</span>
+                </div>
+                <div class="amenity-card">
+                  <div class="amenity-icon">🐕‍🦺</div>
+                  <span class="amenity-label">Pet Sitter Available</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section C: Add Photos -->
+          <div class="property-section mb-5">
+            <h3 class="section-title">Property Photos</h3>
+
+            <div class="mb-4">
+              <label class="form-label section-label"
+                >Upload Property Pictures</label
+              >
+              <div class="photo-upload-container">
+                <div class="photo-upload-grid">
+                  <div class="photo-upload-card main-photo">
+                    <div class="upload-content">
+                      <div class="upload-icon">📷</div>
+                      <span class="upload-text">Main Photo</span>
+                      <span class="upload-subtext"
+                        >Drag & drop or click to upload</span
+                      >
+                    </div>
+                  </div>
+                  <div class="photo-upload-card">
+                    <div class="upload-content">
+                      <div class="upload-icon">📷</div>
+                      <span class="upload-text">Photo 2</span>
+                    </div>
+                  </div>
+                  <div class="photo-upload-card">
+                    <div class="upload-content">
+                      <div class="upload-icon">📷</div>
+                      <span class="upload-text">Photo 3</span>
+                    </div>
+                  </div>
+                  <div class="photo-upload-card">
+                    <div class="upload-content">
+                      <div class="upload-icon">📷</div>
+                      <span class="upload-text">Photo 4</span>
+                    </div>
+                  </div>
+                  <div class="photo-upload-card">
+                    <div class="upload-content">
+                      <div class="upload-icon">📷</div>
+                      <span class="upload-text">Photo 5</span>
+                    </div>
+                  </div>
+                  <div class="photo-upload-card optional">
+                    <div class="upload-content">
+                      <div class="upload-icon">📷</div>
+                      <span class="upload-text">Photo 6</span>
+                      <span class="upload-subtext">(Optional)</span>
+                    </div>
+                  </div>
+                  <div class="photo-upload-card optional">
+                    <div class="upload-content">
+                      <div class="upload-icon">📷</div>
+                      <span class="upload-text">Photo 7</span>
+                      <span class="upload-subtext">(Optional)</span>
+                    </div>
+                  </div>
+                  <div class="photo-upload-card optional">
+                    <div class="upload-content">
+                      <div class="upload-icon">📷</div>
+                      <span class="upload-text">Photo 8</span>
+                      <span class="upload-subtext">(Optional)</span>
+                    </div>
+                  </div>
+                  <div class="photo-upload-card optional">
+                    <div class="upload-content">
+                      <div class="upload-icon">📷</div>
+                      <span class="upload-text">Photo 9</span>
+                      <span class="upload-subtext">(Optional)</span>
+                    </div>
+                  </div>
+                  <div class="photo-upload-card optional">
+                    <div class="upload-content">
+                      <div class="upload-icon">📷</div>
+                      <span class="upload-text">Photo 10</span>
+                      <span class="upload-subtext">(Optional)</span>
+                    </div>
+                  </div>
+                </div>
+                <small class="form-text text-muted">
+                  Minimum 5 photos required. Maximum 10 photos allowed. First
+                  photo will be your main listing photo.
+                </small>
+              </div>
+            </div>
+          </div>
+
+          <!-- Navigation Buttons -->
+          <div class="row g-2 mb-4">
+            <div class="col-6">
+              <button
+                type="button"
+                class="btn btn-outline-secondary back-btn w-100 h-100"
+                (click)="prevStep()"
+              >
+                Back
+              </button>
+            </div>
+            <div class="col-6">
+              <button
+                type="button"
+                class="btn btn-primary submit-btn w-100 h-100"
+                (click)="nextStep()"
+              >
+                Complete Registration
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<app-footer></app-footer>

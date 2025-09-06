@@ -1,0 +1,215 @@
+<app-header></app-header>
+
+<div class="main-content">
+<div class="row justify-content-center min-vh-100 align-items-center">
+  <!-- col-12: for mobile(< 768px), fullwidth(12/12 columns)-->
+  <!-- col-md-10: medium screens (768px+), 10/12 columns -->
+  <!-- col-lg=8: Large screens (992px +), 8/12 columns-->
+  <div class="col-12 col-md-10 col-lg-8">
+    <!-- Registration Card -->
+    <div class="registration-card shadow-sm">
+      <!-- Step 3: Pet Info -->
+      <div>
+        <!-- Basic Pet Info -->
+        <div class="text-center mb-4">
+          <h2 class="registration-title">Pet Rules & Information</h2>
+          <p class="text-muted">Confirm your pet stay requirements</p>
+        </div>
+        <form [formGroup]="registrationForm">
+          <div class="mb-3">
+            <label class="form-label section-label">Select Allowed Pets</label>
+            <select
+              class="form-select custom-input"
+              formControlName="allowedPetsType"
+              multiple
+            >
+              <option value="">Dogs</option>
+              <option value="">Cats</option>
+              <option value="">Birds</option>
+            </select>
+            <small class="form-text text-muted"
+              >Select all pet types allowed.</small
+            >
+          </div>
+
+          <!-- Pet Size restrictions-->
+          <div class="mb-3">
+            <label class="form-label section-label"
+              >Pet Size Restrictions</label
+            >
+            <div class="btn-group" role="group">
+              <div>
+              <input
+                type="checkbox"
+                class="btn-check custom-input"
+                name="petSize1"
+                id="sizeSmall"
+                autocomplete="off"
+              />
+              <label
+                class="btn btn-outline-secondary custom-input"
+                for="sizeSmall"
+                >Small</label
+              >
+              <input
+                type="checkbox"
+                class="btn-check custom-input"
+                name="petSize2"
+                id="sizeMedium"
+                autocomplete="off"
+              />
+              <label
+                class="btn btn-outline-secondary custom-input"
+                for="sizeMedium"
+                >Medium</label
+              >
+              <input
+                type="checkbox"
+                class="btn-check custom-input"
+                name="petSize3"
+                id="sizeLarge"
+                autocomplete="off"
+              />
+              <label
+                class="btn btn-outline-secondary custom-input"
+                for="sizeLarge"
+                >Large</label
+              >
+              <input
+                type="checkbox"
+                class="btn-check custom-input"
+                name="petSize4"
+                id="sizeNone"
+                autocomplete="off"
+              />
+              <label
+                class="btn btn-outline-secondary custom-input"
+                for="sizeNone"
+                >None</label
+              >
+              </div>
+            </div>
+          </div>
+
+          <!-- Total Allowed Pets -->
+          <div class="mb-3">
+            <label class="form-label section-label"
+              >Number of Pets Allowed</label
+            >
+            <input
+              type="number"
+              class="form-control custom-input"
+              min="1"
+              max="4"
+              placeholder="e.g. 2"
+            />
+          </div>
+
+          <!-- House Rules for Pets -->
+          <div class="mb-3">
+            <label class="form-label section-label">House Rules</label>
+            <textarea
+              class="form-control custom-input"
+              rows="3"
+              placeholder="Describe any house rules for pets..."
+            ></textarea>
+          </div>
+
+          <!-- Required Vaccinations Dropdown (Multi-select) -->
+          <div class="mb-3">
+            <label class="form-label section-label"
+              >Required Vaccinations</label
+            >
+            <select
+              class="form-select custom-select"
+              formControlName="vaccinations"
+              size="5"
+              multiple
+            >
+              <!-- <option value="">Select Vaccinations</option> -->
+              <option
+                *ngFor="let vaccinationName of vaccinationsName"
+                [ngValue]="vaccinationName"
+              >
+                {{ vaccinationName }}
+              </option>
+            </select>
+            <small class="form-text text-muted"
+              >Select all required vaccinations.</small
+            >
+          </div>
+
+          <!-- Neutered/Spayed Requirement -->
+          <div class="mb-3">
+            <label class="form-label section-label"
+              >Neutered/Spayed Required?</label
+            >
+            <div>
+              <input
+                type="radio"
+                id="neuteredYes"
+                name="neutered"
+                class="form-check-input"
+              />
+              <label for="neuteredYes" class="form-check-label me-3">Yes</label>
+              <input
+                type="radio"
+                id="neuteredNo"
+                name="neutered"
+                class="form-check-input"
+              />
+              <label for="neuteredNo" class="form-check-label">No</label>
+            </div>
+          </div>
+
+          <!-- Flea/Tick Prevention Required -->
+          <div class="mb-3">
+            <label class="form-label section-label"
+              >Flea/Tick Prevention Required?</label
+            >
+            <div>
+              <input
+                type="radio"
+                id="fleatickYes"
+                name="fleatick"
+                class="form-check-input"
+              />
+              <label for="fleatickYes" class="form-check-label me-3">Yes</label>
+              <input
+                type="radio"
+                id="fleatickNo"
+                name="fleatick"
+                class="form-check-input"
+              />
+              <label for="fleatickNo" class="form-check-label">No</label>
+            </div>
+          </div>
+
+          <div class="row g-2 mb-4">
+            <div class="col-6">
+              <button
+                type="button"
+                class="btn btn-outline-secondary back-btn w-100 h-100"
+                (click)="prevStep()"
+              >
+                Back
+              </button>
+            </div>
+            <div class="col-6">
+              <button
+                type="button"
+                class="btn btn-primary submit-btn w-100 h-100"
+                (click)="nextStep()"
+              >
+                Next
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<app-footer></app-footer>
