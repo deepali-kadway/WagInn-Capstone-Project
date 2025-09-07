@@ -3,6 +3,20 @@
   padding-top: 120px !important;
 }
 
+.registration-title {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #222;
+  margin-bottom: 0;
+}
+
+.section-label {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #222;
+  margin-bottom: 1rem;
+}
+
 /* Submit Button */
 .submit-btn {
   background: linear-gradient(to right, #11a08d 0%, #25b9a6 50%, #04a58f 100%);
@@ -52,7 +66,7 @@
 .property-type-cards,
 .amenity-cards {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));  /* repeat: repeat column definition multiple times; auto-fit: create as many columns that will fit in the container; minmax(): defines size range of columns; 120fx: each col should be atleast 120px wide; 1fr: each col can grow upto one fraction so that they grow evenly*/
   gap: 1rem;
   margin-bottom: 1rem;
 }
@@ -313,4 +327,60 @@
     grid-column: span 2;
     aspect-ratio: 3/2;
   }
+}
+
+/* Custom Validation errors */
+.validation-error {
+  color: #dc3545;
+  font-size: 0.875rem;
+  margin-top: -8px; /* Negative margin to pull it closer */
+  margin-bottom: 8px;
+  font-size: 800;
+  font-weight: bold;
+}
+
+.validation-error-type{
+  color: #dc3545;
+  font-size: 0.875rem;
+  margin-top: -15px;
+  margin-bottom: 8px;
+  font-size: 800;
+  font-weight: bold;
+}
+
+/* Hide the actual radio inputs */
+input[type="radio"] {
+  display: none;
+}
+
+/* Property card styling */
+.property-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* CRITICAL: Selected state when radio is checked */
+input[type="radio"]:checked + .property-card {
+  border-color: #11a08d;
+  background-color: #f0f9f7;
+  box-shadow: 0 4px 12px rgba(17, 160, 141, 0.2);
+}
+
+input[type="checkbox"]:checked + .property-card {
+  border-color: #11a08d;
+  background-color: #f0f9f7;
+  box-shadow: 0 4px 12px rgba(17, 160, 141, 0.2);
+}
+
+
+/* Hover effect */
+.property-card:hover {
+  border-color: #11a08d;
+  transform: translateY(-2px);
 }

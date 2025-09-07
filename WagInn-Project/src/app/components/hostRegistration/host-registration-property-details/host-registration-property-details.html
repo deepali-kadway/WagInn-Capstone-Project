@@ -1,319 +1,669 @@
 <app-header></app-header>
 
 <div class="main-content">
-<div class="row justify-content-center min-vh-100 align-items-center">
-  <!-- col-12: for mobile(< 768px), fullwidth(12/12 columns)-->
-  <!-- col-md-10: medium screens (768px+), 10/12 columns -->
-  <!-- col-lg=8: Large screens (992px +), 8/12 columns-->
-  <div class="col-12 col-md-10 col-lg-8">
-    <!-- Registration Card -->
-    <div class="registration-card shadow-sm">
-      <!-- Step 4: Property Details -->
-      <div>
-        <div class="text-center mb-4">
-          <h2 class="registration-title">Property Details</h2>
-          <p class="text-muted">Tell us about your property</p>
-        </div>
-
-        <form [formGroup]="registrationForm">
-          <!-- Section A: Property Basics -->
-          <div class="property-section mb-5">
-            <h3 class="section-title">Property Basics</h3>
-
-            <!-- Property Name/Title -->
-            <div class="mb-4">
-              <label class="form-label section-label"
-                >Property Name/Title</label
-              >
-              <input
-                type="text"
-                class="form-control custom-input"
-                formControlName="propertyTitle"
-                placeholder="e.g., 2bed 1bath 1pet room in Banff"
-              />
-              <small class="form-text text-muted"
-                >Give your property a catchy, descriptive name</small
-              >
-            </div>
-
-            <!-- Property Type -->
-            <div class="mb-4">
-              <label class="form-label section-label">Property Type</label>
-              <div class="property-type-cards">
-                <div class="property-card">
-                  <div class="property-icon">🏠</div>
-                  <span class="property-label">House</span>
-                </div>
-                <div class="property-card">
-                  <div class="property-icon">🏢</div>
-                  <span class="property-label">Apartment</span>
-                </div>
-                <div class="property-card">
-                  <div class="property-icon">🚜</div>
-                  <span class="property-label">FarmStay</span>
-                </div>
-                <div class="property-card">
-                  <div class="property-icon">🏠</div>
-                  <span class="property-label">Basement</span>
-                </div>
-                <div class="property-card">
-                  <div class="property-icon">🏡</div>
-                  <span class="property-label">Cottage</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- Guest Amenities -->
-            <div class="mb-4">
-              <label class="form-label section-label">Guest Amenities</label>
-              <div class="amenity-cards">
-                <div class="amenity-card">
-                  <div class="amenity-icon">🌐</div>
-                  <span class="amenity-label">WiFi</span>
-                </div>
-                <div class="amenity-card">
-                  <div class="amenity-icon">📺</div>
-                  <span class="amenity-label">TV</span>
-                </div>
-                <div class="amenity-card">
-                  <div class="amenity-icon">❄️</div>
-                  <span class="amenity-label">AC</span>
-                </div>
-                <div class="amenity-card">
-                  <div class="amenity-icon">🔥</div>
-                  <span class="amenity-label">Heating</span>
-                </div>
-                <div class="amenity-card">
-                  <div class="amenity-icon">🍳</div>
-                  <span class="amenity-label">Kitchen</span>
-                </div>
-                <div class="amenity-card">
-                  <div class="amenity-icon">🅿</div>
-                  <span class="amenity-label">Parking</span>
-                </div>
-                <div class="amenity-card">
-                  <div class="amenity-icon">🏊</div>
-                  <span class="amenity-label">Pool</span>
-                </div>
-                <div class="amenity-card">
-                  <div class="amenity-icon">🎛️</div>
-                  <span class="amenity-label">Washing Machine</span>
-                </div>
-                <div class="amenity-card">
-                  <div class="amenity-icon">🚿</div>
-                  <span class="amenity-label">Bathroom</span>
-                </div>
-                <div class="amenity-card">
-                  <div class="amenity-icon">🧰</div>
-                  <span class="amenity-label">First Aid Kit</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- Number of Rooms -->
-            <div class="mb-4">
-              <label class="form-label section-label">Number of Rooms</label>
-              <div class="room-counters">
-                <div class="counter-item">
-                  <span class="counter-label">Guests</span>
-                  <div class="counter-controls">
-                    <button type="button" class="counter-btn minus">−</button>
-                    <span class="counter-value">1</span>
-                    <button type="button" class="counter-btn plus">+</button>
-                  </div>
-                </div>
-                <div class="counter-item">
-                  <span class="counter-label">Bedrooms</span>
-                  <div class="counter-controls">
-                    <button type="button" class="counter-btn minus">−</button>
-                    <span class="counter-value">1</span>
-                    <button type="button" class="counter-btn plus">+</button>
-                  </div>
-                </div>
-                <div class="counter-item">
-                  <span class="counter-label">Beds</span>
-                  <div class="counter-controls">
-                    <button type="button" class="counter-btn minus">−</button>
-                    <span class="counter-value">1</span>
-                    <button type="button" class="counter-btn plus">+</button>
-                  </div>
-                </div>
-                <div class="counter-item">
-                  <span class="counter-label">Bathrooms</span>
-                  <div class="counter-controls">
-                    <button type="button" class="counter-btn minus">−</button>
-                    <span class="counter-value">1</span>
-                    <button type="button" class="counter-btn plus">+</button>
-                  </div>
-                </div>
-                <div class="counter-item">
-                  <span class="counter-label">Pets Allowed</span>
-                  <div class="counter-controls">
-                    <button type="button" class="counter-btn minus">−</button>
-                    <span class="counter-value">1</span>
-                    <button type="button" class="counter-btn plus">+</button>
-                  </div>
-                </div>
-              </div>
-            </div>
+  <div class="row justify-content-center min-vh-100 align-items-center">
+    <!-- col-12: for mobile(< 768px), fullwidth(12/12 columns)-->
+    <!-- col-md-10: medium screens (768px+), 10/12 columns -->
+    <!-- col-lg=8: Large screens (992px +), 8/12 columns-->
+    <div class="col-12 col-md-10 col-lg-8">
+      <!-- Registration Card -->
+      <div class="registration-card shadow-sm">
+        <!-- Step 4: Property Details -->
+        <div>
+          <div class="text-center mb-4">
+            <h2 class="registration-title">Property Details</h2>
+            <p class="text-muted">Tell us about your property</p>
           </div>
 
-          <!-- Section B: Pet-Specific Info -->
-          <div class="property-section mb-5">
-            <h3 class="section-title">Pet-Specific Amenities</h3>
+          <form [formGroup]="registrationForm">
+            <!-- Section A: Property Basics -->
+            <div class="property-section mb-5">
+              <h3 class="section-title">Property Basics</h3>
 
-            <div class="mb-4">
-              <label class="form-label section-label">Pet Amenities</label>
-              <div class="amenity-cards">
-                <div class="amenity-card">
-                  <div class="amenity-icon">🛏️</div>
-                  <span class="amenity-label">Pet Bed</span>
-                </div>
-                <div class="amenity-card">
-                  <div class="amenity-icon">🥣</div>
-                  <span class="amenity-label">Food/Water Bowls</span>
-                </div>
-                <div class="amenity-card">
-                  <div class="amenity-icon">🧸</div>
-                  <span class="amenity-label">Toys</span>
-                </div>
-                <div class="amenity-card">
-                  <div class="amenity-icon">🥾</div>
-                  <span class="amenity-label">Walking Trails</span>
-                </div>
-                <div class="amenity-card">
-                  <div class="amenity-icon">🏃</div>
-                  <span class="amenity-label">Exercise Area</span>
-                </div>
-                <div class="amenity-card">
-                  <div class="amenity-icon">🚿</div>
-                  <span class="amenity-label">Pet Wash Station</span>
-                </div>
-                <div class="amenity-card">
-                  <div class="amenity-icon">🔒</div>
-                  <span class="amenity-label">Fenced Yard</span>
-                </div>
-                <div class="amenity-card">
-                  <div class="amenity-icon">🐕‍🦺</div>
-                  <span class="amenity-label">Pet Sitter Available</span>
+              <!-- Property Name/Title -->
+              <div class="mb-4">
+                <label class="form-label section-label"
+                  >Property Name/Title</label
+                >
+                <input
+                  type="text"
+                  class="form-control custom-input"
+                  formControlName="propertyTitle"
+                  placeholder="e.g., 2bed 1bath 1pet room in Banff"
+                />
+                <small class="form-text text-muted"
+                  >Give your property a catchy, descriptive name</small
+                >
+              </div>
+              <div *ngIf="propertyTitle?.invalid && propertyTitle?.touched">
+                <div
+                  *ngIf="propertyTitle?.errors?.['required']"
+                  class="text-danger validation-error-type"
+                >
+                  Enter a valid Title for your property
                 </div>
               </div>
-            </div>
-          </div>
 
-          <!-- Section C: Add Photos -->
-          <div class="property-section mb-5">
-            <h3 class="section-title">Property Photos</h3>
+              <!-- Property Type -->
+              <div class="mb-4">
+                <label class="form-label section-label">Property Type</label>
+                <div class="property-type-cards">
+                  <input
+                    type="radio"
+                    id="house"
+                    name="propertyType"
+                    value="house"
+                    formControlName="propertyType"
+                    hidden
+                  />
+                  <label for="house" class="property-card">
+                    <div class="property-icon">🏠</div>
+                    <span class="property-label">House</span>
+                  </label>
 
-            <div class="mb-4">
-              <label class="form-label section-label"
-                >Upload Property Pictures</label
-              >
-              <div class="photo-upload-container">
-                <div class="photo-upload-grid">
-                  <div class="photo-upload-card main-photo">
-                    <div class="upload-content">
-                      <div class="upload-icon">📷</div>
-                      <span class="upload-text">Main Photo</span>
-                      <span class="upload-subtext"
-                        >Drag & drop or click to upload</span
+                  <input
+                    type="radio"
+                    id="apartment"
+                    name="propertyType"
+                    value="apartment"
+                    formControlName="propertyType"
+                    hidden
+                  />
+                  <label for="apartment" class="property-card">
+                    <div class="property-icon">🏢</div>
+                    <span class="property-label">Apartment</span>
+                  </label>
+
+                  <input
+                    type="radio"
+                    id="farmStay"
+                    name="propertyType"
+                    value="farmStay"
+                    formControName="propertyType"
+                    hidden
+                  />
+                  <label for="farmStay" class="property-card">
+                    <div class="property-icon">🚜</div>
+                    <span class="property-label">Farm Stay</span>
+                  </label>
+
+                  <input
+                    type="radio"
+                    id="basement"
+                    name="propertyType"
+                    value="basement"
+                    formControName="propertyType"
+                    hidden
+                  />
+                  <label for="basement" class="property-card">
+                    <div class="property-icon">⬇🚪</div>
+                    <span class="property-label">Basement</span>
+                  </label>
+
+                  <input
+                    type="radio"
+                    id="cottage"
+                    name="propertyType"
+                    value="cottage"
+                    formControName="propertyType"
+                    hidden
+                  />
+                  <label for="cottage" class="property-card">
+                    <div class="property-icon">🏡</div>
+                    <span class="property-label">Cottage</span>
+                  </label>
+                </div>
+              </div>
+              <div *ngIf="propertyType?.invalid && propertyType?.touched">
+                <div
+                  *ngIf="propertyType?.errors?.['required']"
+                  class="validation-error"
+                >
+                  Select a Property Type
+                </div>
+              </div>
+
+              <!-- Guest Amenities -->
+              <div class="mb-4">
+                <label class="form-label section-label">Guest Amenities</label>
+                <div class="amenity-cards">
+                  <input
+                    type="checkbox"
+                    id="wifi"
+                    name="ammenities1"
+                    value="wifi"
+                    formControName="ammenities"
+                    hidden
+                  />
+                  <label for="wifi" class="property-card">
+                    <div class="property-icon">🌐</div>
+                    <span class="property-label">WiFi</span>
+                  </label>
+
+                  <input
+                    type="checkbox"
+                    id="tv"
+                    name="ammenities2"
+                    value="tv"
+                    formControName="ammenities"
+                    hidden
+                  />
+                  <label for="tv" class="property-card">
+                    <div class="property-icon">📺</div>
+                    <span class="property-label">TV</span>
+                  </label>
+
+                  <input
+                    type="checkbox"
+                    id="ac"
+                    name="ammenities3"
+                    value="ac"
+                    formControName="ammenities"
+                    hidden
+                  />
+                  <label for="ac" class="property-card">
+                    <div class="property-icon">❄️</div>
+                    <span class="property-label">AC</span>
+                  </label>
+
+                  <input
+                    type="checkbox"
+                    id="heating"
+                    name="ammenities4"
+                    value="heating"
+                    formControName="ammenities"
+                    hidden
+                  />
+                  <label for="heating" class="property-card">
+                    <div class="property-icon">🔥</div>
+                    <span class="property-label">Heating</span>
+                  </label>
+
+                  <input
+                    type="checkbox"
+                    id="kitchen"
+                    name="ammenities5"
+                    value="kitchen"
+                    formControName="ammenities"
+                    hidden
+                  />
+                  <label for="kitchen" class="property-card">
+                    <div class="property-icon">🍳</div>
+                    <span class="property-label">Kitchen</span>
+                  </label>
+
+                  <input
+                    type="checkbox"
+                    id="firstAid"
+                    name="ammenities6"
+                    value="firstAid"
+                    formControName="ammenities"
+                    hidden
+                  />
+                  <label for="firstAid" class="property-card">
+                    <div class="property-icon">🧰</div>
+                    <span class="property-label">First Aid Kit</span>
+                  </label>
+
+                  <input
+                    type="checkbox"
+                    id="bath"
+                    name="ammenities7"
+                    value="bath"
+                    formControName="ammenities"
+                    hidden
+                  />
+                  <label for="bath" class="property-card">
+                    <div class="property-icon">🚿</div>
+                    <span class="property-label">Bathroom</span>
+                  </label>
+
+                  <input
+                    type="checkbox"
+                    id="washmachine"
+                    name="ammenities8"
+                    value="washmachine"
+                    formControName="ammenities"
+                    hidden
+                  />
+                  <label for="washmachine" class="property-card">
+                    <div class="property-icon">🎛️</div>
+                    <span class="property-label">Washer</span>
+                  </label>
+
+                  <input
+                    type="checkbox"
+                    id="pool"
+                    name="ammenities9"
+                    value="pool"
+                    formControName="ammenities"
+                    hidden
+                  />
+                  <label for="pool" class="property-card">
+                    <div class="property-icon">🏊</div>
+                    <span class="property-label">Pool</span>
+                  </label>
+
+                  <input
+                    type="checkbox"
+                    id="parking"
+                    name="ammenities10"
+                    value="parking"
+                    formControName="ammenities"
+                    hidden
+                  />
+                  <label for="parking" class="property-card">
+                    <div class="property-icon">🅿</div>
+                    <span class="property-label">Parking</span>
+                  </label>
+                </div>
+              </div>
+              <div *ngIf="ammenities?.invalid && ammenities?.touched">
+                <div
+                  *ngIf="ammenities?.errors?.['required']"
+                  class="validation-error"
+                >
+                  Select a Property Type
+                </div>
+              </div>
+
+              <!-- Number of Rooms -->
+              <div class="mb-4">
+                <label class="form-label section-label">Number of Rooms</label>
+
+                <input type="hidden" formControlName="guests" />
+                <input type="hidden" formControlName="bedrooms" />
+                <input type="hidden" formControlName="beds" />
+                <input type="hidden" formControlName="bathrooms" />
+                <input type="hidden" formControlName="pets" />
+
+                <div class="room-counters">
+                  <div class="counter-item">
+                    <span class="counter-label">Guests</span>
+                    <div class="counter-controls">
+                      <button
+                        type="button"
+                        class="counter-btn minus"
+                        (click)="updateCounter('guests', 'decrement')"
                       >
+                        −
+                      </button>
+                      <span class="counter-value">{{ counters.guests }}</span>
+                      <button
+                        type="button"
+                        class="counter-btn plus"
+                        (click)="updateCounter('guests', 'increment')"
+                      >
+                        +
+                      </button>
                     </div>
                   </div>
-                  <div class="photo-upload-card">
-                    <div class="upload-content">
-                      <div class="upload-icon">📷</div>
-                      <span class="upload-text">Photo 2</span>
+                  <div class="counter-item">
+                    <span class="counter-label">Bedrooms</span>
+                    <div class="counter-controls">
+                      <button
+                        type="button"
+                        class="counter-btn minus"
+                        (click)="updateCounter('bedrooms', 'decrement')"
+                      >
+                        −
+                      </button>
+                      <span class="counter-value">{{ counters.bedrooms }}</span>
+                      <button
+                        type="button"
+                        class="counter-btn plus"
+                        (click)="updateCounter('bedrooms', 'increment')"
+                      >
+                        +
+                      </button>
                     </div>
                   </div>
-                  <div class="photo-upload-card">
-                    <div class="upload-content">
-                      <div class="upload-icon">📷</div>
-                      <span class="upload-text">Photo 3</span>
+                  <div class="counter-item">
+                    <span class="counter-label">Beds</span>
+                    <div class="counter-controls">
+                      <button
+                        type="button"
+                        class="counter-btn minus"
+                        (click)="updateCounter('beds', 'decrement')"
+                      >
+                        −
+                      </button>
+                      <span class="counter-value">{{ counters.beds }}</span>
+                      <button
+                        type="button"
+                        class="counter-btn plus"
+                        (click)="updateCounter('beds', 'increment')"
+                      >
+                        +
+                      </button>
                     </div>
                   </div>
-                  <div class="photo-upload-card">
-                    <div class="upload-content">
-                      <div class="upload-icon">📷</div>
-                      <span class="upload-text">Photo 4</span>
+                  <div class="counter-item">
+                    <span class="counter-label">Bathrooms</span>
+                    <div class="counter-controls">
+                      <button
+                        type="button"
+                        class="counter-btn minus"
+                        (click)="updateCounter('bathrooms', 'decrement')"
+                      >
+                        −
+                      </button>
+                      <span class="counter-value">{{
+                        counters.bathrooms
+                      }}</span>
+                      <button
+                        type="button"
+                        class="counter-btn plus"
+                        (click)="updateCounter('bathrooms', 'increment')"
+                      >
+                        +
+                      </button>
                     </div>
                   </div>
-                  <div class="photo-upload-card">
-                    <div class="upload-content">
-                      <div class="upload-icon">📷</div>
-                      <span class="upload-text">Photo 5</span>
-                    </div>
-                  </div>
-                  <div class="photo-upload-card optional">
-                    <div class="upload-content">
-                      <div class="upload-icon">📷</div>
-                      <span class="upload-text">Photo 6</span>
-                      <span class="upload-subtext">(Optional)</span>
-                    </div>
-                  </div>
-                  <div class="photo-upload-card optional">
-                    <div class="upload-content">
-                      <div class="upload-icon">📷</div>
-                      <span class="upload-text">Photo 7</span>
-                      <span class="upload-subtext">(Optional)</span>
-                    </div>
-                  </div>
-                  <div class="photo-upload-card optional">
-                    <div class="upload-content">
-                      <div class="upload-icon">📷</div>
-                      <span class="upload-text">Photo 8</span>
-                      <span class="upload-subtext">(Optional)</span>
-                    </div>
-                  </div>
-                  <div class="photo-upload-card optional">
-                    <div class="upload-content">
-                      <div class="upload-icon">📷</div>
-                      <span class="upload-text">Photo 9</span>
-                      <span class="upload-subtext">(Optional)</span>
-                    </div>
-                  </div>
-                  <div class="photo-upload-card optional">
-                    <div class="upload-content">
-                      <div class="upload-icon">📷</div>
-                      <span class="upload-text">Photo 10</span>
-                      <span class="upload-subtext">(Optional)</span>
+                  <div class="counter-item">
+                    <span class="counter-label">Pets Allowed</span>
+                    <div class="counter-controls">
+                      <button
+                        type="button"
+                        class="counter-btn minus"
+                        (click)="updateCounter('pets', 'decrement')"
+                      >
+                        −
+                      </button>
+                      <span class="counter-value">{{ counters.pets }}</span>
+                      <button
+                        type="button"
+                        class="counter-btn plus"
+                        (click)="updateCounter('pets', 'increment')"
+                      >
+                        +
+                      </button>
                     </div>
                   </div>
                 </div>
-                <small class="form-text text-muted">
-                  Minimum 5 photos required. Maximum 10 photos allowed. First
-                  photo will be your main listing photo.
-                </small>
+                <div class="counter-validation">
+                  <div
+                    *ngIf="
+                      registrationForm.get('guests')?.invalid &&
+                      registrationForm.get('guests')?.touched
+                    "
+                  >
+                    <div class="text-danger validation-error">
+                      At least 1 guest is required
+                    </div>
+                  </div>
+                  <div
+                    *ngIf="
+                      registrationForm.get('bedrooms')?.invalid &&
+                      registrationForm.get('bedrooms')?.touched
+                    "
+                  >
+                    <div class="text-danger validation-error">
+                      At least 1 bedroom is required
+                    </div>
+                  </div>
+                  <div
+                    *ngIf="
+                      registrationForm.get('beds')?.invalid &&
+                      registrationForm.get('bed')?.touched
+                    "
+                  >
+                    <div class="text-danger validation-error">
+                      At least 1 bed is required
+                    </div>
+                  </div>
+                  <div
+                    *ngIf="
+                      registrationForm.get('bathrooms')?.invalid &&
+                      registrationForm.get('bathooms')?.touched
+                    "
+                  >
+                    <div class="text-danger validation-error">
+                      At least 1 bathroom is required
+                    </div>
+                  </div>
+                  <div
+                    *ngIf="
+                      registrationForm.get('pets')?.invalid &&
+                      registrationForm.get('pets')?.touched
+                    "
+                  >
+                    <div class="text-danger validation-error">
+                      At least 1 allowed pet is required
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
 
-          <!-- Navigation Buttons -->
-          <div class="row g-2 mb-4">
-            <div class="col-6">
-              <button
-                type="button"
-                class="btn btn-outline-secondary back-btn w-100 h-100"
-                (click)="prevStep()"
-              >
-                Back
-              </button>
+            <!-- Section B: Pet-Specific Info -->
+            <div class="property-section mb-5">
+              <h3 class="section-title">Pet-Specific Amenities</h3>
+
+              <div class="mb-4">
+                <label class="form-label section-label">Pet Amenities</label>
+                <div class="amenity-cards">
+                  <input
+                    type="checkbox"
+                    id="petBed"
+                    name="ammenities1"
+                    value="petBed"
+                    formControName="ammenitiesPets"
+                    hidden
+                  />
+                  <label for="petBed" class="property-card">
+                    <div class="property-icon">🛏️</div>
+                    <span class="property-label">Pet Bed</span>
+                  </label>
+
+                  <input
+                    type="checkbox"
+                    id="petBowls"
+                    name="ammenities2"
+                    value="petBowls"
+                    formControName="ammenitiesPets"
+                    hidden
+                  />
+                  <label for="petBowls" class="property-card">
+                    <div class="property-icon">🥣</div>
+                    <span class="property-label">Food/Water Bowls</span>
+                  </label>
+
+                  <input
+                    type="checkbox"
+                    id="petToys"
+                    name="ammenities3"
+                    value="petToys"
+                    formControName="ammenitiesPets"
+                    hidden
+                  />
+                  <label for="petToys" class="property-card">
+                    <div class="property-icon">🧸</div>
+                    <span class="property-label">Toys</span>
+                  </label>
+
+                  <input
+                    type="checkbox"
+                    id="petTrails"
+                    name="ammenities4"
+                    value="petTrails"
+                    formControName="ammenitiesPets"
+                    hidden
+                  />
+                  <label for="petTrails" class="property-card">
+                    <div class="property-icon">🥾</div>
+                    <span class="property-label">Walking Trails</span>
+                  </label>
+
+                  <input
+                    type="checkbox"
+                    id="petSitter"
+                    name="ammenities5"
+                    value="petSitter"
+                    formControName="ammenitiesPets"
+                    hidden
+                  />
+                  <label for="petSitter" class="property-card">
+                    <div class="property-icon">🐕‍🦺</div>
+                    <span class="property-label">Pet Sitter</span>
+                  </label>
+
+                  <input
+                    type="checkbox"
+                    id="petFenceYard"
+                    name="ammenities6"
+                    value="petFenceYard"
+                    formControName="ammenitiesPets"
+                    hidden
+                  />
+                  <label for="petFenceYard" class="property-card">
+                    <div class="property-icon">🔒</div>
+                    <span class="property-label">Fenced Yard</span>
+                  </label>
+
+                  <input
+                    type="checkbox"
+                    id="petWash"
+                    name="ammenities7"
+                    value="petWash"
+                    formControName="ammenitiesPets"
+                    hidden
+                  />
+                  <label for="petWash" class="property-card">
+                    <div class="property-icon">🚿</div>
+                    <span class="property-label">Pet Washing Station</span>
+                  </label>
+
+                  <input
+                    type="checkbox"
+                    id="petExercise"
+                    name="ammenities8"
+                    value="petExercise"
+                    formControName="ammenitiesPets"
+                    hidden
+                  />
+                  <label for="petExercise" class="property-card">
+                    <div class="property-icon">🏃</div>
+                    <span class="property-label">Exercise Area</span>
+                  </label>
+                </div>
+              </div>
             </div>
-            <div class="col-6">
-              <button
-                type="button"
-                class="btn btn-primary submit-btn w-100 h-100"
-                (click)="nextStep()"
-              >
-                Complete Registration
-              </button>
+            
+
+            <!-- Section C: Add Photos -->
+            <div class="property-section mb-5">
+              <h3 class="section-title">Property Photos</h3>
+
+              <div class="mb-4">
+                <label class="form-label section-label"
+                  >Upload Property Pictures</label
+                >
+                <div class="photo-upload-container">
+                  <div class="photo-upload-grid">
+                    <div class="photo-upload-card main-photo">
+                      <div class="upload-content">
+                        <div class="upload-icon">📷</div>
+                        <span class="upload-text">Main Photo</span>
+                        <span class="upload-subtext"
+                          >Drag & drop or click to upload</span
+                        >
+                      </div>
+                    </div>
+                    <div class="photo-upload-card">
+                      <div class="upload-content">
+                        <div class="upload-icon">📷</div>
+                        <span class="upload-text">Photo 2</span>
+                      </div>
+                    </div>
+                    <div class="photo-upload-card">
+                      <div class="upload-content">
+                        <div class="upload-icon">📷</div>
+                        <span class="upload-text">Photo 3</span>
+                      </div>
+                    </div>
+                    <div class="photo-upload-card">
+                      <div class="upload-content">
+                        <div class="upload-icon">📷</div>
+                        <span class="upload-text">Photo 4</span>
+                      </div>
+                    </div>
+                    <div class="photo-upload-card">
+                      <div class="upload-content">
+                        <div class="upload-icon">📷</div>
+                        <span class="upload-text">Photo 5</span>
+                      </div>
+                    </div>
+                    <div class="photo-upload-card optional">
+                      <div class="upload-content">
+                        <div class="upload-icon">📷</div>
+                        <span class="upload-text">Photo 6</span>
+                        <span class="upload-subtext">(Optional)</span>
+                      </div>
+                    </div>
+                    <div class="photo-upload-card optional">
+                      <div class="upload-content">
+                        <div class="upload-icon">📷</div>
+                        <span class="upload-text">Photo 7</span>
+                        <span class="upload-subtext">(Optional)</span>
+                      </div>
+                    </div>
+                    <div class="photo-upload-card optional">
+                      <div class="upload-content">
+                        <div class="upload-icon">📷</div>
+                        <span class="upload-text">Photo 8</span>
+                        <span class="upload-subtext">(Optional)</span>
+                      </div>
+                    </div>
+                    <div class="photo-upload-card optional">
+                      <div class="upload-content">
+                        <div class="upload-icon">📷</div>
+                        <span class="upload-text">Photo 9</span>
+                        <span class="upload-subtext">(Optional)</span>
+                      </div>
+                    </div>
+                    <div class="photo-upload-card optional">
+                      <div class="upload-content">
+                        <div class="upload-icon">📷</div>
+                        <span class="upload-text">Photo 10</span>
+                        <span class="upload-subtext">(Optional)</span>
+                      </div>
+                    </div>
+                  </div>
+                  <small class="form-text text-muted">
+                    Minimum 5 photos required. Maximum 10 photos allowed. First
+                    photo will be your main listing photo.
+                  </small>
+                </div>
+              </div>
             </div>
-          </div>
-        </form>
+
+            <!-- Navigation Buttons -->
+            <div class="row g-2 mb-4">
+              <div class="col-6">
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary back-btn w-100 h-100"
+                  (click)="prevStep()"
+                >
+                  Back
+                </button>
+              </div>
+              <div class="col-6">
+                <button
+                  type="button"
+                  class="btn btn-primary submit-btn w-100 h-100"
+                  (click)="nextStep()"
+                >
+                  Complete Registration
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   </div>
-</div>
 </div>
 
 <app-footer></app-footer>
