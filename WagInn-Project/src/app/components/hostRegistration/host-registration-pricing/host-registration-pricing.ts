@@ -42,7 +42,11 @@ export class HostRegistrationPricing {
     return this.totalGuestPrice - this.wagInnEarnings;
   }
 
-  nextStep() {}
+  // Navigation to next & previous steps
+  nextStep() {
+    this.router.navigate(['idVerification']);
+  }
+
   prevStep() {
     this.router.navigate(['propertyDetails']);
   }

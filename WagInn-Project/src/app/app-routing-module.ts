@@ -5,6 +5,7 @@ import { HostRegistrationAddressDetails } from './components/hostRegistration/ho
 import { HostRegistrationPetInfo } from './components/hostRegistration/host-registration-pet-info/host-registration-pet-info';
 import { HostRegistrationPropertyDetails } from './components/hostRegistration/host-registration-property-details/host-registration-property-details';
 import { HostRegistrationPricing } from './components/hostRegistration/host-registration-pricing/host-registration-pricing';
+import { HostRegistrationIDVerification } from './components/hostRegistration/host-registration-idverification/host-registration-idverification';
 
 const routes: Routes = [
   { path: '', component: HostRegistrationPersonalInfo },
@@ -12,6 +13,7 @@ const routes: Routes = [
   { path: 'petInfo', component: HostRegistrationPetInfo },
   { path: 'propertyDetails', component: HostRegistrationPropertyDetails },
   { path: 'pricing', component: HostRegistrationPricing },
+  {path: 'idVerification', component: HostRegistrationIDVerification}
 ];
 
 @NgModule({

@@ -1,0 +1,23 @@
+/* Main Container Styles */
+.main-content {
+  padding-top: 140px !important;
+  padding-bottom: 2rem;
+}
+
+/* Registration Card */
+.registration-card {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  border: 1px solid #ddd;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Typography */
+.registration-title {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #222;
+  margin-bottom: 0;
+}

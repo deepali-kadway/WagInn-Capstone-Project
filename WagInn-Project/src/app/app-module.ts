@@ -11,6 +11,7 @@ import { HostRegistrationAddressDetails } from './components/hostRegistration/ho
 import { HostRegistrationPetInfo } from './components/hostRegistration/host-registration-pet-info/host-registration-pet-info';
 import { HostRegistrationPropertyDetails } from './components/hostRegistration/host-registration-property-details/host-registration-property-details';
 import { HostRegistrationPricing } from './components/hostRegistration/host-registration-pricing/host-registration-pricing';
+import { HostRegistrationIDVerification } from './components/hostRegistration/host-registration-idverification/host-registration-idverification';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { HostRegistrationPricing } from './components/hostRegistration/host-regi
     HostRegistrationPetInfo,
     HostRegistrationPropertyDetails,
     HostRegistrationPricing,
+    HostRegistrationIDVerification,
   ],
   imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule],
   providers: [provideBrowserGlobalErrorListeners()],
