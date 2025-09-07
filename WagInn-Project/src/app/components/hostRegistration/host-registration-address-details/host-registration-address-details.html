@@ -24,6 +24,9 @@
               placeholder="Street address"
             />
           </div>
+          <div *ngIf="streetAddress?.invalid && streetAddress?.touched">
+            <div class="text-danger validation-error" *ngIf="streetAddress?.errors?.['required']">Street Address is required</div>
+          </div>
 
           <div class="row g-2 mb-3">
             <div class="col-6">
@@ -35,6 +38,11 @@
                 placeholder="City"
               />
             </div>
+         <div *ngIf="city?.invalid && city?.touched">
+            <div class="text-danger validation-error" *ngIf="city?.errors?.['required']">City is required</div>
+          </div>
+
+
             <div class="col-6">
               <label class="form-label section-label">State</label>
               <input
@@ -44,6 +52,9 @@
                 placeholder="State"
               />
             </div>
+          </div>
+          <div *ngIf="state?.invalid && state?.touched">
+            <div class="text-danger validation-error" *ngIf="state?.errors?.['required']">State is required</div>
           </div>
 
           <div class="row g-2 mb-4">
@@ -56,6 +67,10 @@
                 placeholder="ZIP Code"
               />
             </div>
+            <div *ngIf="zipCode?.invalid && zipCode?.touched">
+              <div class="text-danger validation-error" *ngIf="zipCode?.errors?.['required']">Zip Code is required</div>
+            </div>
+
             <div class="col-6">
               <label class="form-label section-label">Country</label>
               <input
@@ -64,6 +79,9 @@
                 formControlName="country"
                 placeholder="Country"
               />
+            </div>
+            <div *ngIf="country?.invalid && country?.touched">
+              <div class="text-danger validation-error" *ngIf="country?.errors?.['required']">Country is required</div>
             </div>
           </div>
 
@@ -83,6 +101,7 @@
                 type="button"
                 class="btn btn-primary submit-btn w-100 h-100"
                 (click)="nextStep()"
+                
               >
                 Next
               </button>
