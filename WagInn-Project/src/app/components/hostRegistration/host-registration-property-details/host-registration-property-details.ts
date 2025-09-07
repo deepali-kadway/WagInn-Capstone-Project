@@ -55,7 +55,9 @@ export class HostRegistrationPropertyDetails {
       ?.setValue(this.counters[counterName as keyof typeof this.counters]);
   }
 
-  nextStep() {}
+  nextStep() {
+    this.router.navigate(['pricing'])
+  }
   prevStep() {
     this.router.navigate(['petInfo']);
   }

@@ -1,0 +1,125 @@
+<app-header></app-header>
+
+<div class="main-content">
+  <div class="row justify-content-center min-vh-100">
+    <div class="col-12 col-md-10 col-lg-8">
+      <div class="registration-card shadow-sm">
+        <div>
+          <div class="text-center mb-4">
+            <h2 class="registration-title">Set Pricing</h2>
+            <p class="text-muted">Set your pricing and earn</p>
+          </div>
+
+          <form [formGroup]="pricingForm">
+            <!-- Price Input Section -->
+            <div class="mb-4">
+              <div class="price-input-container">
+                <div class="price-display">
+                  <span class="currency-symbol">$</span>
+                  <input
+                    type="number"
+                    class="form-control price-input"
+                    formControlName="basePrice"
+                    placeholder="100"
+                    min="10"
+                    step="0.01"
+                    required
+                  />
+                  <span class="edit-icon">
+                    <i class="bi bi-pencil"></i>
+                  </span>
+                </div>
+              </div>
+
+              <div
+                class="validation-error"
+                *ngIf="basePrice?.invalid && basePrice?.touched"
+              >
+                <div *ngIf="basePrice?.errors?.['required']">
+                  Base price is required
+                </div>
+                <div *ngIf="basePrice?.errors?.['min']">
+                  Price must be at least $10
+                </div>
+              </div>
+            </div>
+
+            <!-- Price Breakdown Section -->
+            <div class="mb-4" *ngIf="basePriceValue > 0">
+              <div class="price-breakdown-card">
+                <div class="breakdown-row">
+                  <span class="breakdown-label">Base price</span>
+                  <span class="breakdown-value"
+                    >${{ basePriceValue | number : "1.0-2" }} CAD</span
+                  >
+                  <!-- format: "1.0-2, 1: atleast one digit before the decimal point, 0: atleast 0 decimal places, 2: atmost 2 decimal places"-->
+                </div>
+                <div class="breakdown-row">
+                  <span class="breakdown-label">Guest service fee</span>
+                  <span class="breakdown-value"
+                    >${{ guestServiceFee }} CAD</span
+                  >
+                </div>
+                <div class="breakdown-row">
+                  <span class="breakdown-label">Taxes</span>
+                  <span class="breakdown-value">${{ taxes }} CAD</span>
+                </div>
+
+                <hr class="breakdown-divider" />
+
+                <div class="breakdown-row total-row">
+                  <span class="breakdown-label-bold">Guest price</span>
+                  <span class="breakdown-value-bold"
+                    >${{ totalGuestPrice | number : "1.0-2" }} CAD</span
+                  >
+                </div>
+              </div>
+            </div>
+
+            <!-- Host Earnings Section -->
+            <div class="mb-4" *ngIf="basePriceValue > 0">
+              <div class="earnings-card">
+                <div class="earnings-row">
+                  <span class="earnings-label">You earn</span>
+                  <span class="earnings-value"
+                    >${{ hostEarnings | number : "1.0-2" }} CAD</span
+                  >
+                </div>
+              </div>
+              <p class="small-text">
+                WagInn service charge (3%) per booking: <b>${{
+                  wagInnEarnings | number : "1.0-2"
+                }}
+                CAD</b>
+              </p>
+            </div>
+
+            <!-- Navigation Buttons -->
+            <div class="row g-2 mb-4">
+              <div class="col-6">
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary back-btn w-100 h-100"
+                  (click)="prevStep()"
+                >
+                  Back
+                </button>
+              </div>
+              <div class="col-6">
+                <button
+                  type="button"
+                  class="btn btn-primary submit-btn w-100 h-100"
+                  (click)="nextStep()"
+                >
+                  Next
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-footer></app-footer>
