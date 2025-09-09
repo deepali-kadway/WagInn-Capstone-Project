@@ -558,6 +558,90 @@
                 <label class="form-label section-label"
                   >Upload Property Pictures</label
                 >
+                <div class="photo-upload-container">
+                  <input
+                    type="file"
+                    class="form-control photo-input"
+                    id="propertyPhotos"
+                    (change)="onFileSelected($event)"
+                    multiple
+                    accept="image/jpeg,image/jpg,image/png"
+                  />
+                  <label for="propertyPhotos" class="photo-upload-label">
+                    <i class="fas fa-camera"></i>
+                    <span class="upload-text">Choose Property Photos</span>
+                    <span class="upload-subtext"
+                      >Select {{ minFiles }}-{{ maxFiles }} images</span
+                    >
+                    <span class="upload-subtext"
+                      >Allowed file types: JPEG, JPG, PNG</span
+                    >
+                  </label>
+                </div>
+
+                <!-- Preview Selected images -->
+                <div
+                  class="selected-images mt-3"
+                  *ngIf="selectedFiles.length > 0"
+                >
+                  <div class="row g-3">
+                    <div
+                      class="col-md-3 col-sm-4 col-6"
+                      *ngFor="let file of selectedFiles; let i = index"
+                    >
+                      <div class="image-preview-card">
+                        <img
+                          [src]="getFilePreview(i)"
+                          [alt]="file.name"
+                          class="preview-image"
+                        />
+                        <button
+                          type="button"
+                          class="btn btn-light btn-sm remove-btn"
+                          (click)="removeImage(i)"
+                        >
+                          <i class="bi bi-x-circle"></i>
+                        </button>
+                        <div class="image-info">
+                          <small class="text-muted">{{ file.name }}</small>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mt-2">
+                    <small class="text-info"
+                      >{{ selectedFiles.length }} of {{ maxFiles }} images
+                      selected</small
+                    >
+                  </div>
+                </div>
+
+                <!-- Validation Messages for property images-->
+                <div
+                  *ngIf="
+                    registrationForm.get('propertyPhotos')?.invalid &&
+                    registrationForm.get('propertyPhotos')?.touched
+                  "
+                >
+                  <div
+                    *ngIf="registrationForm.get('propertyPhotos')?.errors?.['minImages']"
+                    class="text-danger validation-error-photo"
+                  >
+                    Please select at least {{ minFiles }} images.
+                  </div>
+                  <div
+                    *ngIf="registrationForm.get('propertyPhotos')?.errors?.['maxImages']"
+                    class="text-danger validation-error-photo"
+                  >
+                    Maximum {{ maxFiles }} images allowed.
+                  </div>
+                  <div
+                    *ngIf="registrationForm.get('propertyPhotos')?.errors?.['required']"
+                    class="text-danger validation-error-photo"
+                  >
+                    Property photos are required.
+                  </div>
+                </div>
               </div>
             </div>
 
