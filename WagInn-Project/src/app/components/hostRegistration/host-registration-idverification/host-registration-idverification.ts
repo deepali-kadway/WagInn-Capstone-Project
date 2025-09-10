@@ -99,12 +99,18 @@ export class HostRegistrationIDVerification {
   }
 
   submitForm() {
-    if (this.registrationForm.invalid) {
-      this.registrationForm.markAllAsTouched();
-      return;
-    } else {
+    if (this.registrationForm.valid) {
       this.service.updateIdVerification(this.registrationForm.value);
-      this.router.navigate([]);
+
+      this.service.submitRegistration().subscribe({
+        next: (response) => {
+          console.log('Registration successful!');
+          this.router.navigate([]);
+        },
+        error: (error) => {
+          console.log('Registration Failed:', error);
+        }
+      });
     }
   }
 }
