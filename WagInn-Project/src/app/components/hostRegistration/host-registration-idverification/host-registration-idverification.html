@@ -56,6 +56,19 @@
               </div>
             </div>
 
+            <!-- Validation Messages for property images -->
+            <div
+              *ngIf="registrationForm.get('identityPhotosFront')?.invalid &&
+              registrationForm.get('identityPhotosFront')?.touched"
+            >
+            <div
+            *ngIf="registrationForm.get('identityPhotosFront')?.errors?.['required']"
+            class="text-danger validation-error-photo"
+            >
+              Please select at least one image
+            </div>
+            </div>
+
             <!-- Capture Back side of ID -->
             <div class="photo-container">
               <input
@@ -93,6 +106,19 @@
                   </div>
                 </div>
               </div>
+            </div>
+
+            <!-- Validation Messages for property images -->
+            <div
+              *ngIf="registrationForm.get('identityPhotosBack')?.invalid &&
+              registrationForm.get('identityPhotosBack')?.touched"
+            >
+            <div
+            *ngIf="registrationForm.get('identityPhotosBack')?.errors?.['required']"
+            class="text-danger validation-error-photo"
+            >
+              Please select at least one image
+            </div>
             </div>
 
             <!-- Navigation Buttons -->

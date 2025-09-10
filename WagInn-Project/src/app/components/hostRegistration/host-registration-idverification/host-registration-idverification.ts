@@ -22,7 +22,11 @@ export class HostRegistrationIDVerification {
   }
 
   onFrontIdSelected(event: any) {
-    const file = event.target.files[0];
+    const file = event.target.files[0]; // stores element in a FileList object through which we can access it's metadata.
+    //check console for debug
+    if (file) {
+      console.log('Selected File: ', file.name, file.type, file.size); // metadata
+    }
 
     //clear previous selection
     if (this.frontIdPreviewUrl) {
@@ -67,7 +71,7 @@ export class HostRegistrationIDVerification {
     if (this.frontIdPreviewUrl) {
       URL.revokeObjectURL(this.frontIdPreviewUrl);
     }
-    //remove from both arrays
+    //assign null & empty to both properties
     this.frontId = null;
     this.frontIdPreviewUrl = '';
   }
@@ -88,5 +92,10 @@ export class HostRegistrationIDVerification {
     return this.backIdPreviewUrl;
   }
 
-  submitForm(){}
+  submitForm() {
+    if (this.registrationForm.invalid) {
+     this.registrationForm.markAllAsTouched();
+    return;
+    }
+  }
 }

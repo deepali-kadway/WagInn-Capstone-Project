@@ -143,3 +143,12 @@
   transform: translateY(-1px);
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
+
+.validation-error-photo{
+  color: #dc3545;
+  font-size: 0.875rem;
+  margin-top: -8px; /* Negative margin to pull it closer */
+  margin-bottom: 8px;
+  font-size: 800;
+  font-weight: bold;
+}
