@@ -1,11 +1,92 @@
 import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-host-registration-idverification',
   standalone: false,
   templateUrl: './host-registration-idverification.html',
-  styleUrl: './host-registration-idverification.css'
+  styleUrl: './host-registration-idverification.css',
 })
 export class HostRegistrationIDVerification {
+  registrationForm!: FormGroup;
+  frontId: File | null = null;
+  frontIdPreviewUrl: string = '';
+  backId: File | null = null;
+  backIdPreviewUrl: string = '';
 
+  constructor(private fb: FormBuilder) {
+    this.registrationForm = this.fb.group({
+      identityPhotosFront: [null, Validators.required],
+      identityPhotosBack: [null, Validators.required],
+    });
+  }
+
+  onFrontIdSelected(event: any) {
+    const file = event.target.files[0];
+
+    //clear previous selection
+    if (this.frontIdPreviewUrl) {
+      URL.revokeObjectURL(this.frontIdPreviewUrl);
+    }
+
+    if (file && this.isValidImage(file)) {
+      this.frontId = file;
+      this.frontIdPreviewUrl = URL.createObjectURL(file);
+    } else {
+      this.frontId = null;
+      this.frontIdPreviewUrl = '';
+    }
+
+    this.registrationForm.get('identityPhotosFront')?.setValue(this.frontId);
+  }
+
+  onBackIdSelected(event: any) {
+    const file = event.target.files[0];
+
+    if (this.backIdPreviewUrl) {
+      URL.revokeObjectURL(this.backIdPreviewUrl);
+    }
+
+    if (file && this.isValidImage(file)) {
+      this.backId = file;
+      this.backIdPreviewUrl = URL.createObjectURL(file);
+    } else {
+      this.backId = null;
+      this.backIdPreviewUrl = '';
+    }
+    this.registrationForm.get('identityPhotosBack')?.setValue(this.frontId);
+  }
+
+  private isValidImage(file: File) {
+    const allowedImgTypes = ['image/jpg', 'image/png', 'image/jpeg'];
+    const maxSize = 5 * 1024 * 1024;
+    return allowedImgTypes.includes(file.type) && file.size <= maxSize;
+  }
+
+  removeFrontId() {
+    if (this.frontIdPreviewUrl) {
+      URL.revokeObjectURL(this.frontIdPreviewUrl);
+    }
+    //remove from both arrays
+    this.frontId = null;
+    this.frontIdPreviewUrl = '';
+  }
+
+  removeBackId() {
+    if (this.backIdPreviewUrl) {
+      URL.revokeObjectURL(this.backIdPreviewUrl);
+    }
+    this.backId = null;
+    this.backIdPreviewUrl = '';
+  }
+
+  getFrontIdPreview(): string {
+    return this.frontIdPreviewUrl;
+  }
+
+  getBackIdPreview(): string {
+    return this.backIdPreviewUrl;
+  }
+
+  submitForm(){}
 }

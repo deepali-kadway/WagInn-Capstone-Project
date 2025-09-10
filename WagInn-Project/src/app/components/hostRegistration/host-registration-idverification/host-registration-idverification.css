@@ -21,3 +21,125 @@
   color: #222;
   margin-bottom: 0;
 }
+
+.subtitle-style{
+  font-size: 0.95rem;
+  font-weight: 400;
+  color: #222;
+  margin-bottom: 1rem;
+}
+
+.photo-upload-container{
+  position: relative;
+  display: block;
+}
+
+.photo-input{
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  width: 100%;
+  height: 100%;
+}
+
+.photo-upload-label{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 200px;
+  padding: 1rem;
+  border: 2px dashed #11a08d;
+  border-radius: 8px;
+  background-color: #f8f9fa;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.photo-upload-label:hover{
+  background-color: #e3f2fd;
+  border-color: #11a08d;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(17, 160. 141, 0.397);
+}
+
+.photo-upload-label i {
+  font-size: 2.5rem;
+  color: #11a08d;
+  margin-bottom: 0.5rem;
+}
+
+.upload-text{
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.25rem;
+}
+
+.upload-subtext {
+  font-size: 0.9rem;
+  color: #6c757d;
+}
+
+.selected-images{
+  border-top: 1px solid #dee2e6;
+  border-bottom: 1px solid #dee2e6;
+  padding-top: 1rem;
+}
+
+.image-preview-card{
+  position: relative;
+  overflow: hidden;
+  border: 1px solid #dee2e6;
+  background: white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.image-preview-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.preview-image{
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  display: block;
+}
+
+.remove-btn{
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+}
+
+/* Submit Button */
+.submit-btn {
+  background: linear-gradient(to right, #11a08d 0%, #25b9a6 50%, #04a58f 100%);
+  border: none;
+  border-radius: 8px;
+  padding: 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: white;
+  transition: all 0.2s ease;
+}
+
+.submit-btn:hover {
+  background: linear-gradient(to right, #11a08d 0%, #25b9a6 50%, #04a58f 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}

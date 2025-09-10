@@ -7,11 +7,108 @@
         <div>
           <div class="text-center mb-4">
             <h2 class="registration-title">Host Identity Verification</h2>
+            <p class="text-muted">Help us confirm it's you!</p>
+          </div>
+          <div class="text-center mb-4">
+            <h5 class="subtitle-style">
+              For everyone's safety, we ask for a government ID. This helps keep
+              our community real and trustworthy.
+            </h5>
           </div>
 
+          <form [formGroup]="registrationForm">
+            <!-- Capture front side of ID -->
+            <div class="photo-container mb-4">
+              <input
+                type="file"
+                class="form-control photo-input"
+                id="identityPhotosFront"
+                (change)="onFrontIdSelected($event)"
+                accept="image/png, image/jpg, image/jpeg"
+              />
+              <label for="identityPhotosFront" class="photo-upload-label">
+                <i class="bi bi-camera"></i>
+                <span class="upload-text">Front of ID (with photos)</span>
+                <span class="upload-subtext"
+                  >Allowed file types: JPEG, JPG, PNG</span
+                >
+              </label>
+            </div>
+
+            <!-- Preview selected image: Front -->
+            <div class="selected-images mt-3 mb-4" *ngIf="frontIdPreviewUrl">
+              <div class="row g-3">
+                <div class="col-md-3 col-sm-4 col-6">
+                  <div class="image-preview-card">
+                    <img [src]="frontIdPreviewUrl" class="preview-image" />
+                    <button
+                      type="button"
+                      class="btn btn-light btn-sm remove-btn"
+                      (click)="removeFrontId()"
+                    >
+                      <i class="bi bi-x-circle"></i>
+                    </button>
+                    <div class="image-info">
+                      <small class="text-muted">{{ frontId?.name }}</small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Capture Back side of ID -->
+            <div class="photo-container">
+              <input
+                type="file"
+                class="form-control photo-input"
+                id="identityPhotosBack"
+                (change)="onBackIdSelected($event)"
+                accept="image/png, image/jpg, image/jpeg"
+              />
+              <label for="identityPhotosBack" class="photo-upload-label">
+                <i class="bi bi-camera"></i>
+                <span class="upload-text">Back of ID</span>
+                <span class="upload-subtext"
+                  >Allowed file types: JPEG, JPG, PNG</span
+                >
+              </label>
+            </div>
+
+            <!-- Preview selected image: Back -->
+            <div class="selected-images mt-3 mb-4" *ngIf="backIdPreviewUrl">
+              <div class="row g-3">
+                <div class="col-md-3 col-sm-4 col-6">
+                  <div class="image-preview-card">
+                    <img [src]="backIdPreviewUrl" class="preview-image" />
+                    <button
+                      type="button"
+                      class="btn btn-light btn-sm remove-btn"
+                      (click)="removeBackId()"
+                    >
+                      <i class="bi bi-x-circle"></i>
+                    </button>
+                    <div class="image-info">
+                      <small class="text-muted">{{ backId?.name }}</small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Navigation Buttons -->
+            <div class="d-grid mt-3">
+              <button
+                type="button"
+                class="btn btn-primary submit-btn"
+                (click)="submitForm()"
+              >
+                Complete Registration
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
   </div>
-</div>      
+</div>
 <app-footer></app-footer>
