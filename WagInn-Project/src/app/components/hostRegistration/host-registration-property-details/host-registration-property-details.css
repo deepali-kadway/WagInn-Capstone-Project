@@ -318,12 +318,12 @@ input[type="checkbox"]:checked + .property-card {
 
 /* Photo Upload Section*/
 .photo-upload-container {
-  position: relative;
+  position: relative;   /* Parent relative = defines positioning context. */
   display: block;
 }
 
 .photo-input {
-  position: absolute;
+  position: absolute; /* Child absolute = This will position relative to that parent. It will stretch across the parent because of top/left defaults and width: 100%; height: 100%;. */
   opacity: 0;
   pointer-events: none;
   width: 100%;
@@ -338,7 +338,7 @@ input[type="checkbox"]:checked + .property-card {
   width: 100%;
   min-height: 120px;
   padding: 2rem;
-  border: 2px dashed #007bff;
+  border: 2px dashed #11a08d;
   border-radius: 8px;
   background-color: #f8f9fa;
   cursor: pointer;
