@@ -147,7 +147,7 @@
 .validation-error-photo{
   color: #dc3545;
   font-size: 0.875rem;
-  margin-top: -8px; /* Negative margin to pull it closer */
+  margin-top: 10px; /* Negative margin to pull it closer */
   margin-bottom: 8px;
   font-size: 800;
   font-weight: bold;
