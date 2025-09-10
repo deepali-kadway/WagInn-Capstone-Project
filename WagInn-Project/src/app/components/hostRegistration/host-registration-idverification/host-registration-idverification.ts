@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { HostRegistrationServiceTs } from '../../../services/hostRegistration_Service/host-registration.service.ts';
 
 @Component({
   selector: 'app-host-registration-idverification',
@@ -14,7 +16,11 @@ export class HostRegistrationIDVerification {
   backId: File | null = null;
   backIdPreviewUrl: string = '';
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private service: HostRegistrationServiceTs
+  ) {
     this.registrationForm = this.fb.group({
       identityPhotosFront: [null, Validators.required],
       identityPhotosBack: [null, Validators.required],
@@ -94,8 +100,11 @@ export class HostRegistrationIDVerification {
 
   submitForm() {
     if (this.registrationForm.invalid) {
-     this.registrationForm.markAllAsTouched();
-    return;
+      this.registrationForm.markAllAsTouched();
+      return;
+    } else {
+      this.service.updateIdVerification(this.registrationForm.value);
+      this.router.navigate([]);
     }
   }
 }

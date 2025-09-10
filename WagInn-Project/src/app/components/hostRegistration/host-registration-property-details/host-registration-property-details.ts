@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { HostRegistrationServiceTs } from '../../../services/hostRegistration_Service/host-registration.service.ts';
 
 @Component({
   selector: 'app-host-registration-property-details',
@@ -32,7 +33,11 @@ export class HostRegistrationPropertyDetails {
     return this.registrationForm.get('ammenitiesPets');
   }
 
-  constructor(private fb: FormBuilder, private router: Router) {
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private service: HostRegistrationServiceTs
+  ) {
     this.registrationForm = this.fb.group({
       propertyTitle: ['', Validators.required],
       propertyType: ['', Validators.required],
@@ -126,8 +131,12 @@ export class HostRegistrationPropertyDetails {
   }
 
   nextStep() {
-    this.router.navigate(['pricing']);
+    if (this.registrationForm.valid) {
+      this.service.updatePropertyDetails(this.registrationForm.value);
+      this.router.navigate(['pricing']);
+    }
   }
+
   prevStep() {
     this.router.navigate(['petInfo']);
   }

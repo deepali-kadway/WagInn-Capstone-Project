@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { HostRegistrationServiceTs } from '../../../services/hostRegistration_Service/host-registration.service.ts';
+import { HostRegistrationData } from '../../../model/hostRegistration.interface';
 
 @Component({
   selector: 'app-host-registration-personal-info',
@@ -47,7 +49,11 @@ export class HostRegistrationPersonalInfo {
     return this.registrationForm.get('email');
   }
 
-  constructor(private fb: FormBuilder, private router: Router) {
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private service: HostRegistrationServiceTs
+  ) {
     const currentYear = new Date().getFullYear();
     const startYear = 1900;
     this.years = [];
@@ -67,7 +73,19 @@ export class HostRegistrationPersonalInfo {
   }
 
   nextStep() {
-   this.router.navigate(['addressDetails'])
+    //error handling & debugging
+    Object.keys(this.registrationForm.controls).forEach((key) => {
+      //Object.keys gets an array of the control names: firstname, lastname, birthMonth...
+      const control = this.registrationForm.get(key);
+      if (control?.errors) {
+        console.log(`${key} errors: `, control.errors);
+      }
+    });
+
+    if (this.registrationForm.valid) {
+      //not calling .subscribe as service is currently storing data locally and not making HTTP requests
+      this.service.updatePersonalInfo(this.registrationForm.value);
+      this.router.navigate(['addressDetails']);
+    }
   }
-  prevStep() {}
 }

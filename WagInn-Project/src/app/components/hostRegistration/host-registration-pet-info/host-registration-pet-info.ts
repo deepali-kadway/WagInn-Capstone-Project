@@ -7,6 +7,8 @@ import {
   ValidationErrors,
 } from '@angular/forms';
 import { Router } from '@angular/router';
+import { HostRegistrationData } from '../../../model/hostRegistration.interface';
+import { HostRegistrationServiceTs } from '../../../services/hostRegistration_Service/host-registration.service.ts';
 
 @Component({
   selector: 'app-host-registration-pet-info',
@@ -48,7 +50,11 @@ export class HostRegistrationPetInfo {
     return this.registrationForm.get('fleaTickPreventionRequired');
   }
 
-  constructor(private fb: FormBuilder, private router: Router) {
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private service: HostRegistrationServiceTs
+  ) {
     // Initialize the form with form controls
     this.registrationForm = this.fb.group({
       allowedPetsType: ['', Validators.required],
@@ -92,9 +98,12 @@ export class HostRegistrationPetInfo {
   }
 
   nextStep() {
+    if (this.registrationForm.valid) {
+      this.service.updatePetInfo(this.registrationForm.value);
       this.router.navigate(['propertyDetails']);
     }
-  
+  }
+
   prevStep() {
     this.router.navigate(['addressDetails']);
   }

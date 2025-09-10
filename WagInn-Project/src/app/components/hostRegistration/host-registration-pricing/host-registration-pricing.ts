@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { HostRegistrationServiceTs } from '../../../services/hostRegistration_Service/host-registration.service.ts';
 
 @Component({
   selector: 'app-host-registration-pricing',
@@ -14,7 +15,11 @@ export class HostRegistrationPricing {
   taxes = 4; // Standard $4 fee
   serviceChargeRate = 0.03; // 3% per booking
 
-  constructor(private fb: FormBuilder, private router: Router) {
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private service: HostRegistrationServiceTs
+  ) {
     this.pricingForm = this.fb.group({
       basePrice: ['', [Validators.required, Validators.min(10)]],
     });
@@ -44,7 +49,10 @@ export class HostRegistrationPricing {
 
   // Navigation to next & previous steps
   nextStep() {
-    this.router.navigate(['idVerification']);
+    if (this.pricingForm.valid) {
+      this.service.updatePricing(this.pricingForm.value);
+      this.router.navigate(['idVerification']);
+    }
   }
 
   prevStep() {
