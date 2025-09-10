@@ -19,6 +19,9 @@ export class HostRegistrationPropertyDetails {
   maxFiles = 10;
   minFiles = 5;
 
+  // Track selected amenities
+  selectedAmenities: string[] = [];
+
   //getters
   get propertyTitle() {
     return this.registrationForm.get('propertyTitle');
@@ -41,7 +44,10 @@ export class HostRegistrationPropertyDetails {
     this.registrationForm = this.fb.group({
       propertyTitle: ['', Validators.required],
       propertyType: ['', Validators.required],
-      ammenities: ['', Validators.required],
+      ammenities: [
+        '',
+        [Validators.required, this.amenitiesValidator.bind(this)],
+      ],
       guests: [0, [Validators.required, Validators.min(1)]],
       bedrooms: [0, [Validators.required, Validators.min(1)]],
       beds: [0, [Validators.required, Validators.min(1)]],
@@ -113,6 +119,14 @@ export class HostRegistrationPropertyDetails {
     return null;
   }
 
+  private amenitiesValidator(control: any) {
+    const amenitiesValue = control.value || '';
+    if (this.selectedAmenities.length === 0) {
+      return { noAmenities: { message: 'Please select at least one amenity' } };
+    }
+    return null;
+  }
+
   getFilePreview(index: number): string {
     return this.filePreviewUrls[index];
   }
@@ -130,14 +144,61 @@ export class HostRegistrationPropertyDetails {
       ?.setValue(this.selectedFiles.length);
   }
 
+  // Handle amenity selection
+  onAmenityChange(amenity: string, event: any) {
+    if (event.target.checked) {
+      this.selectedAmenities.push(amenity);
+    } else {
+      const index = this.selectedAmenities.indexOf(amenity);
+      if (index > -1) {
+        this.selectedAmenities.splice(index, 1);
+      }
+    }
+
+    // Update form control with comma-separated string
+    this.registrationForm
+      .get('ammenities')
+      ?.setValue(this.selectedAmenities.join(', '));
+  }
+
   nextStep() {
+    console.log('Form valid:', this.registrationForm.valid);
+    console.log('Form errors:', this.registrationForm.errors);
+    console.log('Form value:', this.registrationForm.value);
+    console.log('Selected files count:', this.selectedFiles.length);
+    console.log('Selected amenities:', this.selectedAmenities);
+
+    // Check individual control errors
+    Object.keys(this.registrationForm.controls).forEach((key) => {
+      const control = this.registrationForm.get(key);
+      if (control?.errors) {
+        console.log(`${key} errors:`, control.errors);
+      }
+    });
+
     if (this.registrationForm.valid) {
-      this.service.updatePropertyDetails(this.registrationForm.value);
-      this.router.navigate(['pricing']);
+      // Create the property details data with actual files
+      const propertyDetailsData = {
+        ...this.registrationForm.value,
+        propertyPhotos: this.selectedFiles, // Pass the actual File objects
+      };
+
+      this.service.updatePropertyDetails(propertyDetailsData);
+      this.router.navigate(['/pricing']);
+    } else {
+      console.error('Form is invalid. Check individual field errors above.');
+      this.markFormGroupTouched();
     }
   }
 
+  private markFormGroupTouched() {
+    Object.keys(this.registrationForm.controls).forEach((key) => {
+      const control = this.registrationForm.get(key);
+      control?.markAsTouched();
+    });
+  }
+
   prevStep() {
-    this.router.navigate(['petInfo']);
+    this.router.navigate(['/petInfo']);
   }
 }
