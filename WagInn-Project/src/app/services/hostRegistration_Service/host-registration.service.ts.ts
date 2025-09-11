@@ -39,7 +39,7 @@ export class HostRegistrationServiceTs {
     this.hostregistrationData.idVerification = data;
   }
 
-  //get complete data
+  //get complete data. Further code: users to edit previous steps.
   getRegistrationData(): Partial<HostRegistrationData> {
     return this.hostregistrationData;
   }
