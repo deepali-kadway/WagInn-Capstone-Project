@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class HostRegistrationServiceTs {
-  private apiUrl = `${environment.apiUrl}/host/register`;
+  private apiUrl = `${environment.apiUrlHostRegister}`;
 
   private hostregistrationData: Partial<HostRegistrationData> = {};
 
