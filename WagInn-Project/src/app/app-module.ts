@@ -13,6 +13,7 @@ import { HostRegistrationPropertyDetails } from './components/hostRegistration/h
 import { HostRegistrationPricing } from './components/hostRegistration/host-registration-pricing/host-registration-pricing';
 import { HostRegistrationIDVerification } from './components/hostRegistration/host-registration-idverification/host-registration-idverification';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HostDashboard } from './components/Dashboard/host-dashboard/host-dashboard';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
     HostRegistrationPropertyDetails,
     HostRegistrationPricing,
     HostRegistrationIDVerification,
+    HostDashboard,
   ],
   imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule],
   providers: [provideBrowserGlobalErrorListeners(), provideHttpClient(withInterceptorsFromDi())],

@@ -13,7 +13,8 @@ const routes: Routes = [
   { path: 'petInfo', component: HostRegistrationPetInfo },
   { path: 'propertyDetails', component: HostRegistrationPropertyDetails },
   { path: 'pricing', component: HostRegistrationPricing },
-  {path: 'idVerification', component: HostRegistrationIDVerification}
+  { path: 'idVerification', component: HostRegistrationIDVerification },
+  { path: 'hostDashboard', component: HostRegistrationIDVerification },
 ];
 
 @NgModule({

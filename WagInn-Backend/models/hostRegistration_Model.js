@@ -4,7 +4,7 @@ import { DataTypes } from "sequelize";
 const Host = sequelize.define("Host_Profile", {
   id: {
     type: DataTypes.UUID,
-    defaultValue: DataTypes.UUIDV4,
+    defaultValue: DataTypes.UUIDV4, //Generates uuid automatically
     primaryKey: true,
   },
   //personal info
