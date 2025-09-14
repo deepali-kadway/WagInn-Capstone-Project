@@ -18,13 +18,13 @@
           <form [formGroup]="registrationForm">
             <!-- Legal Name Section -->
             <div class="mb-4">
-              <label class="form-label section-label">Legal name</label>
+              <label class="form-label section-label">Legal name *</label>
               <div class="mb-3">
                 <input
                   type="text"
                   class="form-control custom-input"
                   formControlName="firstName"
-                  placeholder="First name on ID"
+                  placeholder="First name as on ID"
                   required
                 />
               </div>
@@ -45,7 +45,7 @@
                   type="text"
                   class="form-control custom-input"
                   formControlName="lastName"
-                  placeholder="Last name on ID"
+                  placeholder="Last name as on ID"
                   required
                 />
               </div>
@@ -68,7 +68,7 @@
 
             <!-- Date of Birth Section -->
             <div class="mb-4">
-              <label class="form-label section-label">Date of birth</label>
+              <label class="form-label section-label">Date of birth *</label>
               <div class="mb-2">
                 <label class="form-label small-label">Birthday</label>
               </div>
@@ -140,7 +140,7 @@
 
             <!-- Contact Info Section -->
             <div class="mb-4">
-              <label class="form-label section-label">Contact info</label>
+              <label class="form-label section-label">Contact info *</label>
               <div class="mb-3">
                 <label class="form-label small-label">Email</label>
                 <input
