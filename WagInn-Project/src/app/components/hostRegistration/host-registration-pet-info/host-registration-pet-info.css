@@ -59,7 +59,6 @@
   outline: none;
 }
 
-
 /* Filled input (for email field that has a value) */
 .filled-input {
   background-color: #f7f7f7;
@@ -112,25 +111,35 @@
 .submit-btn:hover {
   background: linear-gradient(to right, #11a08d 0%, #25b9a6 50%, #04a58f 100%);
   transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* Back Button */
-.back-btn{
-    background: linear-gradient(to right, #717474fa 0%, #626362 50%, #5e5f5f 100%);
-    border: none;
-    border-radius: 8px;
-    padding: 1rem;
-    font-size: 1rem;
-    font-weight: 600;
-    color: white;
-    transition: all 0.2s ease;
+.back-btn {
+  background: linear-gradient(
+    to right,
+    #717474fa 0%,
+    #626362 50%,
+    #5e5f5f 100%
+  );
+  border: none;
+  border-radius: 8px;
+  padding: 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: white;
+  transition: all 0.2s ease;
 }
 
 .back-btn:hover {
-  background: linear-gradient(to right, #717474fa 0%, #626362 50%, #5e5f5f 100%);
+  background: linear-gradient(
+    to right,
+    #717474fa 0%,
+    #626362 50%,
+    #5e5f5f 100%
+  );
   transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* Links */
@@ -145,19 +154,19 @@ a {
     margin: 1rem;
     padding: 1.5rem;
   }
-  
+
   .registration-title {
     font-size: 1.5rem;
   }
-  
+
   .main-content {
     padding-top: 100px;
   }
-  
+
   .logo-text {
     font-size: 1.25rem;
   }
-  
+
   .logo-img {
     height: 50px;
     width: 120px;
@@ -169,16 +178,16 @@ a {
   .main-content {
     padding: 1rem 0.5rem;
   }
-  
+
   .registration-card {
     margin: 0.5rem;
     padding: 1rem;
   }
-  
+
   .main-content {
     padding-top: 90px;
   }
-  
+
   .logo-img {
     height: 40px;
     width: 100px;
@@ -195,11 +204,20 @@ a {
   font-weight: bold;
 }
 
-.validation-error-size{
+.validation-error-size {
   color: #dc3545;
   font-size: 0.875rem;
   margin-top: 2px;
   margin-bottom: 8px;
   font-size: 800;
   font-weight: bold;
+}
+
+kbd {
+  background: #11a08d;
+  border: 1px solid #d1d5db;
+  border-bottom-width: 2px;
+  padding: 0.1rem 0.35rem;
+  font-size: 0.85em;
+  border-radius: 4px;
 }

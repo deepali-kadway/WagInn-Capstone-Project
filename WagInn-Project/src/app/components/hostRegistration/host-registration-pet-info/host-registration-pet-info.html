@@ -18,7 +18,7 @@
           <form [formGroup]="registrationForm">
             <div class="mb-3">
               <label class="form-label section-label"
-                >Select Allowed Pets</label
+                >Select Allowed Pets *</label
               >
               <select
                 class="form-select custom-input"
@@ -31,7 +31,12 @@
               </select>
               <small class="form-text text-muted"
                 >Select all pet types allowed.</small
-              >
+              ><br />
+              <p class="form-text text-muted">
+                You can select multiple options - hold <kbd>Shift</kbd> to
+                select a range, or <kbd>Ctrl</kbd> (<kbd>⌘</kbd> on Mac) + click
+                to toggle individual items.
+              </p>
             </div>
             <div *ngIf="allowedPetsType?.invalid && allowedPetsType?.touched">
               <div
@@ -45,7 +50,7 @@
             <!-- Pet Size restrictions-->
             <div class="mb-3">
               <label class="form-label section-label"
-                >Pet Size Restrictions</label
+                >Pet Size Restrictions *</label
               >
               <div
                 class="btn-group"
@@ -160,7 +165,12 @@
               </select>
               <small class="form-text text-muted"
                 >Select all required vaccinations.</small
-              >
+              ><br />
+              <p class="form-text text-muted">
+                You can select multiple options - hold <kbd>Shift</kbd> to
+                select a range, or <kbd>Ctrl</kbd> (<kbd>⌘</kbd> on Mac) + click
+                to toggle individual items.
+              </p>
             </div>
             <div
               *ngIf="
@@ -176,7 +186,7 @@
             <!-- Neutered/Spayed Requirement -->
             <div class="mb-3">
               <label class="form-label section-label"
-                >Neutered/Spayed Required?</label
+                >Neutered/Spayed Required? *</label
               >
               <div>
                 <input
@@ -203,7 +213,7 @@
             <!-- Flea/Tick Prevention Required -->
             <div class="mb-3">
               <label class="form-label section-label"
-                >Flea/Tick Prevention Required?</label
+                >Flea/Tick Prevention Required? *</label
               >
               <div>
                 <input
