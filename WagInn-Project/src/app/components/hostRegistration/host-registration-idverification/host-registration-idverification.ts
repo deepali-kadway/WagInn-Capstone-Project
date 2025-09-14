@@ -64,7 +64,7 @@ export class HostRegistrationIDVerification {
       this.backId = null;
       this.backIdPreviewUrl = '';
     }
-    this.registrationForm.get('identityPhotosBack')?.setValue(this.frontId);
+    this.registrationForm.get('identityPhotosBack')?.setValue(this.backId);
   }
 
   private isValidImage(file: File) {
@@ -100,7 +100,13 @@ export class HostRegistrationIDVerification {
 
   submitForm() {
     if (this.registrationForm.valid) {
-      this.service.updateIdVerification(this.registrationForm.value);
+      // Create the ID verification data with the actual file objects
+      const idVerificationData = {
+        frontIdFile: this.frontId,
+        backIdFile: this.backId
+      };
+      
+      this.service.updateIdVerification(idVerificationData);
 
       this.service.submitRegistration().subscribe({
         next: (response) => {

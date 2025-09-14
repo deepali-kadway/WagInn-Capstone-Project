@@ -21,6 +21,7 @@ export class HostRegistrationPropertyDetails {
 
   // Track selected amenities
   selectedAmenities: string[] = [];
+  petsAmmenities: string[] = [];
 
   //getters
   get propertyTitle() {
@@ -53,7 +54,7 @@ export class HostRegistrationPropertyDetails {
       beds: [0, [Validators.required, Validators.min(1)]],
       bathrooms: [0, [Validators.required, Validators.min(1)]],
       pets: [0, [Validators.required, Validators.min(1)]],
-      ammenitiesPets: [''], //can be optional
+      ammenitiesPets: [''],
       propertyPhotos: [
         0,
         [Validators.required, this.imageCountValidate.bind(this)],
@@ -159,6 +160,21 @@ export class HostRegistrationPropertyDetails {
     this.registrationForm
       .get('ammenities')
       ?.setValue(this.selectedAmenities.join(', '));
+  }
+
+  // Handle ammenity selection for pets
+  onPetsAmmenityChange(ammenity: string, event: any) {
+    if (event.target.checked) {
+      this.petsAmmenities.push(ammenity);
+    } else {
+      const index = this.petsAmmenities.indexOf(ammenity);
+      if (index > -1) {
+        this.petsAmmenities.splice(index, 1);
+      }
+    }
+    this.registrationForm
+      .get('ammenitiesPets')
+      ?.setValue(this.petsAmmenities.join(', '));
   }
 
   nextStep() {

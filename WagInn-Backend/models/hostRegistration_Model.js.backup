@@ -66,6 +66,10 @@ const Host = sequelize.define("Host_Profile", {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  numberOfPetsAllowed: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
   houseRules: {
     type: DataTypes.TEXT,
   },

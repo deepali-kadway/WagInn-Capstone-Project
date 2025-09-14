@@ -37,9 +37,6 @@ export class HostRegistrationPetInfo {
   get petSizeRestrictions() {
     return this.registrationForm.get('petSizeRestrictions');
   }
-  get numberOfPetsAllowed() {
-    return this.registrationForm.get('numberOfPetsAllowed');
-  }
   get houseRules() {
     return this.registrationForm.get('houseRules');
   }
@@ -67,7 +64,6 @@ export class HostRegistrationPetInfo {
         },
         { validators: this.petSizeValidator }
       ),
-      numberOfPetsAllowed: ['', Validators.required],
       houseRules: [''], // Optional field
       requiredVaccinations: [''], // Optional field
       neuteredSpayedRequired: ['', Validators.required],
@@ -99,7 +95,12 @@ export class HostRegistrationPetInfo {
 
   nextStep() {
     if (this.registrationForm.valid) {
-      this.service.updatePetInfo(this.registrationForm.value);
+      const payload = {...this.registrationForm.value,}
+      // Convert array to comma separated string
+      if(Array.isArray(payload.allowedPetsType)){
+        payload.allowedPetsType = payload.allowedPetsType.join(', ')
+      }
+      this.service.updatePetInfo(payload);
       this.router.navigate(['propertyDetails']);
     }
   }

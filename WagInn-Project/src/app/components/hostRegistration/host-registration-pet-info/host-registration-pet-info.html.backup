@@ -123,6 +123,33 @@
               </div>
             </div>
 
+            <!-- Total Allowed Pets -->
+            <div class="mb-3">
+              <label class="form-label section-label"
+                >Number of Pets Allowed</label
+              >
+              <input
+                type="number"
+                class="form-control custom-input"
+                min="1"
+                max="4"
+                formControlName="numberOfPetsAllowed"
+                placeholder="e.g. 2"
+              />
+            </div>
+            <div
+              *ngIf="
+                numberOfPetsAllowed?.invalid && numberOfPetsAllowed?.touched
+              "
+            >
+              <div
+                class="text-danger validation-error"
+                *ngIf="numberOfPetsAllowed?.errors?.['required']"
+              >
+                Allowed number of pets required
+              </div>
+            </div>
+
             <!-- House Rules for Pets -->
             <div class="mb-3">
               <label class="form-label section-label">House Rules</label>
@@ -153,7 +180,7 @@
               >
                 <option
                   *ngFor="let vaccinationName of vaccinationsName"
-                  [value]="vaccinationName.name"
+                  [value]="vaccinationName.id"
                 >
                   {{ vaccinationName.name }}
                 </option>

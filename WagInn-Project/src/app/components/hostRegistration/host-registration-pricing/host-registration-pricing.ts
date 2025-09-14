@@ -50,7 +50,14 @@ export class HostRegistrationPricing {
   // Navigation to next & previous steps
   nextStep() {
     if (this.pricingForm.valid) {
-      this.service.updatePricing(this.pricingForm.value);
+      // Create complete pricing object with calculated values
+      const pricingData = {
+        basePrice: this.basePriceValue,
+        totalGuestPrice: this.totalGuestPrice,
+        hostEarnings: this.hostEarnings,
+      };
+
+      this.service.updatePricing(pricingData);
       this.router.navigate(['idVerification']);
     }
   }

@@ -17,7 +17,6 @@ export interface HostRegistrationData {
   petInfo: {
     allowedPetsType: string;
     petSizeRestrictions: string;
-    numberOfPetsAllowed: number;
     houseRules: string;
     requiredVaccinations: string;
     neuteredSpayedRequired: string;

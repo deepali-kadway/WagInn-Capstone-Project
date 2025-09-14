@@ -4,36 +4,9 @@ import { v4 as uuidv4 } from "uuid";
 import Host from "../models/hostRegistration_Model.js";
 import upload from "../middleware/upload.js";
 
-const processFiles = (files) => {
-  const result = {
-    propertyPhotos: [],
-    frontIdUrl: null,
-    backIdUrl: null,
-  };
-
-  if (!files) return result;
-
-  if (files.propertyPhoto) {
-    result.propertyPhotos = files.propertyPhoto.map((file) => file.path);
-  }
-
-  if (files.frontId && files.frontId[0]) {
-    result.frontIdUrl = files.frontId[0].path;
-  }
-
-  if (files.backId && files.backId[0]) {
-    result.backIdUrl = files.backId[0].path;
-  }
-
-  return result;
-};
-
 //debug logs
 router.use((req, res, next) => {
   console.log(`${req.method} ${req.path} - Request Received`);
-  console.log(`Request Body: `, req.body);
-  console.log(`Uploaded Files: `, req.files);
-
   next();
 });
 
@@ -129,7 +102,6 @@ router.post("/register", flexibleUpload, async (req, res) => {
         petSizeRestrictions: JSON.stringify(
           data.petInfo?.petSizeRestrictions || {}
         ),
-        numberOfPetsAllowed: data.petInfo?.numberOfPetsAllowed,
         houseRules: data.petInfo?.houseRules,
         requiredVaccinations: JSON.stringify(
           data.petInfo?.requiredVaccinations || []
@@ -137,12 +109,10 @@ router.post("/register", flexibleUpload, async (req, res) => {
         neuteredSpayedRequired: data.petInfo?.neuteredSpayedRequired,
         fleaTickPreventionRequired: data.petInfo?.fleaTickPreventionRequired,
 
-        // Extract from pricing
+        // Extract from pricing (use frontend calculated values)
         basePrice: data.pricing?.basePrice,
-        totalGuestPrice:
-          data.pricing?.totalGuestPrice || data.pricing?.basePrice, // Use basePrice if totalGuestPrice is missing
-        hostEarnings:
-          data.pricing?.hostEarnings || data.pricing?.basePrice * 0.85, // Calculate if missing
+        totalGuestPrice: data.pricing?.totalGuestPrice,
+        hostEarnings: data.pricing?.hostEarnings,
 
         // File fields
         propertyPhotos: data.propertyPhotos,
@@ -156,7 +126,7 @@ router.post("/register", flexibleUpload, async (req, res) => {
     const flattenedData = flattenHostData(hostData);
     console.log(
       "Step 6: Final flattened data:",
-      JSON.stringify(flattenedData, null, 2)
+      JSON.stringify(flattenedData, null, 2) //null -> include all properties, don't filer anything; 2 -> indentation in formated output. each nested level is indented by 2 spaces.
     );
 
     console.log("Step 7: About to create database record");
@@ -167,12 +137,10 @@ router.post("/register", flexibleUpload, async (req, res) => {
       .json({ message: "Host Registration Successful", host: newHost });
   } catch (error) {
     console.error("Detailed error:", error);
-    console.error("Error stack:", error.stack);
     console.error("Request data:", req.body);
     res.status(500).json({
       message: "Host Registration FAILED",
       error: error.message,
-      details: error.stack,
     });
   }
 });
