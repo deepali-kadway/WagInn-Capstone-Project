@@ -1,6 +1,7 @@
 import multer from "multer";
 import path from "path";
 import fs from "fs";
+import { v4 as uuidv4 } from "uuid";
 
 // Helper function to sanitize and URL encode filenames for security
 const sanitizeAndEncodeFilename = (originalName) => {
@@ -51,21 +52,16 @@ const storage = multer.diskStorage({
   },
   filename: (req, file, cb) => {
     //generate unique filename with timestamp and random number
-    const suffix = Date.now() + "-" + Math.round(Math.random() * 1e9); //// 1 followed by 9 zeros
-
-    // Sanitize and encode the original filename for security
-    const sanitizedOriginalName = sanitizeAndEncodeFilename(file.originalname);
-
-    // Get file extension safely
+    // const suffix = Date.now() + "-" + Math.round(Math.random() * 1e9); //// 1 followed by 9 zeros
+    const uniqueId = uuidv4();
     const ext = path.extname(file.originalname);
-    const encodedExt = encodeURIComponent(ext);
 
-    // Create secure filename: fieldname + suffix + encoded original name + extension
-    const filename = `${file.fieldname}-${suffix}-${sanitizedOriginalName}${encodedExt}`;
+    // Store original name separately, use UUID for actual filename
+    const filename = `${file.fieldname}-${uniqueId}${ext}`;
 
     // Store metadata in file object for later use
-    file.encodedOriginalName = sanitizedOriginalName;
-    file.decodedOriginalName = decodeFilename(sanitizedOriginalName);
+    file.encodedOriginalName = sanitizeAndEncodeFilename(file.originalname);
+    file.decodedOriginalName = file.originalname;
     file.secureFilename = filename;
 
     cb(null, filename);
@@ -89,9 +85,7 @@ const fileFilter = (req, file, cb) => {
     cb(null, true); // Accept the file
   } else {
     cb(
-      new Error(
-        "Invalid file type. Only image files (JPG, PNG) are allowed."
-      ),
+      new Error("Invalid file type. Only image files (JPG, PNG) are allowed."),
       false
     );
   }
