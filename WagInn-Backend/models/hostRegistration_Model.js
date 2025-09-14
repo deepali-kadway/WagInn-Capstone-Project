@@ -59,18 +59,18 @@ const Host = sequelize.define("Host_Profile", {
 
   //Pet Info
   allowedPetsType: {
-    type: DataTypes.STRING,
+    type: DataTypes.JSON, // Changed to JSON for array data
     allowNull: false,
   },
   petSizeRestrictions: {
-    type: DataTypes.STRING,
+    type: DataTypes.JSON, // Changed to JSON for object data
     allowNull: false,
   },
   houseRules: {
     type: DataTypes.TEXT,
   },
   requiredVaccinations: {
-    type: DataTypes.STRING,
+    type: DataTypes.JSON, // Changed to JSON for array data
   },
   neuteredSpayedRequired: {
     type: DataTypes.STRING,
@@ -135,10 +135,10 @@ const Host = sequelize.define("Host_Profile", {
 
   // ID Verification
   frontIdUrl: {
-    type: DataTypes.STRING,
+    type: DataTypes.JSON, // Use JSON for structured metadata
   },
   backIdUrl: {
-    type: DataTypes.STRING,
+    type: DataTypes.JSON, // Use JSON for structured metadata
   },
 
   // Overall Status

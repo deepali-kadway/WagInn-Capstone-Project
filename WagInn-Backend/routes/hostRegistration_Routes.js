@@ -2,7 +2,14 @@ import express from "express";
 const router = express.Router();
 import { v4 as uuidv4 } from "uuid";
 import Host from "../models/hostRegistration_Model.js";
-import upload from "../middleware/upload.js";
+import upload, {
+  addFileMetadata,
+  getSafeFileUrl,
+  getDecodedFilePath,
+} from "../middleware/upload.js";
+import multer from "multer";
+import path from "path";
+import fs from "fs";
 
 //debug logs
 router.use((req, res, next) => {
@@ -10,29 +17,66 @@ router.use((req, res, next) => {
   next();
 });
 
+// Error handling middleware for file upload errors
+router.use((error, req, res, next) => {
+  if (error instanceof multer.MulterError) {
+    if (error.code === "LIMIT_FILE_SIZE") {
+      return res
+        .status(400)
+        .json({ error: "File too large. Maximum size is 5MB." });
+    }
+    if (error.code === "LIMIT_FILE_COUNT") {
+      return res
+        .status(400)
+        .json({ error: "Too many files. Maximum 10 files allowed." });
+    }
+  }
+  if (error.message && error.message.includes("Invalid file type")) {
+    return res.status(400).json({ error: error.message });
+  }
+  next(error);
+});
+
 const flexibleUpload = upload.any(); //accepts any field names
 //Post Host registration data
-router.post("/register", flexibleUpload, async (req, res) => {
+router.post("/register", flexibleUpload, addFileMetadata, async (req, res) => {
   try {
     console.log(`Step 1: Request Body: `, req.body);
     console.log(`Step 2: Uploaded Files: `, req.files);
 
-    // Process files dynamically
-    const propertyPhotos = [];
-    let frontIdUrl = null;
-    let backIdUrl = null;
+    // Process files dynamically with enhanced security metadata
+    const processSecureFiles = () => {
+      const propertyPhotos = [];
+      let frontIdUrl = null;
+      let backIdUrl = null;
 
-    if (req.files) {
-      req.files.forEach((file) => {
-        if (file.fieldname.startsWith("propertyPhoto")) {
-          propertyPhotos.push(file.path);
-        } else if (file.fieldname === "frontId") {
-          frontIdUrl = file.path;
-        } else if (file.fieldname === "backId") {
-          backIdUrl = file.path;
-        }
-      });
-    }
+      if (req.files) {
+        req.files.forEach((file) => {
+          // Create secure file metadata object
+          const fileMetadata = {
+            originalName: file.safeOriginalName || file.originalname, // Decoded original name for display
+            secureFilename: file.secureFilename || file.filename, // Secure filename on disk
+            filePath: file.path, // File system path
+            urlSafePath: file.urlSafePath || file.path, // URL-safe path for serving
+            size: file.size,
+            mimetype: file.mimetype,
+            uploadTimestamp: new Date().toISOString(),
+          };
+
+          if (file.fieldname.startsWith("propertyPhoto")) {
+            propertyPhotos.push(fileMetadata); // Store secure metadata instead of just path
+          } else if (file.fieldname === "frontId") {
+            frontIdUrl = fileMetadata; // Store secure metadata instead of just path
+          } else if (file.fieldname === "backId") {
+            backIdUrl = fileMetadata; // Store secure metadata instead of just path
+          }
+        });
+      }
+
+      return { propertyPhotos, frontIdUrl, backIdUrl };
+    };
+
+    const { propertyPhotos, frontIdUrl, backIdUrl } = processSecureFiles();
 
     // JSON Parsing
     const parseJSONFields = (data) => {
@@ -62,9 +106,9 @@ router.post("/register", flexibleUpload, async (req, res) => {
     const hostData = {
       id: uuidv4(),
       ...req.body,
-      propertyPhotos: JSON.stringify(propertyPhotos),
-      frontIdUrl,
-      backIdUrl,
+      propertyPhotos: propertyPhotos, // Sequelize will handle JSON conversion automatically
+      frontIdUrl: frontIdUrl || null, // Store as JSON object directly
+      backIdUrl: backIdUrl || null, // Store as JSON object directly
     };
 
     const flattenHostData = (data) => {
@@ -98,14 +142,10 @@ router.post("/register", flexibleUpload, async (req, res) => {
         ammenitiesPets: data.propertyDetails?.ammenitiesPets,
 
         // Extract from petInfo
-        allowedPetsType: JSON.stringify(data.petInfo?.allowedPetsType || []),
-        petSizeRestrictions: JSON.stringify(
-          data.petInfo?.petSizeRestrictions || {}
-        ),
+        allowedPetsType: data.petInfo?.allowedPetsType || [], // Sequelize handles JSON automatically
+        petSizeRestrictions: data.petInfo?.petSizeRestrictions || {}, // Sequelize handles JSON automatically
         houseRules: data.petInfo?.houseRules,
-        requiredVaccinations: JSON.stringify(
-          data.petInfo?.requiredVaccinations || []
-        ),
+        requiredVaccinations: data.petInfo?.requiredVaccinations || [], // Sequelize handles JSON automatically
         neuteredSpayedRequired: data.petInfo?.neuteredSpayedRequired,
         fleaTickPreventionRequired: data.petInfo?.fleaTickPreventionRequired,
 
@@ -142,6 +182,34 @@ router.post("/register", flexibleUpload, async (req, res) => {
       message: "Host Registration FAILED",
       error: error.message,
     });
+  }
+});
+
+// Secure file serving route
+router.get("/files/:folder/:filename", (req, res) => {
+  try {
+    const folder = req.params.folder;
+    const encodedFilename = req.params.filename;
+
+    // Validate folder to prevent directory traversal
+    const allowedFolders = ["property-photos", "id-verification"];
+    if (!allowedFolders.includes(folder)) {
+      return res.status(400).json({ error: "Invalid folder" });
+    }
+
+    // Decode filename safely
+    const decodedFilename = getDecodedFilePath(encodedFilename);
+    const filePath = path.join("uploads", folder, decodedFilename);
+
+    // Check if file exists and serve it
+    if (fs.existsSync(filePath)) {
+      res.sendFile(path.resolve(filePath));
+    } else {
+      res.status(404).json({ error: "File not found" });
+    }
+  } catch (error) {
+    console.error("Error serving file:", error);
+    res.status(500).json({ error: "Error serving file" });
   }
 });
 
