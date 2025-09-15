@@ -24,7 +24,7 @@ sequelize
 console.log("About to sync models...");
 
 sequelize
-  .sync({ force: false })
+  .sync({ force: true })
   .then(() => {
     console.log("Database tables created successfully");
   })

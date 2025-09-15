@@ -153,6 +153,11 @@ const Host = sequelize.define("Host_Profile", {
     type: DataTypes.BOOLEAN,
     defaultValue: true,
   },
+  passCode: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    defaultValue: 6785,
+  },
 });
 
 export default Host;
