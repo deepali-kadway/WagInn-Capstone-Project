@@ -9,7 +9,7 @@
             <p class="text-muted">Login to access Host Dashboard</p>
           </div>
 
-          <form [formGroup]="hostSignIn">
+          <form [formGroup]="hostSignIn" (submit)="hostLogin()">
             <div class="mb-4">
               <label class="section-label">Host Email</label>
               <div class="mb-3">
