@@ -111,7 +111,7 @@ export class HostRegistrationIDVerification {
       this.service.submitRegistration().subscribe({
         next: (response) => {
           console.log('Registration successful!');
-          this.router.navigate(['hostDashboard']);
+          this.router.navigate(['/hostDashboard']);
         },
         error: (error) => {
           console.log('Registration Failed:', error);

@@ -1,7 +1,7 @@
 /* Main Container Styles */
 .main-content {
   padding-top: 140px !important;
-  padding-bottom: 2rem;
+  padding-bottom: 13.5rem;
 }
 
 /* Registration Card */
@@ -22,19 +22,19 @@
   margin-bottom: 0;
 }
 
-.subtitle-style{
+.subtitle-style {
   font-size: 0.95rem;
   font-weight: 400;
   color: #222;
   margin-bottom: 1rem;
 }
 
-.photo-upload-container{
+.photo-upload-container {
   position: relative;
   display: block;
 }
 
-.photo-input{
+.photo-input {
   position: absolute;
   opacity: 0;
   pointer-events: none;
@@ -42,13 +42,13 @@
   height: 100%;
 }
 
-.photo-upload-label{
+.photo-upload-label {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   width: 100%;
-  min-height: 200px;
+  min-height: 100px;
   padding: 1rem;
   border: 2px dashed #11a08d;
   border-radius: 8px;
@@ -58,11 +58,11 @@
   text-align: center;
 }
 
-.photo-upload-label:hover{
+.photo-upload-label:hover {
   background-color: #e3f2fd;
   border-color: #11a08d;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(17, 160. 141, 0.397);
+  box-shadow: 0 4px 12px rgba(17, 160 141, 0.397);
 }
 
 .photo-upload-label i {
@@ -71,7 +71,7 @@
   margin-bottom: 0.5rem;
 }
 
-.upload-text{
+.upload-text {
   font-size: 1.1rem;
   font-weight: 600;
   color: #333;
@@ -83,18 +83,18 @@
   color: #6c757d;
 }
 
-.selected-images{
+.selected-images {
   border-top: 1px solid #dee2e6;
   border-bottom: 1px solid #dee2e6;
   padding-top: 1rem;
 }
 
-.image-preview-card{
+.image-preview-card {
   position: relative;
   overflow: hidden;
   border: 1px solid #dee2e6;
   background: white;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease;
   border-radius: 8px;
   margin-bottom: 20px;
@@ -102,17 +102,17 @@
 
 .image-preview-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-.preview-image{
+.preview-image {
   width: 100%;
   height: 120px;
   object-fit: cover;
   display: block;
 }
 
-.remove-btn{
+.remove-btn {
   position: absolute;
   top: 5px;
   right: 5px;
@@ -141,14 +141,112 @@
 .submit-btn:hover {
   background: linear-gradient(to right, #11a08d 0%, #25b9a6 50%, #04a58f 100%);
   transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.validation-error-photo{
+.validation-error-photo {
   color: #dc3545;
   font-size: 0.875rem;
   margin-top: 10px; /* Negative margin to pull it closer */
   margin-bottom: 8px;
   font-size: 800;
   font-weight: bold;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .registration-card {
+    margin: 1rem;
+    padding: 1.5rem;
+  }
+
+  .registration-title {
+    font-size: 1.5rem;
+  }
+
+  .main-content {
+    padding-top: 100px !important;
+  }
+
+  .photo-upload-label {
+    min-height: 80px;
+    padding: 0.8rem;
+  }
+
+  .photo-upload-label i {
+    font-size: 2rem;
+  }
+
+  .upload-text {
+    font-size: 1rem;
+  }
+
+  .upload-subtext {
+    font-size: 0.8rem;
+  }
+
+  .preview-image {
+    height: 100px;
+  }
+
+  .submit-btn {
+    padding: 0.8rem;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .registration-card {
+    margin: 0.5rem;
+    padding: 1rem;
+  }
+
+  .main-content {
+    padding-top: 90px !important;
+  }
+
+  .registration-title {
+    font-size: 1.3rem;
+  }
+
+  .subtitle-style {
+    font-size: 0.85rem;
+  }
+
+  .photo-upload-label {
+    min-height: 70px;
+    padding: 0.6rem;
+  }
+
+  .photo-upload-label i {
+    font-size: 1.8rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .upload-text {
+    font-size: 0.9rem;
+  }
+
+  .upload-subtext {
+    font-size: 0.75rem;
+  }
+
+  .preview-image {
+    height: 80px;
+  }
+
+  .remove-btn {
+    width: 20px;
+    height: 20px;
+    font-size: 0.65rem;
+  }
+
+  .submit-btn {
+    padding: 0.7rem;
+    font-size: 0.85rem;
+  }
+
+  .validation-error-photo {
+    font-size: 0.8rem;
+  }
 }

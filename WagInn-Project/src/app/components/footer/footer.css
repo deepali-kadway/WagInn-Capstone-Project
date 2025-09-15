@@ -4,6 +4,8 @@
   color: #222;
   font-size: 0.95rem;
   border-top: 1px solid #e5e5e5;
+  margin-top: 0; /* Remove margin to eliminate gap */
+  padding: 1rem 0; /* Add consistent padding instead */
 }
 .footer-left {
   gap: 0.5rem;
@@ -26,7 +28,8 @@
 .footer-copyright {
   font-weight: 400;
 }
-.footer-lang, .footer-currency {
+.footer-lang,
+.footer-currency {
   font-weight: 500;
   color: #222;
 }

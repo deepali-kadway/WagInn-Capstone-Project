@@ -6,6 +6,7 @@ import { HostRegistrationPetInfo } from './components/hostRegistration/host-regi
 import { HostRegistrationPropertyDetails } from './components/hostRegistration/host-registration-property-details/host-registration-property-details';
 import { HostRegistrationPricing } from './components/hostRegistration/host-registration-pricing/host-registration-pricing';
 import { HostRegistrationIDVerification } from './components/hostRegistration/host-registration-idverification/host-registration-idverification';
+import { HostDashboard } from './components/Dashboard/host-dashboard/host-dashboard';
 
 const routes: Routes = [
   { path: '', component: HostRegistrationPersonalInfo },
@@ -14,7 +15,7 @@ const routes: Routes = [
   { path: 'propertyDetails', component: HostRegistrationPropertyDetails },
   { path: 'pricing', component: HostRegistrationPricing },
   { path: 'idVerification', component: HostRegistrationIDVerification },
-  { path: 'hostDashboard', component: HostRegistrationIDVerification },
+  { path: 'hostDashboard', component: HostDashboard },
 ];
 
 @NgModule({
