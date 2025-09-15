@@ -14,6 +14,7 @@ import { HostRegistrationPricing } from './components/hostRegistration/host-regi
 import { HostRegistrationIDVerification } from './components/hostRegistration/host-registration-idverification/host-registration-idverification';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { HostDashboard } from './components/Dashboard/host-dashboard/host-dashboard';
+import { HostSignInPage } from './components/hostSignIn/host-sign-in-page/host-sign-in-page';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { HostDashboard } from './components/Dashboard/host-dashboard/host-dashbo
     HostRegistrationPricing,
     HostRegistrationIDVerification,
     HostDashboard,
+    HostSignInPage,
   ],
   imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule],
   providers: [provideBrowserGlobalErrorListeners(), provideHttpClient(withInterceptorsFromDi())],

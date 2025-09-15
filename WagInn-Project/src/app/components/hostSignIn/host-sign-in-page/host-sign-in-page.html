@@ -1,0 +1,63 @@
+<div class="main-content">
+  <div class="row justify-content-center min-vh-100 align-items-center">
+    <div class="col-12 col-md-10 col-lg-8">
+      <!-- Registration Card -->
+      <div class="signIn-card shadow-sm">
+        <div>
+          <div class="text-center mb-4">
+            <h2 class="signIn-title">Host Sign In</h2>
+            <p class="text-muted">Login to access Host Dashboard</p>
+          </div>
+
+          <form [formGroup]="hostSignIn">
+            <div class="mb-4">
+              <label class="section-label">Host Email</label>
+              <div class="mb-3">
+                <input
+                  type="email"
+                  class="form-control custom-input"
+                  formControlName="userName"
+                  placeholder="Enter registered email id"
+                  required
+                />
+                <div
+                  class="validation-error"
+                  *ngIf="userName?.invalid && userName?.touched"
+                >
+                  <div *ngIf="userName?.errors?.['required']">
+                    Email is mandatory
+                  </div>
+                </div>
+              </div>
+
+              <label class="form-label section-label">Passcode</label>
+              <div class="mb-3">
+                <input
+                  type="number"
+                  class="form-control custom-input"
+                  formControlName="passCode"
+                  placeholder="Enter passCode"
+                  required
+                />
+                <div *ngIf="passCode?.invalid && passCode?.touched">
+                  <div
+                    class="validation-error"
+                    *ngIf="passCode?.errors?.['required']"
+                  >
+                    Passcode is mandatory
+                  </div>
+                </div>
+              </div>
+
+              <div class="d-grid">
+                <button type="submit" class="btn btn-primary submit-btn">
+                  Sign In
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

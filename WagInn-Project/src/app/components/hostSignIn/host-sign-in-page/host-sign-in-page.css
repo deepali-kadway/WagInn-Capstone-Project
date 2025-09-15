@@ -1,0 +1,98 @@
+.main-content {
+  margin-top: -10px;
+}
+
+.signIn-card {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  border: 1px solid #ddd;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.signIn-title {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #222;
+  margin-bottom: 0;
+}
+
+.section-label {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #222;
+  margin-bottom: 1rem;
+}
+
+.custom-input {
+  border: 2px solid #b0b0b0;
+  border-radius: 8px;
+  padding: 1rem;
+  font-size: 1rem;
+  line-height: 1.25;
+  transition: border-color 0.2s ease;
+  background-color: #fff;
+}
+
+.custom-input:hover {
+  border-color: #11a08d;
+  box-shadow: none;
+  outline: none;
+}
+
+.submit-btn {
+  background: linear-gradient(to right, #11a08d 0%, #25b9a6 50%, #04a58f 100%);
+  border: none;
+  border-radius: 8px;
+  padding: 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: white;
+  transition: all 0.2s ease;
+}
+
+.submit-btn:hover {
+  background: linear-gradient(to right, #11a08d 0%, #25b9a6 50%, #04a58f 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .signIn-card {
+    margin: 1rem;
+    padding: 1.5rem;
+  }
+
+  .signIn-title {
+    font-size: 1.5rem;
+  }
+
+  .main-content {
+    padding-top: 100px;
+  }
+}
+
+@media (max-width: 576px) {
+  .main-content {
+    padding: 1rem 0.5rem;
+  }
+  .signIn-card {
+    margin: 0.5rem;
+    padding: 1rem;
+  }
+  .main-content {
+    padding-top: 90px;
+  }
+}
+
+/* Custom Validation errors */
+.validation-error {
+  color: #dc3545;
+  font-size: 0.875rem;
+  margin-top: -8px; /* Negative margin to pull it closer */
+  margin-bottom: 8px;
+  font-size: 800;
+  font-weight: bold;
+}

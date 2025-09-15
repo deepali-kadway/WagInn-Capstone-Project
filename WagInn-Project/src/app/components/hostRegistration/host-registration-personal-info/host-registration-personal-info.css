@@ -147,19 +147,9 @@ a {
   .main-content {
     padding-top: 100px;
   }
-  
-  .logo-text {
-    font-size: 1.25rem;
-  }
-  
-  .logo-img {
-    height: 50px;
-    width: 120px;
-  }
 }
 
 @media (max-width: 576px) {
-  .container-fluid,
   .main-content {
     padding: 1rem 0.5rem;
   }
@@ -171,11 +161,6 @@ a {
   
   .main-content {
     padding-top: 90px;
-  }
-  
-  .logo-img {
-    height: 40px;
-    width: 100px;
   }
 }
 
