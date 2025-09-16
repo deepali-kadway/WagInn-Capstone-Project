@@ -177,6 +177,84 @@
               </div>
             </div>
 
+            <!-- Password Section -->
+            <div class="mb-4">
+              <label class="form-label section-label">
+                Password *
+                <i
+                  class="bi bi-info-circle ms-2 text-muted password-info-icon"
+                  title="Password must be exactly 8 characters with minimum: 1 lowercase letter, 1 uppercase letter, 1 number, and 1 special character"
+                ></i>
+              </label>
+              <div class="mb-3">
+                <input
+                  type="password"
+                  class="form-control custom-input"
+                  formControlName="passwordInput"
+                  placeholder="Set Password"
+                  required
+                />
+              </div>
+
+              <!-- Required validation (separate condition) -->
+              <div
+                class="validation-error"
+                *ngIf="passwordInput?.errors?.['required'] && passwordInput?.touched"
+              >
+                Password is required!
+              </div>
+
+              <!-- Format validation -->
+              <div
+                class="validation-error"
+                *ngIf="passwordInput?.errors?.['passwordFormat'] && passwordInput?.touched"
+              >
+                <div *ngIf="passwordInput?.errors?.['passwordFormat'].length">
+                  Password must be exactly 8 characters
+                </div>
+                <div
+                  *ngIf="passwordInput?.errors?.['passwordFormat'].lowercase"
+                >
+                  Password must contain lowercase letter
+                </div>
+                <div
+                  *ngIf="passwordInput?.errors?.['passwordFormat'].uppercase"
+                >
+                  Password must contain uppercase letter
+                </div>
+                <div *ngIf="passwordInput?.errors?.['passwordFormat'].number">
+                  Password must contain number
+                </div>
+                <div *ngIf="passwordInput?.errors?.['passwordFormat'].special">
+                  Password must contain special character
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <input
+                  type="password"
+                  class="form-control custom-input"
+                  formControlName="confirmPassword"
+                  placeholder="Confirm Password"
+                  required
+                />
+              </div>
+            </div>
+            <div
+              class="validation-error"
+              *ngIf="confirmPassword?.errors?.['required'] && confirmPassword?.touched"
+            >
+              Confirm Password in required!
+            </div>
+
+            <div
+              class="validation-error"
+              *ngIf="userRegistrationForm.errors?.['passwordMismatch'] && 
+            (passwordInput?.touched || confirmPassword?.touched)"
+            >
+              Passwords do not match
+            </div>
+
             <!-- Navigation Buttons -->
             <div class="d-grid">
               <button

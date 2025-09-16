@@ -19,3 +19,13 @@
 .phone-input {
   padding-left: 40px !important;
 }
+
+/* Password info icon styling */
+.password-info-icon {
+  cursor: help;
+  font-size: 0.9rem;
+}
+
+.password-info-icon:hover {
+  color: #007bff !important;
+}

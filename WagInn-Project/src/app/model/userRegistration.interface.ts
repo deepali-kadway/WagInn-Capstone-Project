@@ -7,5 +7,6 @@ export interface UserRegistrationData {
     birthYear: string;
     email: string;
     phone: string;
+    passwordInput: string;
   };
 }
