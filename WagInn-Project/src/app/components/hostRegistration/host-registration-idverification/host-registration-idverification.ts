@@ -16,6 +16,13 @@ export class HostRegistrationIDVerification {
   backId: File | null = null;
   backIdPreviewUrl: string = '';
 
+  // Message Box properties
+  showMessageBox: boolean = false;
+  messageBoxTitle: string = '';
+  messageBoxContent: string = '';
+  messageBoxType: string = '';
+  pendingUser: boolean = false;
+
   constructor(
     private fb: FormBuilder,
     private router: Router,
@@ -103,20 +110,35 @@ export class HostRegistrationIDVerification {
       // Create the ID verification data with the actual file objects
       const idVerificationData = {
         frontIdFile: this.frontId,
-        backIdFile: this.backId
+        backIdFile: this.backId,
       };
-      
+
       this.service.updateIdVerification(idVerificationData);
 
       this.service.submitRegistration().subscribe({
         next: (response) => {
           console.log('Registration successful!');
-          this.router.navigate(['/hostDashboard']);
+          this.showSuccessMessage();
+          // this.router.navigate(['/hostSignIn']);
         },
         error: (error) => {
           console.log('Registration Failed:', error);
         },
       });
     }
+  }
+
+  private showSuccessMessage() {
+    this.messageBoxTitle = 'Registration Completed!';
+    this.messageBoxContent =
+      'Your registration is pending for approval. Please wait for Admin Verification';
+    this.messageBoxType = 'success';
+    this.pendingUser = false;
+    this.showMessageBox = true;
+  }
+
+  closeMessageBox() {
+    this.showMessageBox = false;
+    this.router.navigate(['hostSignIn']);
   }
 }
