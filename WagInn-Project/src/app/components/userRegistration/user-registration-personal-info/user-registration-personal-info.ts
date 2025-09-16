@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { UserRegistrationService } from '../../../services/userRegistration_Service/user-registration-service';
 
 @Component({
   selector: 'app-user-registration-personal-info',
@@ -56,7 +57,11 @@ export class UserRegistrationPersonalInfo {
     return this.userRegistrationForm.get('phone');
   }
 
-  constructor(private fb: FormBuilder, private router: Router) {
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private service: UserRegistrationService
+  ) {
     const currentYear = new Date().getFullYear();
     const startYear = 1900;
     this.years = [];
@@ -81,8 +86,13 @@ export class UserRegistrationPersonalInfo {
       const formData = { ...this.userRegistrationForm.value };
       formData.phone = '+1' + formData.phone;
 
-      // TODO: Call service with formData when service is created
-      console.log('User registration data with +1 prefix:', formData);
+      this.service.updatePersonalInfo(formData);
+      this.router.navigate(['userPetInfo']);
+    } else {
+      Object.keys(this.userRegistrationForm.controls).forEach((key) => {
+        const control = this.userRegistrationForm.get(key);
+        control?.markAsTouched;
+      });
     }
   }
 }
