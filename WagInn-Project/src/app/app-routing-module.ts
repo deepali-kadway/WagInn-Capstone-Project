@@ -8,6 +8,7 @@ import { HostRegistrationPricing } from './components/hostRegistration/host-regi
 import { HostRegistrationIDVerification } from './components/hostRegistration/host-registration-idverification/host-registration-idverification';
 import { HostDashboard } from './components/Dashboard/host-dashboard/host-dashboard';
 import { HostSignInPage } from './components/hostSignIn/host-sign-in-page/host-sign-in-page';
+import { authGuard } from './auth-guard';
 
 const routes: Routes = [
   { path: '', component: HostRegistrationPersonalInfo },
@@ -16,8 +17,12 @@ const routes: Routes = [
   { path: 'propertyDetails', component: HostRegistrationPropertyDetails },
   { path: 'pricing', component: HostRegistrationPricing },
   { path: 'idVerification', component: HostRegistrationIDVerification },
-  { path: 'hostDashboard', component: HostDashboard },
-  { path: 'hostSignIn', component: HostSignInPage}
+  {
+    path: 'hostDashboard',
+    component: HostDashboard,
+    canActivate: [authGuard], // Protect this route
+  },
+  { path: 'hostSignIn', component: HostSignInPage },
 ];
 
 @NgModule({

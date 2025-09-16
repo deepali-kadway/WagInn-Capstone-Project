@@ -1,6 +1,11 @@
 import express from "express";
+import jwt from "jsonwebtoken";
 const router = express.Router();
 import Host from "../models/hostRegistration_Model.js";
+
+// JWT Secret - In production, use environment variable
+const JWT_SECRET =
+  process.env.JWT_SECRET || "your-super-secret-jwt-key-change-in-production";
 
 router.post("/login", async (req, res) => {
   try {
@@ -75,10 +80,25 @@ router.post("/login", async (req, res) => {
       });
     }
 
-    // Successful login
+    // Successful login - Generate JWT token
+    const tokenPayload = {
+      id: host.id,
+      email: host.email,
+      firstName: host.firstName,
+      lastName: host.lastName,
+      role: "host",
+    };
+
+    const token = jwt.sign(
+      tokenPayload,
+      JWT_SECRET,
+      { expiresIn: "24h" } // Token expires in 24 hours
+    );
+
     res.status(200).json({
       success: true,
       message: "Login successful",
+      token: token,
       user: {
         id: host.id,
         email: host.email,

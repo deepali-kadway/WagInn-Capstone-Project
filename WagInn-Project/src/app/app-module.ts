@@ -12,9 +12,10 @@ import { HostRegistrationPetInfo } from './components/hostRegistration/host-regi
 import { HostRegistrationPropertyDetails } from './components/hostRegistration/host-registration-property-details/host-registration-property-details';
 import { HostRegistrationPricing } from './components/hostRegistration/host-registration-pricing/host-registration-pricing';
 import { HostRegistrationIDVerification } from './components/hostRegistration/host-registration-idverification/host-registration-idverification';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { HostDashboard } from './components/Dashboard/host-dashboard/host-dashboard';
 import { HostSignInPage } from './components/hostSignIn/host-sign-in-page/host-sign-in-page';
+import { authInterceptor } from './auth-interceptor';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,10 @@ import { HostSignInPage } from './components/hostSignIn/host-sign-in-page/host-s
     HostSignInPage,
   ],
   imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule],
-  providers: [provideBrowserGlobalErrorListeners(), provideHttpClient(withInterceptorsFromDi())],
+  providers: [
+    provideBrowserGlobalErrorListeners(),
+    provideHttpClient(withInterceptors([authInterceptor])),
+  ],
   bootstrap: [App],
 })
 export class AppModule {}

@@ -5,7 +5,14 @@ import hostRegRoute from "./routes/hostRegistration_Routes.js";
 import hostSignIn from "./routes/hostSignIn_Routes.js";
 
 const app = express();
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:4200", // Your Angular app URL
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
+  })
+);
 
 app.use(express.json());
 
