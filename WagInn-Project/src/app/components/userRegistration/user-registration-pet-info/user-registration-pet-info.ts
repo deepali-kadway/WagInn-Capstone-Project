@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { UserRegistrationService } from '../../../services/userRegistration_Service/user-registration-service';
 
 @Component({
   selector: 'app-user-registration-pet-info',
@@ -52,7 +53,18 @@ export class UserRegistrationPetInfo {
     ],
   };
 
-  constructor(private fb: FormBuilder, private router: Router) {
+  // Message Box properties
+  showMessageBox: boolean = false;
+  messageBoxTitle: string = '';
+  messageBoxContent: string = '';
+  messageBoxType: string = '';
+  pendingUser: boolean = false;
+
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private service: UserRegistrationService
+  ) {
     this.initializeForm();
   }
 
@@ -102,7 +114,7 @@ export class UserRegistrationPetInfo {
   }
 
   previousStep() {
-    this.router.navigate(['/userPersonalInfo']);
+    this.router.navigate(['/userRegistration']);
   }
 
   nextStep() {
@@ -125,9 +137,17 @@ export class UserRegistrationPetInfo {
         })),
       };
 
-      console.log('Pet registration data:', processedData);
-      // TODO: Send to service when ready
-      // this.service.updatePetInfo(processedData);
+      this.service.updatePetInfo(processedData);
+
+      this.service.submitRegistration().subscribe({
+        next: (response) => {
+          console.log('Registration Successful!');
+          this.showSuccessMessage();
+        },
+        error: (error) => {
+          console.log('Registration Failed:', error);
+        },
+      });
       // this.router.navigate(['/nextStep']);
     } else {
       this.markAllFieldsAsTouched();
@@ -146,6 +166,18 @@ export class UserRegistrationPetInfo {
       }
       vaccinationsControl?.updateValueAndValidity();
     });
+  }
+
+  private showSuccessMessage() {
+    this.messageBoxTitle = 'Registration Completed!';
+    this.messageBoxContent = 'Click OK to access your user dashboard';
+    this.messageBoxType = 'success';
+    this.showMessageBox = true;
+  }
+
+  closeMessageBox() {
+    this.showMessageBox = false;
+    this.router.navigate(['nextStep']);
   }
 
   private markAllFieldsAsTouched() {

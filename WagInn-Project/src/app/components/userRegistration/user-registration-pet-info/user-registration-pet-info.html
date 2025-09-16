@@ -412,3 +412,13 @@
     </div>
   </div>
 </div>
+
+<div class="message-box-overlay" *ngIf="showMessageBox">
+  <div class="message-box">
+    <div class="message-box-title">{{ messageBoxTitle }}</div>
+    <div class="message-box-content">
+      {{ messageBoxContent }}
+    </div>
+    <button class="message-box-button" (click)="closeMessageBox()">OK</button>
+  </div>
+</div>
