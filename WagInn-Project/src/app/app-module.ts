@@ -16,6 +16,8 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { HostDashboard } from './components/Dashboard/host-dashboard/host-dashboard';
 import { HostSignInPage } from './components/hostSignIn/host-sign-in-page/host-sign-in-page';
 import { authInterceptor } from './auth-interceptor';
+import { UserRegistrationPersonalInfo } from './components/userRegistration/user-registration-personal-info/user-registration-personal-info';
+import { UserRegistrationPetInfo } from './components/userRegistration/user-registration-pet-info/user-registration-pet-info';
 
 @NgModule({
   declarations: [
@@ -30,6 +32,8 @@ import { authInterceptor } from './auth-interceptor';
     HostRegistrationIDVerification,
     HostDashboard,
     HostSignInPage,
+    UserRegistrationPersonalInfo,
+    UserRegistrationPetInfo,
   ],
   imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule],
   providers: [
