@@ -95,11 +95,29 @@ export class HostRegistrationPetInfo {
 
   nextStep() {
     if (this.registrationForm.valid) {
-      const payload = {...this.registrationForm.value,}
-      // Convert array to comma separated string
-      if(Array.isArray(payload.allowedPetsType)){
-        payload.allowedPetsType = payload.allowedPetsType.join(', ')
+      const payload = { ...this.registrationForm.value };
+
+      // Clean up allowedPetsType: Convert array to comma separated string
+      if (Array.isArray(payload.allowedPetsType)) {
+        payload.allowedPetsType = payload.allowedPetsType.join(', ');
       }
+
+      // Clean up requiredVaccinations: Convert array to comma separated string
+      if (Array.isArray(payload.requiredVaccinations)) {
+        payload.requiredVaccinations = payload.requiredVaccinations.join(', ');
+      }
+
+      // Clean up petSizeRestrictions: Convert object to comma separated string of selected values
+      if (
+        payload.petSizeRestrictions &&
+        typeof payload.petSizeRestrictions === 'object'
+      ) {
+        const selectedSizes = Object.keys(payload.petSizeRestrictions) // Gets all keys of the object, e.g. ["small", "medium", "large", "none"].
+          .filter((key) => payload.petSizeRestrictions[key]) // Keeps only keys where the value is true
+          .join(', '); // Turns the array into a string separated by commas
+        payload.petSizeRestrictions = selectedSizes;
+      }
+
       this.service.updatePetInfo(payload);
       this.router.navigate(['propertyDetails']);
     }
