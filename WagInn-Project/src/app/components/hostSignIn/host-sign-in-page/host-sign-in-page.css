@@ -50,6 +50,7 @@
   font-weight: 600;
   color: white;
   transition: all 0.2s ease;
+  margin-top: 10px;
 }
 
 .submit-btn:hover {
