@@ -76,6 +76,7 @@ export class UserRegistrationPetInfo {
   }
 
   createPetFormGroup(): FormGroup {
+    //returns a new form group with all fields related to a single pet
     return this.fb.group({
       petName: ['', [Validators.required, Validators.minLength(2)]],
       petType: ['', Validators.required],
@@ -127,7 +128,7 @@ export class UserRegistrationPetInfo {
       // Process the data (clean up vaccination field for pets that aren't vaccinated)
       const processedData = {
         pets: petData.pets.map((pet: any) => ({
-          ...pet,
+          ...pet, //spread operator copies all existing pet properties & keeps original data
           vaccinations:
             pet.isVaccinated === 'yes'
               ? Array.isArray(pet.vaccinations)
