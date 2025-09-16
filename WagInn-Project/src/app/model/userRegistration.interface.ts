@@ -1,3 +1,5 @@
+import { PetInfo } from "./petsInfo.interface";
+
 export interface UserRegistrationData {
   personalInfo: {
     firstName: string;
@@ -10,15 +12,6 @@ export interface UserRegistrationData {
     passwordInput: string;
   };
   userPetInfo: {
-    petName: string;
-    petAge: string;
-    petType: string;
-    petBreed: string;
-    petSize: string;
-    isVaccinated: string;
-    vaccinesProvided: string;
-    isNeutered: string;
-    isFleaTickPrevented: string;
-    concerns: string;
+    pets: PetInfo[]
   };
 }
