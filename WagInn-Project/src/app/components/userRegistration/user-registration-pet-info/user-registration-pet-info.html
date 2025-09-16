@@ -1,1 +1,414 @@
-<p>user-registration-pet-info works!</p>
+<div class="main-content">
+  <div class="row justify-content-center min-vh-100 align-items-center">
+    <div class="col-12 col-md-10 col-lg-8">
+      <!-- Registration Card -->
+      <div class="registration-card shadow-sm">
+        <div>
+          <div class="text-center mb-4">
+            <h2 class="registration-title">Pet Profile Information</h2>
+            <p class="text-muted">Confirm details of your pets</p>
+          </div>
+
+          <form [formGroup]="userRegistrationForm">
+            <!-- Loop through pets array for multiple pet profiles -->
+            <div formArrayName="pets">
+              <div
+                *ngFor="let pet of pets.controls; let i = index"
+                [formGroupName]="i"
+                class="pet-profile-card mb-4"
+              >
+                <div class="pet-header">
+                  <h5 class="pet-title">Pet Profile #{{ i + 1 }}</h5>
+                  <button
+                    *ngIf="pets.length > 1"
+                    type="button"
+                    class="btn btn-sm btn-outline-danger"
+                    (click)="removePet(i)"
+                  >
+                    <i class="bi bi-trash"></i> Remove
+                  </button>
+                </div>
+
+                <!-- Pet Name -->
+                <div class="mb-3">
+                  <label class="form-label section-label">Pet Name *</label>
+                  <input
+                    type="text"
+                    class="form-control custom-input"
+                    formControlName="petName"
+                    placeholder="Enter pet name"
+                    required
+                  />
+                  <div
+                    class="validation-error"
+                    *ngIf="
+                      getPetControl(i, 'petName')?.invalid &&
+                      getPetControl(i, 'petName')?.touched
+                    "
+                  >
+                    <div
+                      *ngIf="getPetControl(i, 'petName')?.errors?.['required']"
+                    >
+                      Pet name is required
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Type of Pet: Dog, Cat, Bird -->
+                <div class="mb-3">
+                  <label class="form-label section-label">Type of Pet *</label>
+                  <select
+                    class="form-select custom-input"
+                    formControlName="petType"
+                    required
+                  >
+                    <option value="">Select pet type</option>
+                    <option value="dog">Dog</option>
+                    <option value="cat">Cat</option>
+                    <option value="bird">Bird</option>
+                  </select>
+                  <div
+                    class="validation-error"
+                    *ngIf="
+                      getPetControl(i, 'petType')?.invalid &&
+                      getPetControl(i, 'petType')?.touched
+                    "
+                  >
+                    <div
+                      *ngIf="getPetControl(i, 'petType')?.errors?.['required']"
+                    >
+                      Pet type is required
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Breed of Pet -->
+                <div class="mb-3">
+                  <label class="form-label section-label">Breed *</label>
+                  <select
+                    class="form-select custom-input"
+                    formControlName="breed"
+                    required
+                  >
+                    <option value="">Select breed</option>
+                    <option
+                      *ngFor="
+                        let breed of getBreedOptions(
+                          getPetControl(i, 'petType')?.value
+                        )
+                      "
+                      [value]="breed"
+                    >
+                      {{ breed }}
+                    </option>
+                  </select>
+                  <div
+                    class="validation-error"
+                    *ngIf="
+                      getPetControl(i, 'breed')?.invalid &&
+                      getPetControl(i, 'breed')?.touched
+                    "
+                  >
+                    <div
+                      *ngIf="getPetControl(i, 'breed')?.errors?.['required']"
+                    >
+                      Breed is required
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Size of Pet -->
+                <div class="mb-3">
+                  <label class="form-label section-label">Size *</label>
+                  <select
+                    class="form-select custom-input"
+                    formControlName="size"
+                    required
+                  >
+                    <option value="">Select size</option>
+                    <option value="small">Small</option>
+                    <option value="medium">Medium</option>
+                    <option value="large">Large</option>
+                  </select>
+                  <div
+                    class="validation-error"
+                    *ngIf="
+                      getPetControl(i, 'size')?.invalid &&
+                      getPetControl(i, 'size')?.touched
+                    "
+                  >
+                    <div *ngIf="getPetControl(i, 'size')?.errors?.['required']">
+                      Size is required
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Age -->
+                <div class="mb-3">
+                  <label class="form-label section-label">Age (years) *</label>
+                  <input
+                    type="number"
+                    class="form-control custom-input"
+                    formControlName="age"
+                    placeholder="Enter age"
+                    min="0"
+                    max="30"
+                    required
+                  />
+                  <div
+                    class="validation-error"
+                    *ngIf="
+                      getPetControl(i, 'age')?.invalid &&
+                      getPetControl(i, 'age')?.touched
+                    "
+                  >
+                    <div *ngIf="getPetControl(i, 'age')?.errors?.['required']">
+                      Age is required
+                    </div>
+                    <div *ngIf="getPetControl(i, 'age')?.errors?.['min']">
+                      Age must be 0 or greater
+                    </div>
+                    <div *ngIf="getPetControl(i, 'age')?.errors?.['max']">
+                      Age must be 30 or less
+                    </div>
+                  </div>
+                </div>
+
+                <!-- isVaccinated? -->
+                <div class="mb-3">
+                  <label class="form-label section-label"
+                    >Is Vaccinated? *</label
+                  >
+                  <div class="form-check-group">
+                    <div class="form-check">
+                      <input
+                        class="form-check-input"
+                        type="radio"
+                        formControlName="isVaccinated"
+                        value="yes"
+                        [id]="'vaccinated-yes-' + i"
+                      />
+                      <label
+                        class="form-check-label"
+                        [for]="'vaccinated-yes-' + i"
+                        >Yes</label
+                      >
+                    </div>
+                    <div class="form-check">
+                      <input
+                        class="form-check-input"
+                        type="radio"
+                        formControlName="isVaccinated"
+                        value="no"
+                        [id]="'vaccinated-no-' + i"
+                      />
+                      <label
+                        class="form-check-label"
+                        [for]="'vaccinated-no-' + i"
+                        >No</label
+                      >
+                    </div>
+                  </div>
+                  <div
+                    class="validation-error"
+                    *ngIf="
+                      getPetControl(i, 'isVaccinated')?.invalid &&
+                      getPetControl(i, 'isVaccinated')?.touched
+                    "
+                  >
+                    <div
+                      *ngIf="getPetControl(i, 'isVaccinated')?.errors?.['required']"
+                    >
+                      Please select vaccination status
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Vaccinations (conditional: if yes in isVaccinated) -->
+                <div
+                  class="mb-3"
+                  *ngIf="getPetControl(i, 'isVaccinated')?.value === 'yes'"
+                >
+                  <label class="form-label section-label">Vaccinations *</label>
+                  <select
+                    class="form-select custom-input"
+                    formControlName="vaccinations"
+                    multiple
+                    size="6"
+                    required
+                  >
+                    <option value="rabies">Rabies</option>
+                    <option value="bordetella">Bordetella</option>
+                    <option value="dhpp">DHPP/DAPP</option>
+                    <option value="civ">CIV</option>
+                    <option value="fvrcp">FVRCP</option>
+                    <option value="felv">FeLV</option>
+                  </select>
+                  <small class="form-text text-muted"
+                    >Hold Ctrl (⌘ on Mac) to select multiple
+                    vaccinations.</small
+                  >
+                  <div
+                    class="validation-error"
+                    *ngIf="
+                      getPetControl(i, 'vaccinations')?.invalid &&
+                      getPetControl(i, 'vaccinations')?.touched &&
+                      getPetControl(i, 'isVaccinated')?.value === 'yes'
+                    "
+                  >
+                    <div
+                      *ngIf="getPetControl(i, 'vaccinations')?.errors?.['required']"
+                    >
+                      Please select at least one vaccination
+                    </div>
+                  </div>
+                </div>
+
+                <!-- isNeutered? -->
+                <div class="mb-3">
+                  <label class="form-label section-label"
+                    >Is Neutered/Spayed? *</label
+                  >
+                  <div class="form-check-group">
+                    <div class="form-check">
+                      <input
+                        class="form-check-input"
+                        type="radio"
+                        formControlName="isNeutered"
+                        value="yes"
+                        [id]="'neutered-yes-' + i"
+                      />
+                      <label
+                        class="form-check-label"
+                        [for]="'neutered-yes-' + i"
+                        >Yes</label
+                      >
+                    </div>
+                    <div class="form-check">
+                      <input
+                        class="form-check-input"
+                        type="radio"
+                        formControlName="isNeutered"
+                        value="no"
+                        [id]="'neutered-no-' + i"
+                      />
+                      <label class="form-check-label" [for]="'neutered-no-' + i"
+                        >No</label
+                      >
+                    </div>
+                  </div>
+                  <div
+                    class="validation-error"
+                    *ngIf="
+                      getPetControl(i, 'isNeutered')?.invalid &&
+                      getPetControl(i, 'isNeutered')?.touched
+                    "
+                  >
+                    <div
+                      *ngIf="getPetControl(i, 'isNeutered')?.errors?.['required']"
+                    >
+                      Please select neutered/spayed status
+                    </div>
+                  </div>
+                </div>
+
+                <!-- isFleaTickPrevented? -->
+                <div class="mb-3">
+                  <label class="form-label section-label"
+                    >Flea/Tick Prevention? *</label
+                  >
+                  <div class="form-check-group">
+                    <div class="form-check">
+                      <input
+                        class="form-check-input"
+                        type="radio"
+                        formControlName="isFleaTickPrevented"
+                        value="yes"
+                        [id]="'flea-yes-' + i"
+                      />
+                      <label class="form-check-label" [for]="'flea-yes-' + i"
+                        >Yes</label
+                      >
+                    </div>
+                    <div class="form-check">
+                      <input
+                        class="form-check-input"
+                        type="radio"
+                        formControlName="isFleaTickPrevented"
+                        value="no"
+                        [id]="'flea-no-' + i"
+                      />
+                      <label class="form-check-label" [for]="'flea-no-' + i"
+                        >No</label
+                      >
+                    </div>
+                  </div>
+                  <div
+                    class="validation-error"
+                    *ngIf="
+                      getPetControl(i, 'isFleaTickPrevented')?.invalid &&
+                      getPetControl(i, 'isFleaTickPrevented')?.touched
+                    "
+                  >
+                    <div
+                      *ngIf="getPetControl(i, 'isFleaTickPrevented')?.errors?.['required']"
+                    >
+                      Please select flea/tick prevention status
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Concerns if any -->
+                <div class="mb-3">
+                  <label class="form-label section-label"
+                    >Special Concerns or Notes</label
+                  >
+                  <textarea
+                    class="form-control custom-input"
+                    formControlName="concerns"
+                    rows="3"
+                    placeholder="Any special concerns, medical conditions, or behavioral notes..."
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+
+            <!-- Add More Pets Button -->
+            <div class="text-center mb-4">
+              <button
+                type="button"
+                class="btn btn-outline-primary"
+                (click)="addPet()"
+              >
+                <i class="bi bi-plus-circle"></i> Add Another Pet
+              </button>
+            </div>
+
+            <!-- Navigation Buttons -->
+            <div class="row g-2 mb-4">
+              <div class="col-6">
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary back-btn w-100 h-100"
+                  (click)="previousStep()"
+                >
+                  Back
+                </button>
+              </div>
+
+              <div class="col-6">
+                <button
+                  type="button"
+                  class="btn btn-primary submit-btn w-100 h-100"
+                  (click)="nextStep()"
+                >
+                  Next
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

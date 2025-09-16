@@ -9,4 +9,16 @@ export interface UserRegistrationData {
     phone: string;
     passwordInput: string;
   };
+  userPetInfo: {
+    petName: string;
+    petAge: string;
+    petType: string;
+    petBreed: string;
+    petSize: string;
+    isVaccinated: string;
+    vaccinesProvided: string;
+    isNeutered: string;
+    isFleaTickPrevented: string;
+    concerns: string;
+  };
 }

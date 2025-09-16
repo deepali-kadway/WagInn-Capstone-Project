@@ -14,11 +14,11 @@ export class UserRegistrationService {
   constructor(private http: HttpClient) {}
 
   //step wise data update
-  updatePersonalInfo(data: any){
+  updatePersonalInfo(data: any) {
     this.userRegistrationData.personalInfo = data;
   }
 
-  updatePetInfo(data: any){
-    // this.userRegistrationData.petInfo = data;
+  updatePetInfo(data: any) {
+    this.userRegistrationData.userPetInfo = data;
   }
 }
