@@ -42,3 +42,10 @@
   margin-bottom: 0;
   cursor: pointer;
 }
+
+.validation-errors {
+  font-weight: bold;
+  color: #dc3545;
+  margin-top: 4px;
+  font-size: 0.875rem;
+}
