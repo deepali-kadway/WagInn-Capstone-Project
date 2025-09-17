@@ -12,6 +12,7 @@ import { authGuard } from './auth-guard';
 import { UserRegistrationPersonalInfo } from './components/userRegistration/user-registration-personal-info/user-registration-personal-info';
 import { UserRegistrationPetInfo } from './components/userRegistration/user-registration-pet-info/user-registration-pet-info';
 import { UserDashboard } from './components/Dashboard/user-dashboard/user-dashboard';
+import { UserSignInPage } from './components/userSignIn/user-sign-in-page/user-sign-in-page';
 
 const routes: Routes = [
   { path: '', component: HostRegistrationPersonalInfo },
@@ -29,6 +30,7 @@ const routes: Routes = [
   { path: 'userRegistration', component: UserRegistrationPersonalInfo },
   { path: 'userPetInfo', component: UserRegistrationPetInfo },
   { path: 'userDashboard', component: UserDashboard },
+  { path: 'userSignIn', component: UserSignInPage },
 ];
 
 @NgModule({

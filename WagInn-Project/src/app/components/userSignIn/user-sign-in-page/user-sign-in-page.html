@@ -1,0 +1,69 @@
+<div class="main-content">
+  <div class="row justify-content-center min-vh-100 align-items-center">
+    <div class="col-12 col-md-10 col-lg-8">
+      <!-- Registration Card -->
+      <div class="signIn-card shadow-sm">
+        <div>
+          <div class="text-center mb-4">
+            <h2 class="signIn-title">User Sign In</h2>
+            <p class="text-muted">Login to access Host Dashboard</p>
+          </div>
+
+          <form [formGroup]="userSignIn" (submit)="userLogin()">
+            <div class="mb-4">
+              <label class="section-label">User Email</label>
+              <div class="mb-3">
+                <input
+                  type="email"
+                  class="form-control custom-input"
+                  formControlName="userName"
+                  placeholder="Enter registered email id"
+                  required
+                />
+                <div
+                  class="validation-error"
+                  *ngIf="userName?.invalid && userName?.touched"
+                >
+                  <div *ngIf="userName?.errors?.['required']">
+                    Email is mandatory
+                  </div>
+                </div>
+              </div>
+
+              <label class="form-label section-label">Password</label>
+              <div class="mb-3">
+                <input
+                  type="password"
+                  class="form-control custom-input"
+                  formControlName="password"
+                  placeholder="Enter generated passcode"
+                  required
+                />
+                <div *ngIf="password?.invalid && password?.touched">
+                  <div
+                    class="validation-error"
+                    *ngIf="password?.errors?.['required']"
+                  >
+                    Password is mandatory
+                  </div>
+                </div>
+              </div>
+
+              <div class="d-grid">
+                <button type="submit" class="btn btn-primary submit-btn">
+                  Sign In
+                </button>
+              </div>
+
+              <p class="register-prompt">
+                <b>New User? Please </b> <a href="http://localhost:4200/userRegistration" class="register-link">Register Here!</a>
+              </p>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+

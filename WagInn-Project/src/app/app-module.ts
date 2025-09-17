@@ -19,6 +19,7 @@ import { authInterceptor } from './auth-interceptor';
 import { UserRegistrationPersonalInfo } from './components/userRegistration/user-registration-personal-info/user-registration-personal-info';
 import { UserRegistrationPetInfo } from './components/userRegistration/user-registration-pet-info/user-registration-pet-info';
 import { UserDashboard } from './components/Dashboard/user-dashboard/user-dashboard';
+import { UserSignInPage } from './components/userSignIn/user-sign-in-page/user-sign-in-page';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { UserDashboard } from './components/Dashboard/user-dashboard/user-dashbo
     UserRegistrationPersonalInfo,
     UserRegistrationPetInfo,
     UserDashboard,
+    UserSignInPage,
   ],
   imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule],
   providers: [

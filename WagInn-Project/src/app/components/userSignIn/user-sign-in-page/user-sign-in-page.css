@@ -1,0 +1,225 @@
+.main-content {
+  margin-top: -10px;
+}
+
+.signIn-card {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  border: 1px solid #ddd;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.signIn-title {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #222;
+  margin-bottom: 0;
+}
+
+.section-label {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #222;
+  margin-bottom: 1rem;
+}
+
+.custom-input {
+  border: 2px solid #b0b0b0;
+  border-radius: 8px;
+  padding: 1rem;
+  font-size: 1rem;
+  line-height: 1.25;
+  transition: border-color 0.2s ease;
+  background-color: #fff;
+}
+
+.custom-input:hover {
+  border-color: #11a08d;
+  box-shadow: none;
+  outline: none;
+}
+
+.submit-btn {
+  background: linear-gradient(to right, #11a08d 0%, #25b9a6 50%, #04a58f 100%);
+  border: none;
+  border-radius: 8px;
+  padding: 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: white;
+  transition: all 0.2s ease;
+  margin-top: 10px;
+}
+
+.submit-btn:hover {
+  background: linear-gradient(to right, #11a08d 0%, #25b9a6 50%, #04a58f 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .signIn-card {
+    margin: 1rem;
+    padding: 1.5rem;
+  }
+
+  .signIn-title {
+    font-size: 1.5rem;
+  }
+
+  .main-content {
+    padding-top: 100px;
+  }
+}
+
+@media (max-width: 576px) {
+  .main-content {
+    padding: 1rem 0.5rem;
+  }
+  .signIn-card {
+    margin: 0.5rem;
+    padding: 1rem;
+  }
+  .main-content {
+    padding-top: 90px;
+  }
+}
+
+/* Custom Validation errors */
+.validation-error {
+  color: #dc3545;
+  font-size: 0.875rem;
+  margin-top: 2px;
+  margin-bottom: 8px;
+  font-size: 800;
+  font-weight: bold;
+}
+
+/* Message Box Styles */
+/* z-index: controls stacking of elements. Appears in front of elements with lower z-index. default value is autp (treated as 0)
+Only works on elements with a positioning context (position: relative, absolute, fixed pr sticky)*/
+.message-box-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.message-box {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  border: 2px solid #11a08d;
+}
+
+.message-box-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #222;
+  margin-bottom: 1rem;
+}
+
+.message-box-content {
+  font-size: 1rem;
+  color: #555;
+  line-height: 1.5;
+  margin-bottom: 1.5rem;
+}
+
+.message-box-button {
+  background: linear-gradient(to right, #11a08d 0%, #25b9a6 50%, #04a58f 100%);
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 80px;
+}
+
+.message-box-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(17, 160, 141, 0.3);
+}
+
+.message-box-button:active {
+  transform: translateY(0);
+}
+
+/* Pending Status Styling */
+.message-box.pending {
+  border-color: #f39c12;
+}
+
+.message-box.pending .message-box-title {
+  color: #f39c12;
+}
+
+/* Success Status Styling */
+.message-box.success {
+  border-color: #11a08d;
+}
+
+.message-box.success .message-box-title {
+  color: #11a08d;
+}
+
+/* Error Status Styling */
+.message-box.error {
+  border-color: #dc3545;
+}
+
+.message-box.error .message-box-title {
+  color: #dc3545;
+}
+
+/* Registration Prompt Styling */
+.register-prompt {
+  text-align: center;
+  margin-top: 1.5rem;
+  margin-bottom: 0;
+  font-size: 0.95rem;
+  color: #666;
+}
+
+.register-link {
+  color: #11a08d;
+  text-decoration: none;
+  font-weight: 600;
+  position: relative;
+}
+
+.register-link:hover {
+  color: #04a58f;
+  text-decoration: none;
+}
+
+.register-link::after {
+  content: ""; /* creates an empty sudo element */
+  position: absolute; /* position relavtive to link */
+  width: 0; /* start with no width(invisible) */
+  height: 2px; /* 2px tall (thin line) */
+  bottom: -2px; /* 2px below the text */
+  left: 0; /* start from the left edge */
+  background: linear-gradient(to right, #11a08d, #25b9a6);
+  transition: width 0.3s ease; /* Smooth animation for width changes */
+}
+
+.register-link:hover::after {
+  width: 100%; /* On hover, expand to full width */
+}
