@@ -21,9 +21,26 @@ app.use(
   })
 );
 
-app.use(express.json());
+app.use(express.json({ limit: '10mb' })); // Increased limit for safety
 app.use(express.urlencoded({ extended: true }));
-app.use(upload.none()); // For text fields in multipart/form-data
+
+// Route-specific middleware
+// User routes: Handle JSON data
+app.use("/user", (req, res, next) => {
+  // Ensure user routes expect JSON
+  if (req.headers['content-type'] && req.headers['content-type'].includes('multipart/form-data')) {
+    return res.status(400).json({ 
+      error: "User registration expects JSON data, not form-data" 
+    });
+  }
+  next();
+});
+
+// Host routes: Handle multipart/form-data  
+app.use("/host", (req, res, next) => {
+  // Host registration will handle its own multer middleware in routes
+  next();
+});
 
 //use imported routes
 app.use("/host", hostRegRoute);
