@@ -27,6 +27,9 @@
                   <div *ngIf="userName?.errors?.['required']">
                     Email is mandatory
                   </div>
+                  <div *ngIf="userName?.errors?.['strictEmail']">
+                    Please enter a valid email format (e.g., user@example.com)
+                  </div>
                 </div>
               </div>
 
@@ -36,7 +39,7 @@
                   type="password"
                   class="form-control custom-input"
                   formControlName="password"
-                  placeholder="Enter generated passcode"
+                  placeholder="Enter registered password"
                   required
                 />
                 <div *ngIf="password?.invalid && password?.touched">
@@ -56,7 +59,12 @@
               </div>
 
               <p class="register-prompt">
-                <b>New User? Please </b> <a href="http://localhost:4200/userRegistration" class="register-link">Register Here!</a>
+                <b>New User? Please </b>
+                <a
+                  href="http://localhost:4200/userRegistration"
+                  class="register-link"
+                  >Register Here!</a
+                >
               </p>
             </div>
           </form>
@@ -65,5 +73,3 @@
     </div>
   </div>
 </div>
-
-
