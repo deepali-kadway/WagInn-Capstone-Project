@@ -24,10 +24,10 @@ export class UserRegistrationService {
   }
 
   submitRegistration(): Observable<any> {
-    // Send JSON directly, not FormData
+    // Send JSON directly, not FormData as backend accepts JSON
     const jsonData = {
       personalInfo: this.userRegistrationData.personalInfo,
-      userPetInfo: this.userRegistrationData.userPetInfo
+      userPetInfo: this.userRegistrationData.userPetInfo,
     };
 
     // Debug: Log the JSON data being sent
@@ -36,8 +36,8 @@ export class UserRegistrationService {
     // Send JSON with proper headers
     return this.http.post(this.apiUrl, jsonData, {
       headers: {
-        'Content-Type': 'application/json'
-      }
+        'Content-Type': 'application/json',
+      },
     });
   }
 }
