@@ -13,7 +13,27 @@ router.use((req, res, next) => {
 //Post User registration data
 router.post("/register", async (req, res) => {
   try {
+    // Basic debugging first
+    console.log("=== DEBUGGING REQUEST ===");
+    console.log("req.body exists:", req.body !== undefined);
+    console.log("req.body type:", typeof req.body);
+    console.log("req.body:", req.body);
+    console.log("req.headers:", req.headers);
+    console.log("========================");
+
+    // Check if req.body exists before proceeding
+    if (!req.body) {
+      return res.status(400).json({
+        message: "No request body received",
+        error: "req.body is undefined - check middleware setup",
+      });
+    }
+
     console.log(`Step 1: Request Body: `, req.body);
+
+    // Debug: Check raw data before parsing
+    console.log("Step 1.5: Raw personalInfo:", req.body.personalInfo);
+    console.log("Step 1.6: Raw userPetInfo:", req.body.userPetInfo);
 
     //JSON Parsing
     const parseJSONFields = (data) => {
@@ -31,11 +51,30 @@ router.post("/register", async (req, res) => {
     console.log("Step 2: Parsing JSON fields");
     parseJSONFields(req.body);
 
+    // Debug: Check parsed data structure
+    console.log(
+      "Step 2.5: Parsed personalInfo:",
+      JSON.stringify(req.body.personalInfo, null, 2)
+    );
+    console.log(
+      "Step 2.6: Parsed userPetInfo:",
+      JSON.stringify(req.body.userPetInfo, null, 2)
+    );
+
     console.log("Step 3: Creating user data");
+    // Hash password after parsing
+    const hashedPassword = await bcrypt.hash(
+      req.body.personalInfo?.passwordInput,
+      10
+    );
+
     const userData = {
       id: uuidv4(),
       ...req.body,
-      passwordInput: await bcrypt.hash(passwordInput, 10),
+      personalInfo: {
+        ...req.body.personalInfo,
+        passwordInput: hashedPassword,
+      },
     };
 
     const flattenUserData = (data) => {
@@ -52,17 +91,17 @@ router.post("/register", async (req, res) => {
         phone: data.personalInfo?.phone,
         passwordInput: data.personalInfo?.passwordInput,
 
-        //extract from petInfo
-        petName: data.userPetInfo?.petName,
-        petType: data.userPetInfo?.petType,
-        breed: data.userPetInfo?.breed,
-        size: data.userPetInfo?.size,
-        age: data.userPetInfo?.age,
-        isVaccinated: data.userPetInfo?.isVaccinated,
-        vaccinations: data.userPetInfo?.vaccinations || [],
-        isNeutered: data.userPetInfo?.isNeutered,
-        isFleaTickPrevented: data.userPetInfo?.isFleaTickPrevented,
-        concerns: data.userPetInfo?.concerns,
+        //extract from petInfo (handle pets array - take first pet for now)
+        petName: data.userPetInfo?.pets?.[0]?.petName,
+        petType: data.userPetInfo?.pets?.[0]?.petType,
+        breed: data.userPetInfo?.pets?.[0]?.breed,
+        size: data.userPetInfo?.pets?.[0]?.size,
+        age: data.userPetInfo?.pets?.[0]?.age,
+        isVaccinated: data.userPetInfo?.pets?.[0]?.isVaccinated,
+        vaccinations: data.userPetInfo?.pets?.[0]?.vaccinations || [],
+        isNeutered: data.userPetInfo?.pets?.[0]?.isNeutered,
+        isFleaTickPrevented: data.userPetInfo?.pets?.[0]?.isFleaTickPrevented,
+        concerns: data.userPetInfo?.pets?.[0]?.concerns,
       };
       return flattened;
     };

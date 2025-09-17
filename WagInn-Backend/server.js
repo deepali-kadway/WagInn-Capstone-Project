@@ -1,11 +1,16 @@
 import express from "express";
 import cors from "cors";
+import multer from "multer";
 import sequelize from "./config.js";
 import hostRegRoute from "./routes/hostRegistration_Routes.js";
 import hostSignIn from "./routes/hostSignIn_Routes.js";
-import userRegRoute from "./routes/userRegistration_Routes.js"
+import userRegRoute from "./routes/userRegistration_Routes.js";
 
 const app = express();
+
+// Configure multer for handling multipart/form-data
+const upload = multer();
+
 app.use(
   cors({
     origin: "http://localhost:4200", // Your Angular app URL
@@ -16,11 +21,13 @@ app.use(
 );
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(upload.none()); // For text fields in multipart/form-data
 
 //use imported routes
 app.use("/host", hostRegRoute);
 app.use("/host", hostSignIn);
-app.use("/user", userRegRoute)
+app.use("/user", userRegRoute);
 
 //Test DB connection
 sequelize
