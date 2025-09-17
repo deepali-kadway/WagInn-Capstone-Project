@@ -18,6 +18,12 @@ import { UserSignInService } from '../../../services/userSignIn_Service/user-sig
 export class UserSignInPage {
   userSignIn!: FormGroup;
 
+  //message box properties
+  showMessageBox: boolean = false;
+  messageBoxTitle: string = '';
+  messageBoxContent: string = '';
+  messageBoxType: string = '';
+
   get userName() {
     return this.userSignIn.get('userName');
   }
@@ -63,7 +69,7 @@ export class UserSignInPage {
           this.router.navigate(['userDashboard']);
         },
         error: (error) => {
-          console.log('Login Failed!', error);
+          this.showErrorMessage(error.message);
         },
       });
     } else {
@@ -71,5 +77,19 @@ export class UserSignInPage {
         this.userSignIn.get('key')?.markAsTouched();
       });
     }
+  }
+
+  showErrorMessage(message: string) {
+    this.showMessageBox = true;
+    this.messageBoxTitle = 'Login Failed';
+    this.messageBoxContent = message;
+    this.messageBoxType = 'error';
+  }
+
+  closeMessageBox() {
+    this.showMessageBox = false;
+    this.messageBoxTitle = '';
+    this.messageBoxContent = '';
+    this.messageBoxType = '';
   }
 }

@@ -28,10 +28,13 @@ router.post("/login", async (req, res) => {
 
     //Check if user exists
     if (!user) {
-      console.log("User not found with provided credentials");
-      return res.status(401).json({
+      console.log(
+        "User not found with provided credentials. If new user, complete registration!"
+      );
+      return res.status(404).json({
         success: false,
-        message: "Invalid credentials",
+        error: "USER_NOT_FOUND",
+        message: "No account found with this email address",
       });
     }
 
@@ -44,7 +47,8 @@ router.post("/login", async (req, res) => {
       console.log("Entered password does not match");
       return res.status(401).json({
         success: false,
-        message: "Invalid Password",
+        error: "INVALID_PASSWORD",
+        message: "Incorrect Password. Please enter correct password",
       });
     } else {
       console.log("User Found", {

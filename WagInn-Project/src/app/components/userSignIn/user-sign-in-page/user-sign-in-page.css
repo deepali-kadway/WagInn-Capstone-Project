@@ -98,9 +98,42 @@
   font-weight: bold;
 }
 
-/* Message Box Styles */
-/* z-index: controls stacking of elements. Appears in front of elements with lower z-index. default value is autp (treated as 0)
-Only works on elements with a positioning context (position: relative, absolute, fixed pr sticky)*/
+/* Registration Prompt Styling */
+.register-prompt {
+  text-align: center;
+  margin-top: 1.5rem;
+  margin-bottom: 0;
+  font-size: 0.95rem;
+  color: #666;
+}
+
+.register-link {
+  color: #11a08d;
+  text-decoration: none;
+  font-weight: 600;
+  position: relative;
+}
+
+.register-link:hover {
+  color: #04a58f;
+  text-decoration: none;
+}
+
+.register-link::after {
+  content: ""; /* creates an empty sudo element */
+  position: absolute; /* position relavtive to link */
+  width: 0; /* start with no width(invisible) */
+  height: 2px; /* 2px tall (thin line) */
+  bottom: -2px; /* 2px below the text */
+  left: 0; /* start from the left edge */
+  background: linear-gradient(to right, #11a08d, #25b9a6);
+  transition: width 0.3s ease; /* Smooth animation for width changes */
+}
+
+.register-link:hover::after {
+  width: 100%; /* On hover, expand to full width */
+}
+
 .message-box-overlay {
   position: fixed;
   top: 0;
@@ -161,24 +194,6 @@ Only works on elements with a positioning context (position: relative, absolute,
   transform: translateY(0);
 }
 
-/* Pending Status Styling */
-.message-box.pending {
-  border-color: #f39c12;
-}
-
-.message-box.pending .message-box-title {
-  color: #f39c12;
-}
-
-/* Success Status Styling */
-.message-box.success {
-  border-color: #11a08d;
-}
-
-.message-box.success .message-box-title {
-  color: #11a08d;
-}
-
 /* Error Status Styling */
 .message-box.error {
   border-color: #dc3545;
@@ -186,40 +201,4 @@ Only works on elements with a positioning context (position: relative, absolute,
 
 .message-box.error .message-box-title {
   color: #dc3545;
-}
-
-/* Registration Prompt Styling */
-.register-prompt {
-  text-align: center;
-  margin-top: 1.5rem;
-  margin-bottom: 0;
-  font-size: 0.95rem;
-  color: #666;
-}
-
-.register-link {
-  color: #11a08d;
-  text-decoration: none;
-  font-weight: 600;
-  position: relative;
-}
-
-.register-link:hover {
-  color: #04a58f;
-  text-decoration: none;
-}
-
-.register-link::after {
-  content: ""; /* creates an empty sudo element */
-  position: absolute; /* position relavtive to link */
-  width: 0; /* start with no width(invisible) */
-  height: 2px; /* 2px tall (thin line) */
-  bottom: -2px; /* 2px below the text */
-  left: 0; /* start from the left edge */
-  background: linear-gradient(to right, #11a08d, #25b9a6);
-  transition: width 0.3s ease; /* Smooth animation for width changes */
-}
-
-.register-link:hover::after {
-  width: 100%; /* On hover, expand to full width */
 }
