@@ -12,8 +12,6 @@ export class UserSignInService {
   constructor(private http: HttpClient) {}
 
   getUserSignIn(loginData: any): Observable<any> {
-    console.log('Incoming data: ', loginData);
-
     return this.http
       .post(this.apiUrl, loginData, {
         headers: {
