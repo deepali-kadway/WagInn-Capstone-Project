@@ -1,8 +1,9 @@
 import express from "express";
 const router = express.Router();
 import { v4 as uuidv4 } from "uuid";
-import User from "../models/userRegistration_Model.js";
+import { User, Pet } from "../models/associations.js";
 import bcrypt from "bcrypt";
+import sequelize from "../config.js";
 
 //debug logs
 router.use((req, res, next) => {
@@ -12,6 +13,9 @@ router.use((req, res, next) => {
 
 //Post User registration data
 router.post("/register", async (req, res) => {
+  //start a database transaction
+  const transaction = await sequelize.transaction();
+
   try {
     // Basic debugging first
     console.log("=== DEBUGGING REQUEST ===");
@@ -32,8 +36,8 @@ router.post("/register", async (req, res) => {
     console.log(`Step 1: Request Body: `, req.body);
 
     // Debug: Check raw data before parsing
-    console.log("Step 1.5: Raw personalInfo:", req.body.personalInfo);
-    console.log("Step 1.6: Raw userPetInfo:", req.body.userPetInfo);
+    console.log("Step 1.1: Raw personalInfo:", req.body.personalInfo);
+    console.log("Step 1.2: Raw userPetInfo:", req.body.userPetInfo);
 
     //JSON Parsing
     const parseJSONFields = (data) => {
@@ -53,13 +57,17 @@ router.post("/register", async (req, res) => {
 
     // Debug: Check parsed data structure
     console.log(
-      "Step 2.5: Parsed personalInfo:",
+      "Step 2.1: Parsed personalInfo:",
       JSON.stringify(req.body.personalInfo, null, 2)
     );
     console.log(
-      "Step 2.6: Parsed userPetInfo:",
+      "Step 2.2: Parsed userPetInfo:",
       JSON.stringify(req.body.userPetInfo, null, 2)
     );
+
+    //extract user data and pets data
+    const personalInfo = req.body.personalInfo;
+    const petsData = req.body.userPetInfo?.pets || [];
 
     console.log("Step 3: Creating user data");
     // Hash password after parsing
@@ -68,58 +76,69 @@ router.post("/register", async (req, res) => {
       10
     );
 
+    // Prepare user data (personal info only)
     const userData = {
-      id: uuidv4(),
-      ...req.body,
-      personalInfo: {
-        ...req.body.personalInfo,
-        passwordInput: hashedPassword,
-      },
+      // No manually setting id - the model will generate it with UUIDV4
+      firstName: personalInfo.firstName,
+      lastName: personalInfo.lastName,
+      birthMonth: personalInfo.birthMonth,
+      birthDay: personalInfo.birthDay,
+      birthYear: personalInfo.birthYear,
+      email: personalInfo.email,
+      phone: personalInfo.phone,
+      passwordInput: hashedPassword,
     };
 
-    const flattenUserData = (data) => {
-      const flattened = {
-        id: data.id,
+    console.log("Step 4: Creating user record for personal data");
+    console.log("User data: ", JSON.stringify(userData, null, 2));
 
-        //extract from personalInfo
-        firstName: data.personalInfo?.firstName,
-        lastName: data.personalInfo?.lastName,
-        birthMonth: data.personalInfo?.birthMonth,
-        birthDay: data.personalInfo?.birthDay,
-        birthYear: data.personalInfo?.birthYear,
-        email: data.personalInfo?.email,
-        phone: data.personalInfo?.phone,
-        passwordInput: data.personalInfo?.passwordInput,
+    //create user record
+    const newUser = await User.create(userData, { transaction });
 
-        //extract from petInfo (handle pets array - take first pet for now)
-        petName: data.userPetInfo?.pets?.[0]?.petName,
-        petType: data.userPetInfo?.pets?.[0]?.petType,
-        breed: data.userPetInfo?.pets?.[0]?.breed,
-        size: data.userPetInfo?.pets?.[0]?.size,
-        age: data.userPetInfo?.pets?.[0]?.age,
-        isVaccinated: data.userPetInfo?.pets?.[0]?.isVaccinated,
-        vaccinations: data.userPetInfo?.pets?.[0]?.vaccinations || [],
-        isNeutered: data.userPetInfo?.pets?.[0]?.isNeutered,
-        isFleaTickPrevented: data.userPetInfo?.pets?.[0]?.isFleaTickPrevented,
-        concerns: data.userPetInfo?.pets?.[0]?.concerns,
-      };
-      return flattened;
-    };
-    console.log("Step 4: Flatten nested data");
-    const flattenedData = flattenUserData(userData);
-    console.log(
-      "Step 5: Final Flatten data:",
-      JSON.stringify(flattenedData, null, 2)
-    );
-    //null -> include all properties, don't filer anything; 2 -> indentation in formated output. each nested level is indented by 2 spaces.
+    console.log("Step 4.1: User created successfully");
+    console.log("New user ID:", newUser.id);
+    console.log("New user object:", JSON.stringify(newUser.toJSON(), null, 2));
 
-    console.log("Step 6: About to create database record");
-    const newUser = await User.create(flattenedData);
+    console.log("Step 5: Creating pet records");
+    console.log("Pets data:", JSON.stringify(petsData, null, 2));
 
-    res
-      .status(201)
-      .json({ message: "User Registration Successfull", user: newUser });
+    // Create pet records associated with the user
+    if (petsData.length > 0) {
+      const petPromises = petsData.map((petData) => {
+        return Pet.create(
+          {
+            //removing manual UUID. sequelize model is generating UUID automatically
+            userId: newUser.id, // Use newUser.id instead of newUser.userId
+            petName: petData.petName,
+            petType: petData.petType,
+            breed: petData.breed,
+            size: petData.size,
+            age: petData.age,
+            isVaccinated: petData.isVaccinated,
+            vaccinations: petData.vaccinations || [],
+            isNeutered: petData.isNeutered,
+            isFleaTickPrevented: petData.isFleaTickPrevented,
+            concerns: petData.concerns,
+          },
+          { transaction }
+        );
+      });
+
+      await Promise.all(petPromises);
+      console.log(`Step 6: Created ${petsData.length} pet records`);
+    }
+
+    // Commit transaction
+    await transaction.commit();
+
+    res.status(201).json({
+      message: "User and pets registered successfully",
+      userId: newUser.id, // Use newUser.id instead of newUser.userId
+      petsCreated: petsData.length,
+    });
   } catch (error) {
+    // Rollback transaction on error
+    await transaction.rollback();
     console.error("Detailed error:", error);
     console.error("Request data:", req.body);
     res.status(500).json({

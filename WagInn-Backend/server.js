@@ -5,6 +5,7 @@ import sequelize from "./config.js";
 import hostRegRoute from "./routes/hostRegistration_Routes.js";
 import hostSignIn from "./routes/hostSignIn_Routes.js";
 import userRegRoute from "./routes/userRegistration_Routes.js";
+import "./models/associations.js";
 
 const app = express();
 

@@ -178,7 +178,7 @@ export class UserRegistrationPetInfo {
 
   closeMessageBox() {
     this.showMessageBox = false;
-    this.router.navigate(['nextStep']);
+    this.router.navigate(['userDashboard']);
   }
 
   private markAllFieldsAsTouched() {

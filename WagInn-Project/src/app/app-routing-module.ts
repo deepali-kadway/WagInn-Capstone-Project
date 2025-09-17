@@ -11,6 +11,7 @@ import { HostSignInPage } from './components/hostSignIn/host-sign-in-page/host-s
 import { authGuard } from './auth-guard';
 import { UserRegistrationPersonalInfo } from './components/userRegistration/user-registration-personal-info/user-registration-personal-info';
 import { UserRegistrationPetInfo } from './components/userRegistration/user-registration-pet-info/user-registration-pet-info';
+import { UserDashboard } from './components/Dashboard/user-dashboard/user-dashboard';
 
 const routes: Routes = [
   { path: '', component: HostRegistrationPersonalInfo },
@@ -27,6 +28,7 @@ const routes: Routes = [
   { path: 'hostSignIn', component: HostSignInPage },
   { path: 'userRegistration', component: UserRegistrationPersonalInfo },
   { path: 'userPetInfo', component: UserRegistrationPetInfo },
+  { path: 'userDashboard', component: UserDashboard },
 ];
 
 @NgModule({

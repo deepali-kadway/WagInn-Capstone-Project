@@ -43,46 +43,6 @@ const User = sequelize.define("User_Profile", {
     type: DataTypes.STRING(255), // for bcrypt storage
     allowNull: false,
   },
-
-  //Pet Info
-  petName: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  petType: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  breed: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  size: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  age: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-  },
-  isVaccinated: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  vaccinations: {
-    type: DataTypes.JSON,
-  },
-  isNeutered: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  isFleaTickPrevented: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  concerns: {
-    type: DataTypes.TEXT,
-  },
 });
 
 export default User;
