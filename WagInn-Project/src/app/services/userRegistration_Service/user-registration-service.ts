@@ -24,27 +24,20 @@ export class UserRegistrationService {
   }
 
   submitRegistration(): Observable<any> {
-    const formData = new FormData();
+    // Send JSON directly, not FormData
+    const jsonData = {
+      personalInfo: this.userRegistrationData.personalInfo,
+      userPetInfo: this.userRegistrationData.userPetInfo
+    };
 
-    // Add data to FormData first
-    formData.append(
-      'personalInfo',
-      JSON.stringify(this.userRegistrationData.personalInfo)
-    );
-    formData.append(
-      'userPetInfo',
-      JSON.stringify(this.userRegistrationData.userPetInfo)
-    );
+    // Debug: Log the JSON data being sent
+    console.log('JSON data being sent:', jsonData);
 
-    // Debug: Log the raw data before FormData
-    console.log('Raw registration data:', this.userRegistrationData);
-
-    // Debug: Log FormData contents (after data is added)
-    console.log('FormData contents:');
-    for (let [key, value] of formData.entries()) {
-      console.log(`${key}:`, value);
-    }
-
-    return this.http.post(this.apiUrl, formData);
+    // Send JSON with proper headers
+    return this.http.post(this.apiUrl, jsonData, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
   }
 }
