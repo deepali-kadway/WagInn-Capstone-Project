@@ -3,6 +3,7 @@ import cors from "cors";
 import sequelize from "./config.js";
 import hostRegRoute from "./routes/hostRegistration_Routes.js";
 import hostSignIn from "./routes/hostSignIn_Routes.js";
+import userRegRoute from "./routes/userRegistration_Routes.js"
 
 const app = express();
 app.use(
@@ -19,6 +20,7 @@ app.use(express.json());
 //use imported routes
 app.use("/host", hostRegRoute);
 app.use("/host", hostSignIn);
+app.use("/user", userRegRoute)
 
 //Test DB connection
 sequelize
