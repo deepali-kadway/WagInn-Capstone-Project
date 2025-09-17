@@ -5,9 +5,11 @@ import sequelize from "./config.js";
 import hostRegRoute from "./routes/hostRegistration_Routes.js";
 import hostSignIn from "./routes/hostSignIn_Routes.js";
 import userRegRoute from "./routes/userRegistration_Routes.js";
-import userSignIn from "./routes/userSignIn_Routes.js"
+import userSignIn from "./routes/userSignIn_Routes.js";
 import "./models/associations.js";
+import dotenv from "dotenv";
 
+dotenv.config();
 const app = express();
 
 // Configure multer for handling multipart/form-data
@@ -50,7 +52,7 @@ app.use("/host", (req, res, next) => {
 app.use("/host", hostRegRoute);
 app.use("/host", hostSignIn);
 app.use("/user", userRegRoute);
-app.use("/user", userSignIn)
+app.use("/user", userSignIn);
 
 //Test DB connection
 sequelize

@@ -24,12 +24,18 @@ const routes: Routes = [
   {
     path: 'hostDashboard',
     component: HostDashboard,
-    canActivate: [authGuard], // Protect this route
+    canActivate: [authGuard],
+    data: { role: 'host' }, // Protect this route
   },
   { path: 'hostSignIn', component: HostSignInPage },
   { path: 'userRegistration', component: UserRegistrationPersonalInfo },
   { path: 'userPetInfo', component: UserRegistrationPetInfo },
-  { path: 'userDashboard', component: UserDashboard },
+  {
+    path: 'userDashboard',
+    component: UserDashboard,
+    canActivate: [authGuard],
+    data: { role: 'user' },
+  }, //protected route
   { path: 'userSignIn', component: UserSignInPage },
 ];
 

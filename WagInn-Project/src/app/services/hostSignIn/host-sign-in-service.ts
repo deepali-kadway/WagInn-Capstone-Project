@@ -61,13 +61,17 @@ export class HostSignInService {
 
   private isTokenExpired(token: string): boolean {
     try {
-      const payload = JSON.parse(atob(token.split('.')[1]));
+      const payload = JSON.parse(atob(token.split('.')[1])); //atob converts the Base64 payload into a raw JSON string (if the input is valid).
       const currentTime = Math.floor(Date.now() / 1000);
       return payload.exp < currentTime;
     } catch (error) {
       return true; // If can't decode, consider expired
     }
   }
+
+  // called at service initialization.
+  // If there’s a valid token + user in storage → keep user logged in.
+  // Otherwise, clear old data.
 
   private checkInitialAuthState() {
     const token = this.getToken();

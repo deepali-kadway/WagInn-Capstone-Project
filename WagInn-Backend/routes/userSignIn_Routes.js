@@ -2,6 +2,13 @@ import express from "express";
 const router = express.Router();
 import bcrypt from "bcrypt";
 import User from "../models/userRegistration_Model.js";
+import jwt from "jsonwebtoken";
+// import { use } from "react";
+import dotenv from "dotenv";
+dotenv.config();
+
+// JWT Secret
+const JWT_SECRET = process.env.JWT_SECRET || "change-jwt-key-in-prod";
 
 router.post("/login", async (req, res) => {
   try {
@@ -57,9 +64,21 @@ router.post("/login", async (req, res) => {
       });
     }
 
+    //successfull login - jwt token generate
+    const tokenPayload = {
+      id: user.id,
+      email: user.email,
+      firstName: user.firstName,
+      lastname: user.lastName,
+      role: "user",
+    };
+
+    const token = jwt.sign(tokenPayload, JWT_SECRET, { expiresIn: "24h" });
+
     res.status(200).json({
       success: true,
       message: "Login successful",
+      token: token,
       user: {
         id: user.id,
         email: user.email,
