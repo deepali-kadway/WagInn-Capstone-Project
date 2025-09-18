@@ -1,6 +1,10 @@
 <div class="host-dashboard-container">
   <!-- Menu Toggle Button -->
-  <button class="menu-toggle-btn" (click)="toggleSidebar()">
+  <button
+    class="menu-toggle-btn"
+    *ngIf="!sidebarOpen"
+    (click)="toggleSidebar()"
+  >
     <i class="bi bi-list"></i>
   </button>
 
