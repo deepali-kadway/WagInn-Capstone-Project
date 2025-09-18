@@ -1,1 +1,211 @@
-<p>user-dashboard works!</p>
+<div class="dashboard-container">
+  <!-- Search Section -->
+  <div class="search-section">
+    <div class="search-card">
+      <div class="search-header">
+        <h2>Find Your Purrfect Stay</h2>
+        <!-- Menu Toggle Button -->
+        <button class="menu-toggle-btn" (click)="toggleSidebar()">
+          <i class="menu-icon">☰</i>
+        </button>
+      </div>
+      <form class="search-form">
+        <!-- Destination -->
+        <div class="form-row">
+          <div class="form-group destination-group">
+            <label for="destination">Where are you going?</label>
+            <input
+              type="text"
+              id="destination"
+              [(ngModel)]="searchParams.destination"
+              name="destination"
+              placeholder="Enter destination, city, or property name"
+              class="form-control destination-input"
+            />
+          </div>
+        </div>
+
+        <!-- Dates -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="checkIn">Check-in</label>
+            <input
+              type="date"
+              id="checkIn"
+              [(ngModel)]="searchParams.checkInDate"
+              name="checkInDate"
+              class="form-control"
+            />
+          </div>
+          <div class="form-group">
+            <label for="checkOut">Check-out</label>
+            <input
+              type="date"
+              id="checkOut"
+              [(ngModel)]="searchParams.checkOutDate"
+              name="checkOutDate"
+              class="form-control"
+            />
+          </div>
+        </div>
+
+        <!-- Guests and Counts -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="guests">Adults</label>
+            <select
+              id="guests"
+              [(ngModel)]="searchParams.adults"
+              name="adults"
+              class="form-control"
+            >
+              <option value="1">1 Adult</option>
+              <option value="2">2 Adults</option>
+              <option value="3">3 Adults</option>
+              <option value="4">4 Adults</option>
+              <option value="5">5+ Adults</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="children">Children (2-12)</label>
+            <select
+              id="children"
+              [(ngModel)]="searchParams.children"
+              name="children"
+              class="form-control"
+            >
+              <option value="0">0 Children</option>
+              <option value="1">1 Child</option>
+              <option value="2">2 Children</option>
+              <option value="3">3 Children</option>
+              <option value="4">4+ Children</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="infants">Infants (0-2)</label>
+            <select
+              id="infants"
+              [(ngModel)]="searchParams.infants"
+              name="infants"
+              class="form-control"
+            >
+              <option value="0">0 Infants</option>
+              <option value="1">1 Infant</option>
+              <option value="2">2 Infants</option>
+              <option value="3">3+ Infants</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="pets">Pets</label>
+            <select
+              id="pets"
+              [(ngModel)]="searchParams.pets"
+              name="pets"
+              class="form-control"
+            >
+              <option value="0">0 Pets</option>
+              <option value="1">1 Pet</option>
+              <option value="2">2 Pets</option>
+              <option value="3">3 Pets</option>
+              <option value="4">4+ Pets</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Search Button -->
+        <div class="form-row">
+          <button type="submit" class="search-btn" (click)="onSearch()">
+            Search Properties
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Main Content Area -->
+  <div class="main-content">
+    <!-- Content Area -->
+    <div class="content-area">
+      <div class="content-header">
+        <h1>Welcome Back!</h1>
+        <p>Find your next perfect stay with your furry friends</p>
+      </div>
+
+      <!-- Dynamic Content Based on Active Section -->
+      <div class="content-body">
+        <div *ngIf="activeSection === 'profile'" class="section-content">
+          <h2>Profile Management</h2>
+          <p>Manage your personal information and preferences</p>
+        </div>
+
+        <div *ngIf="activeSection === 'bookings'" class="section-content">
+          <h2>My Bookings</h2>
+          <p>View and manage your upcoming and past bookings</p>
+        </div>
+
+        <div *ngIf="activeSection === 'chats'" class="section-content">
+          <h2>Messages</h2>
+          <p>Chat with hosts and manage your conversations</p>
+        </div>
+
+        <div
+          *ngIf="!activeSection || activeSection === 'dashboard'"
+          class="section-content"
+        >
+          <h2>Search Results</h2>
+          <p>Your search results will appear here</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide-out Sidebar -->
+  <div
+    class="sidebar-overlay"
+    [class.active]="sidebarOpen"
+    (click)="closeSidebar()"
+  ></div>
+  <nav class="slide-sidebar" [class.open]="sidebarOpen">
+    <div class="sidebar-header">
+      <div class="user-info">
+        <div class="user-avatar">
+          <i class="user-icon">👤</i>
+        </div>
+        <div class="user-details">
+          <h3>{{ currentUser?.firstName || "John" }}</h3>
+          <p>{{ currentUser?.email || "user@example.com" }}</p>
+        </div>
+      </div>
+      <button class="close-btn" (click)="closeSidebar()">
+        <i class="close-icon">✕</i>
+      </button>
+    </div>
+
+    <ul class="sidebar-menu">
+      <li class="sidebar-item" [class.active]="activeSection === 'profile'">
+        <a href="#" (click)="setActiveSection('profile')" class="sidebar-link">
+          <i class="sidebar-icon">👤</i>
+          <span>Profile</span>
+        </a>
+      </li>
+      <li class="sidebar-item" [class.active]="activeSection === 'bookings'">
+        <a href="#" (click)="setActiveSection('bookings')" class="sidebar-link">
+          <i class="sidebar-icon">📅</i>
+          <span>My Bookings</span>
+        </a>
+      </li>
+      <li class="sidebar-item" [class.active]="activeSection === 'chats'">
+        <a href="#" (click)="setActiveSection('chats')" class="sidebar-link">
+          <i class="sidebar-icon">💬</i>
+          <span>Chats</span>
+        </a>
+      </li>
+      <li class="sidebar-item logout-item">
+        <a href="#" (click)="onLogout()" class="sidebar-link logout-link">
+          <i class="sidebar-icon">🚪</i>
+          <span>Logout</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+</div>
