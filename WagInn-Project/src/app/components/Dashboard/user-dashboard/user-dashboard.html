@@ -6,7 +6,7 @@
         <h2>Find Your Purrfect Stay</h2>
         <!-- Menu Toggle Button -->
         <button class="menu-toggle-btn" (click)="toggleSidebar()">
-          <i class="menu-icon">☰</i>
+          <i class="bi bi-list"></i>
         </button>
       </div>
       <form class="search-form">
@@ -169,7 +169,7 @@
     <div class="sidebar-header">
       <div class="user-info">
         <div class="user-avatar">
-          <i class="user-icon">👤</i>
+          <i class="bi-person-circle"></i>
         </div>
         <div class="user-details">
           <h3>{{ currentUser?.firstName || "John" }}</h3>
@@ -177,32 +177,32 @@
         </div>
       </div>
       <button class="close-btn" (click)="closeSidebar()">
-        <i class="close-icon">✕</i>
+        <i class="bi-x-lg"></i>
       </button>
     </div>
 
     <ul class="sidebar-menu">
       <li class="sidebar-item" [class.active]="activeSection === 'profile'">
         <a href="#" (click)="setActiveSection('profile')" class="sidebar-link">
-          <i class="sidebar-icon">👤</i>
+          <i class="bi bi-person-fill"></i>
           <span>Profile</span>
         </a>
       </li>
       <li class="sidebar-item" [class.active]="activeSection === 'bookings'">
         <a href="#" (click)="setActiveSection('bookings')" class="sidebar-link">
-          <i class="sidebar-icon">📅</i>
+          <i class="bi bi-calendar-check"></i>
           <span>My Bookings</span>
         </a>
       </li>
       <li class="sidebar-item" [class.active]="activeSection === 'chats'">
         <a href="#" (click)="setActiveSection('chats')" class="sidebar-link">
-          <i class="sidebar-icon">💬</i>
+          <i class="bi-chat-dots"></i>
           <span>Chats</span>
         </a>
       </li>
       <li class="sidebar-item logout-item">
         <a href="#" (click)="onLogout()" class="sidebar-link logout-link">
-          <i class="sidebar-icon">🚪</i>
+          <i class="bi-box-arrow-left"></i>
           <span>Logout</span>
         </a>
       </li>

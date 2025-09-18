@@ -163,7 +163,6 @@
   margin: 0 auto;
 }
 
-/* Remove old sidebar styles and add slide-out sidebar */
 .slide-sidebar {
   position: fixed;
   top: 0;
@@ -202,7 +201,7 @@
 
 /* Sidebar Header */
 .sidebar-header {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+   background: linear-gradient(to right, #11a08d 0%, #25b9a6 50%, #04a58f 100%);
   padding: 25px 20px;
   color: white;
   position: relative;
@@ -293,13 +292,13 @@
 
 .sidebar-link:hover {
   background: #f8f9fa;
-  color: #3498db;
+  color: #11a08d;
 }
 
 .sidebar-item.active .sidebar-link {
   background: #e3f2fd;
-  color: #1976d2;
-  border-left: 5px solid #1976d2;
+  color: #11a08d;
+  border-left: 5px solid #11a08d;
 }
 
 .sidebar-icon {
