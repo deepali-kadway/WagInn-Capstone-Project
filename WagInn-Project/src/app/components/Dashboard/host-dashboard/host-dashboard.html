@@ -1,1 +1,269 @@
-<p>host-dashboard works!</p>
+<div class="host-dashboard-container">
+  <!-- Menu Toggle Button -->
+  <button class="menu-toggle-btn" (click)="toggleSidebar()">
+    <i class="bi bi-list"></i>
+  </button>
+
+  <!-- Main Content Area -->
+  <div class="main-content">
+    <!-- Dashboard Overview Section -->
+    <div
+      *ngIf="!activeSection || activeSection === 'dashboard'"
+      class="dashboard-content"
+    >
+      <!-- Quick Stats Section -->
+      <section class="stats-section">
+        <h2 class="section-title">
+          <i class="bi bi-graph-up-arrow"></i>
+          Dashboard Overview
+        </h2>
+        <div class="stats-grid">
+          <div class="stat-card properties">
+            <div class="stat-icon">
+              <i class="bi bi-house-fill"></i>
+            </div>
+            <div class="stat-info">
+              <div class="stat-number">
+                {{ dashboardStats.totalProperties }}
+              </div>
+              <div class="stat-label">Total Properties</div>
+            </div>
+          </div>
+
+          <div class="stat-card bookings">
+            <div class="stat-icon">
+              <i class="bi bi-calendar-check-fill"></i>
+            </div>
+            <div class="stat-info">
+              <div class="stat-number">{{ dashboardStats.activeBookings }}</div>
+              <div class="stat-label">Active Bookings</div>
+            </div>
+          </div>
+
+          <div class="stat-card revenue">
+            <div class="stat-icon">
+              <i class="bi bi-currency-dollar"></i>
+            </div>
+            <div class="stat-info">
+              <div class="stat-number">
+                ${{ dashboardStats.lastMonthRevenue }}
+              </div>
+              <div class="stat-label">Last Month Revenue</div>
+            </div>
+          </div>
+
+          <div class="stat-card requests">
+            <div class="stat-icon">
+              <i class="bi bi-bell-fill"></i>
+            </div>
+            <div class="stat-info">
+              <div class="stat-number">
+                {{ dashboardStats.pendingRequests }}
+              </div>
+              <div class="stat-label">Pending Requests</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Booking Management Section -->
+      <section class="booking-management">
+        <h2 class="section-title">
+          <i class="bi bi-calendar-event-fill"></i>
+          Recent Bookings
+        </h2>
+        <div class="bookings-container">
+          <div class="bookings-header">
+            <div class="booking-filters">
+              <button class="filter-btn active">All Bookings</button>
+              <button class="filter-btn">Pending</button>
+              <button class="filter-btn">Confirmed</button>
+              <button class="filter-btn">Completed</button>
+            </div>
+          </div>
+
+          <div class="bookings-table">
+            <div class="booking-row header-row">
+              <div class="booking-cell">Booking ID</div>
+              <div class="booking-cell">Guest & Pet</div>
+              <div class="booking-cell">Property</div>
+              <div class="booking-cell">Dates</div>
+              <div class="booking-cell">Status</div>
+              <div class="booking-cell">Revenue</div>
+              <div class="booking-cell">Actions</div>
+            </div>
+
+            <div class="booking-row" *ngFor="let booking of recentBookings">
+              <div class="booking-cell">
+                <span class="booking-id">{{ booking.id }}</span>
+              </div>
+
+              <div class="booking-cell">
+                <div class="guest-info">
+                  <div class="guest-name">{{ booking.guestName }}</div>
+                  <div class="pet-info">
+                    <i class="bi bi-heart-fill"></i>
+                    {{ booking.petInfo }}
+                  </div>
+                </div>
+              </div>
+
+              <div class="booking-cell">
+                <div class="property-name">{{ booking.property }}</div>
+              </div>
+
+              <div class="booking-cell">
+                <div class="date-range">
+                  <div class="check-in">
+                    <i class="bi bi-calendar-plus"></i>
+                    {{ booking.checkIn }}
+                  </div>
+                  <div class="check-out">
+                    <i class="bi bi-calendar-minus"></i>
+                    {{ booking.checkOut }}
+                  </div>
+                  <div class="nights">{{ booking.nights }} nights</div>
+                </div>
+              </div>
+
+              <div class="booking-cell">
+                <span class="status-badge" [ngClass]="booking.status">
+                  {{ booking.status | titlecase }}
+                </span>
+              </div>
+
+              <div class="booking-cell">
+                <div class="revenue-amount">${{ booking.revenue }}</div>
+              </div>
+
+              <div class="booking-cell">
+                <div class="action-buttons">
+                  <button
+                    class="action-btn view"
+                    (click)="viewBookingDetails(booking.id)"
+                  >
+                    <i class="bi bi-eye-fill"></i>
+                  </button>
+                  <button
+                    class="action-btn message"
+                    (click)="messageGuest(booking.id)"
+                  >
+                    <i class="bi bi-chat-fill"></i>
+                  </button>
+                  <button
+                    class="action-btn edit"
+                    (click)="updateBookingStatus(booking.id, 'confirmed')"
+                  >
+                    <i class="bi bi-pencil-fill"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Profile Section -->
+    <div *ngIf="activeSection === 'profile'" class="section-content">
+      <h2>Host Profile</h2>
+      <p>Manage your host profile and property information</p>
+    </div>
+
+    <!-- Properties Section -->
+    <div *ngIf="activeSection === 'properties'" class="section-content">
+      <h2>My Properties</h2>
+      <p>View and manage all your listed properties</p>
+    </div>
+
+    <!-- Analytics Section -->
+    <div *ngIf="activeSection === 'analytics'" class="section-content">
+      <h2>Analytics & Reports</h2>
+      <p>View detailed analytics and performance reports</p>
+    </div>
+
+    <!-- Messages Section -->
+    <div *ngIf="activeSection === 'messages'" class="section-content">
+      <h2>Messages</h2>
+      <p>Communicate with your guests</p>
+    </div>
+  </div>
+
+  <!-- Slide-out Sidebar -->
+  <div
+    class="sidebar-overlay"
+    [class.active]="sidebarOpen"
+    (click)="closeSidebar()"
+  ></div>
+  <nav class="slide-sidebar" [class.open]="sidebarOpen">
+    <div class="sidebar-header">
+      <div class="host-info">
+        <div class="host-avatar">
+          <i class="bi bi-person-fill"></i>
+        </div>
+        <div class="host-details">
+          <h3>{{ currentHost?.firstName || "Host" }}</h3>
+          <p>{{ currentHost?.email || "host@example.com" }}</p>
+          <span class="host-badge">
+            <i class="bi bi-house-heart-fill"></i>
+            Host
+          </span>
+        </div>
+      </div>
+      <button class="close-btn" (click)="closeSidebar()">
+        <i class="bi bi-x-lg"></i>
+      </button>
+    </div>
+
+    <ul class="sidebar-menu">
+      <li class="sidebar-item" [class.active]="activeSection === 'dashboard'">
+        <a
+          href="#"
+          (click)="setActiveSection('dashboard')"
+          class="sidebar-link"
+        >
+          <i class="bi bi-speedometer2"></i>
+          <span>Dashboard</span>
+        </a>
+      </li>
+      <li class="sidebar-item" [class.active]="activeSection === 'properties'">
+        <a
+          href="#"
+          (click)="setActiveSection('properties')"
+          class="sidebar-link"
+        >
+          <i class="bi bi-house-door-fill"></i>
+          <span>My Properties</span>
+        </a>
+      </li>
+      <li class="sidebar-item" [class.active]="activeSection === 'analytics'">
+        <a
+          href="#"
+          (click)="setActiveSection('analytics')"
+          class="sidebar-link"
+        >
+          <i class="bi bi-graph-up"></i>
+          <span>Analytics</span>
+        </a>
+      </li>
+      <li class="sidebar-item" [class.active]="activeSection === 'messages'">
+        <a href="#" (click)="setActiveSection('messages')" class="sidebar-link">
+          <i class="bi bi-chat-dots-fill"></i>
+          <span>Messages</span>
+        </a>
+      </li>
+      <li class="sidebar-item" [class.active]="activeSection === 'profile'">
+        <a href="#" (click)="setActiveSection('profile')" class="sidebar-link">
+          <i class="bi bi-person-circle"></i>
+          <span>Profile</span>
+        </a>
+      </li>
+      <li class="sidebar-item logout-item">
+        <a href="#" (click)="onLogout()" class="sidebar-link logout-link">
+          <i class="bi bi-box-arrow-right"></i>
+          <span>Logout</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+</div>
