@@ -150,10 +150,251 @@
 
         <div
           *ngIf="!activeSection || activeSection === 'dashboard'"
-          class="section-content"
+          class="dashboard-content"
         >
-          <h2>Search Results</h2>
-          <p>Your search results will appear here</p>
+          <!-- 1. Popular Destinations -->
+          <section class="trending-destinations">
+            <h2 class="section-title">
+              <i class="bi bi-geo-alt-fill"></i>
+              Trending Pet-Friendly Destinations
+            </h2>
+            <div class="destinations-grid">
+              <div class="destination-card">
+                <div class="destination-image">
+                  <i class="bi bi-building destination-icon"></i>
+                </div>
+                <div class="destination-info">
+                  <h3>Banff</h3>
+                  <p>
+                    <i class="bi bi-house-heart-fill"></i> 20+ Pet-Friendly
+                    Stays
+                  </p>
+                  <div class="pet-amenities">
+                    <span class="amenity"
+                      ><i class="bi bi-tree-fill"></i> Hiking Trails</span
+                    >
+                    <span class="amenity"
+                      ><i class="bi bi-shop"></i> Pet Stores</span
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <div class="destination-card">
+                <div class="destination-image">
+                  <i class="bi bi-building destination-icon"></i>
+                </div>
+                <div class="destination-info">
+                  <h3>Calgary</h3>
+                  <p>
+                    <i class="bi bi-house-heart-fill"></i> 38+ Pet-Friendly
+                    Stays
+                  </p>
+                  <div class="pet-amenities">
+                    <span class="amenity"
+                      ><i class="bi bi-music-note"></i> Indoor Play</span
+                    >
+                    <span class="amenity"
+                      ><i class="bi bi-cup-hot-fill"></i> Pet Cafes</span
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <div class="destination-card">
+                <div class="destination-image">
+                  <i class="bi bi-building destination-icon"></i>
+                </div>
+                <div class="destination-info">
+                  <h3>Jasper</h3>
+                  <p>
+                    <i class="bi bi-house-heart-fill"></i> 15+ Pet-Friendly
+                    Stays
+                  </p>
+                  <div class="pet-amenities">
+                    <span class="amenity"
+                      ><i class="bi bi-tree-fill"></i> Hiking Trails</span
+                    >
+                    <span class="amenity"
+                      ><i class="bi bi-music-note"></i> Indoor Play</span
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <div class="destination-card">
+                <div class="destination-image">
+                  <i class="bi bi-building destination-icon"></i>
+                </div>
+                <div class="destination-info">
+                  <h3>Vancouver</h3>
+                  <p>
+                    <i class="bi bi-house-heart-fill"></i> 26+ Pet-Friendly
+                    Stays
+                  </p>
+                  <div class="pet-amenities">
+                    <span class="amenity"
+                      ><i class="bi bi-water"></i> Pet Beaches</span
+                    >
+                    <span class="amenity"
+                      ><i class="bi bi-shop"></i> Pet Stores</span
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- 3. Pet-Friendly Features -->
+          <section class="pet-features">
+            <h2 class="section-title">
+              <i class="bi bi-heart-fill"></i>
+              What Makes a Stay Perfect for Your Pet?
+            </h2>
+            <div class="features-grid">
+              <div class="feature-card">
+                <div class="feature-icon">
+                  <i class="bi bi-house-door"></i>
+                </div>
+                <h3>Fenced Yards</h3>
+                <p>
+                  Secure outdoor spaces where your pet can play freely and
+                  safely
+                </p>
+              </div>
+
+              <div class="feature-card">
+                <div class="feature-icon">
+                  <i class="bi bi-gift"></i>
+                </div>
+                <h3>Pet Toys Provided</h3>
+                <p>
+                  Complimentary toys and accessories to keep your furry friend
+                  entertained
+                </p>
+              </div>
+
+              <div class="feature-card">
+                <div class="feature-icon">
+                  <i class="bi bi-plus-circle-fill"></i>
+                </div>
+                <h3>Pet Grooming Centers</h3>
+                <p>
+                  Gentle pet grooming close to home for a happy, healthy shine.
+                </p>
+              </div>
+
+              <div class="feature-card">
+                <div class="feature-icon">
+                  <i class="bi bi-tree-fill"></i>
+                </div>
+                <h3>Dog Parks Nearby</h3>
+                <p>
+                  Off-leash areas and pet socialization spots just minutes away
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <!-- 4. Testimonials -->
+          <section class="testimonials">
+            <h2 class="section-title">
+              <i class="bi bi-chat-heart-fill"></i>
+              What Pet Parents Are Saying
+            </h2>
+            <div class="testimonials-grid">
+              <div class="testimonial-card">
+                <div class="testimonial-header">
+                  <div class="reviewer-info">
+                    <div class="reviewer-avatar">
+                      <i class="bi bi-person-fill"></i>
+                    </div>
+                    <div class="reviewer-details">
+                      <h4>Sarah M.</h4>
+                      <p>Golden Retriever Parent</p>
+                    </div>
+                  </div>
+                  <div class="pet-badge">
+                    <i class="bi bi-heart-fill"></i>
+                  </div>
+                </div>
+                <div class="testimonial-content">
+                  <p>
+                    "Max loved the fenced yard! The hosts were incredibly
+                    welcoming and even left treats for him. Will definitely book
+                    again!"
+                  </p>
+                  <div class="rating">
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                  </div>
+                </div>
+              </div>
+
+              <div class="testimonial-card">
+                <div class="testimonial-header">
+                  <div class="reviewer-info">
+                    <div class="reviewer-avatar">
+                      <i class="bi bi-person-fill"></i>
+                    </div>
+                    <div class="reviewer-details">
+                      <h4>Mike & Luna</h4>
+                      <p>Cat & Dog Family</p>
+                    </div>
+                  </div>
+                  <div class="pet-badge">
+                    <i class="bi bi-heart-fill"></i>
+                  </div>
+                </div>
+                <div class="testimonial-content">
+                  <p>
+                    "Perfect for our multi-pet family! Luna and Whiskers both
+                    felt at home. The pet amenities were outstanding."
+                  </p>
+                  <div class="rating">
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                  </div>
+                </div>
+              </div>
+
+              <div class="testimonial-card">
+                <div class="testimonial-header">
+                  <div class="reviewer-info">
+                    <div class="reviewer-avatar">
+                      <i class="bi bi-person-fill"></i>
+                    </div>
+                    <div class="reviewer-details">
+                      <h4>Emma K.</h4>
+                      <p>Rescue Dog Mom</p>
+                    </div>
+                  </div>
+                  <div class="pet-badge">
+                    <i class="bi bi-heart-fill"></i>
+                  </div>
+                </div>
+                <div class="testimonial-content">
+                  <p>
+                    "Buddy was nervous about traveling, but the pet-friendly
+                    touches made all the difference. Highly recommend!"
+                  </p>
+                  <div class="rating">
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
         </div>
       </div>
     </div>
