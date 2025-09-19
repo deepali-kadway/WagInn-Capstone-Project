@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-user-dashboard',
@@ -6,7 +6,7 @@ import { Component } from '@angular/core';
   templateUrl: './user-dashboard.html',
   styleUrl: './user-dashboard.css',
 })
-export class UserDashboard {
+export class UserDashboard implements OnInit {
   // Search parameters
   searchParams = {
     destination: '',
@@ -23,10 +23,21 @@ export class UserDashboard {
   sidebarOpen: boolean = false;
 
   // User information (will be populated from auth service later)
-  currentUser: any = {
-    firstName: 'John',
-    email: 'user@example.com',
-  };
+  currentUser: any = null;
+  ngOnInit(): void {
+    const userData = localStorage.getItem('USER_INFO');
+    if (userData) {
+      this.currentUser = JSON.parse(userData);
+    }
+  }
+
+  // Get comma-separated pet names
+  getPetNames(): string {
+    if (!this.currentUser?.pets || this.currentUser.pets.length === 0) {
+      return 'No pets registered';
+    }
+    return this.currentUser.pets.map((pet: any) => pet.petName).join(', ');
+  }
 
   // Methods for UI interactions
   onSearch(): void {

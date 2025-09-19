@@ -415,6 +415,7 @@
         <div class="user-details">
           <h3>{{ currentUser?.firstName || "John" }}</h3>
           <p>{{ currentUser?.email || "user@example.com" }}</p>
+          <p><b>Pets: </b>{{ getPetNames() }}</p>
         </div>
       </div>
       <button class="close-btn" (click)="closeSidebar()">
@@ -429,15 +430,21 @@
           <span>Profile</span>
         </a>
       </li>
+      <li class="sidebar-item" [class.active]="activeSection === 'pets'">
+        <a href="#" (click)="setActiveSection('pets')" class="sidebar-link">
+          <i class="bi bi-heart-fill"></i>
+          <span>My Pets</span>
+        </a>
+      </li>
       <li class="sidebar-item" [class.active]="activeSection === 'bookings'">
         <a href="#" (click)="setActiveSection('bookings')" class="sidebar-link">
-          <i class="bi bi-calendar-check"></i>
+          <i class="bi bi-calendar-check-fill"></i>
           <span>My Bookings</span>
         </a>
       </li>
       <li class="sidebar-item" [class.active]="activeSection === 'chats'">
         <a href="#" (click)="setActiveSection('chats')" class="sidebar-link">
-          <i class="bi-chat-dots"></i>
+          <i class="bi-chat-dots-fill"></i>
           <span>Chats</span>
         </a>
       </li>
