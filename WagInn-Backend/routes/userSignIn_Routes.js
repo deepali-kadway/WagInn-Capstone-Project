@@ -5,6 +5,7 @@ import User from "../models/userRegistration_Model.js";
 import jwt from "jsonwebtoken";
 // import { use } from "react";
 import dotenv from "dotenv";
+import Pet from "../models/petProfile_Model.js";
 dotenv.config();
 
 // JWT Secret
@@ -31,6 +32,21 @@ router.post("/login", async (req, res) => {
         email: userName,
         // password: password,
       },
+      include: [
+        {
+          model: Pet,
+          as: "pets",
+          attributes: [
+            "petName",
+            "petType",
+            "breed",
+            "size",
+            "isVaccinated",
+            "vaccinations",
+            "concerns",
+          ],
+        },
+      ],
     });
 
     //Check if user exists
@@ -84,6 +100,7 @@ router.post("/login", async (req, res) => {
         email: user.email,
         firstName: user.firstName,
         lastName: user.lastName,
+        pets: user.pets,
       },
     });
   } catch (error) {
