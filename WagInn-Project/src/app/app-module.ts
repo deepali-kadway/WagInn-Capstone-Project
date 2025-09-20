@@ -20,6 +20,7 @@ import { UserRegistrationPersonalInfo } from './components/userRegistration/user
 import { UserRegistrationPetInfo } from './components/userRegistration/user-registration-pet-info/user-registration-pet-info';
 import { UserDashboard } from './components/Dashboard/user-dashboard/user-dashboard';
 import { UserSignInPage } from './components/userSignIn/user-sign-in-page/user-sign-in-page';
+import { OpenPropertyDetails } from './components/Dashboard/open-property-details/open-property-details';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { UserSignInPage } from './components/userSignIn/user-sign-in-page/user-s
     UserRegistrationPetInfo,
     UserDashboard,
     UserSignInPage,
+    OpenPropertyDetails,
   ],
   imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule, FormsModule],
   providers: [

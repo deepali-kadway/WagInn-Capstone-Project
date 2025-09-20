@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserFetchProperties } from '../../../services/userDashboard/user-fetch-properties';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-dashboard',
@@ -26,7 +27,7 @@ export class UserDashboard implements OnInit {
   activeSection: string = 'dashboard';
   sidebarOpen: boolean = false;
 
-  constructor(private service: UserFetchProperties) {}
+  constructor(private service: UserFetchProperties, private router: Router) {}
 
   // User information (will be populated from auth service later)
   currentUser: any = null;
@@ -131,9 +132,7 @@ export class UserDashboard implements OnInit {
 
   // Property action methods
   viewProperty(propertyId: string): void {
-    console.log('View property:', propertyId);
-    // TODO: Navigate to property details page or show property details modal
-    // For now, just log the action
+    this.router.navigate(['propertyDetailsDashboard']);
   }
 
   contactHost(propertyId: string): void {
