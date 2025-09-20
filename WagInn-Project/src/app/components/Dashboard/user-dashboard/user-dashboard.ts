@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { UserFetchProperties } from '../../../services/userDashboard/user-fetch-properties';
 
 @Component({
   selector: 'app-user-dashboard',
@@ -17,10 +18,15 @@ export class UserDashboard implements OnInit {
     infants: 0,
     pets: 0,
   };
+  searchResults: any[] = [];
+  isSearching: boolean = false;
+  searchError: string = '';
 
   // Navigation state
   activeSection: string = 'dashboard';
   sidebarOpen: boolean = false;
+
+  constructor(private service: UserFetchProperties) {}
 
   // User information (will be populated from auth service later)
   currentUser: any = null;
@@ -39,10 +45,53 @@ export class UserDashboard implements OnInit {
     return this.currentUser.pets.map((pet: any) => pet.petName).join(', ');
   }
 
-  // Methods for UI interactions
-  onSearch(): void {
-    console.log('Search params:', this.searchParams);
-    // Search logic will be implemented later
+  // Called when user clicks on Search button
+  onSearch(event: any): void {
+    event?.preventDefault();
+
+    // validation checks
+    if (!this.searchParams.destination.trim()) {
+      this.searchError = 'Please enter a destination';
+      return;
+    }
+
+    const totalGuests =
+      this.searchParams.adults +
+      this.searchParams.children +
+      this.searchParams.infants;
+    if (totalGuests === 0) {
+      this.searchError = 'At least one guest is required';
+      return;
+    }
+
+    // Clear previous errors and set loading state
+    this.searchError = '';
+    this.isSearching = true;
+    this.searchResults = [];
+
+    //call service
+    this.service.searchProperties(this.searchParams).subscribe({
+      next: (response: any) => {
+        console.log('API Response:', response);
+        this.searchResults = response.properties || response.data || response;
+        this.isSearching = false;
+
+        if (this.searchResults.length > 0) {
+          // Navigate to search results section
+          this.setActiveSection('search-results');
+          console.log('Found properties:', this.searchResults);
+        } else {
+          this.searchError =
+            'No properties found matching your criteria. Try adjusting your search.';
+        }
+      },
+      error: (error: any) => {
+        console.error('Search failed:', error);
+        this.isSearching = false;
+        this.searchError =
+          error.error?.message || 'Search failed. Please try again later.';
+      },
+    });
   }
 
   setActiveSection(section: string): void {

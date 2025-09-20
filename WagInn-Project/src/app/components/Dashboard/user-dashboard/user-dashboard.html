@@ -19,7 +19,7 @@
               id="destination"
               [(ngModel)]="searchParams.destination"
               name="destination"
-              placeholder="Enter destination, city, or property name"
+              placeholder="Enter destination city"
               class="form-control destination-input"
             />
           </div>
@@ -114,7 +114,7 @@
 
         <!-- Search Button -->
         <div class="form-row">
-          <button type="submit" class="search-btn" (click)="onSearch()">
+          <button type="submit" class="search-btn" (click)="onSearch($event)">
             Search Properties
           </button>
         </div>
