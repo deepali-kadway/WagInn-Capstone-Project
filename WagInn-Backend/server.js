@@ -28,6 +28,9 @@ app.use(
 app.use(express.json({ limit: "10mb" })); // Increased limit for safety
 app.use(express.urlencoded({ extended: true }));
 
+// Serve static files from uploads directory
+app.use("/uploads", express.static("uploads"));
+
 // Route-specific middleware
 // User routes: Handle JSON data
 app.use("/user", (req, res, next) => {
@@ -82,7 +85,7 @@ sequelize
 console.log("Available models:", Object.keys(sequelize.models));
 console.log("Connected to database:", sequelize.config.database);
 
-//Listen on Port 3004
-app.listen(3004, () => {
-  console.log("Server is running on port 3004");
+//Listen on Port 8080
+app.listen(8080, () => {
+  console.log("Server is running on port 8080");
 });

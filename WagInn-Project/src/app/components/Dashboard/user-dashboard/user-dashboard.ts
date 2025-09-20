@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UserFetchProperties } from '../../../services/userDashboard/userFetch_Property/user-fetch-properties';
+import { UserFetchProperties } from '../../../services/userDashboard/user-fetch-properties';
 import { Router } from '@angular/router';
 
 @Component({
@@ -130,9 +130,18 @@ export class UserDashboard implements OnInit {
     // Logout logic will be implemented later
   }
 
-  // Property action methods
+  // Display details of select property, send search parameters along with property id
   viewProperty(propertyId: string): void {
-    this.router.navigate(['propertyDetailsDashboard']);
+    this.router.navigate(['propertyDetailsDashboard', propertyId], {
+      queryParams: {
+        checkIn: this.searchParams.checkInDate,
+        checkOut: this.searchParams.checkOutDate,
+        adults: this.searchParams.adults,
+        children: this.searchParams.children,
+        infants: this.searchParams.infants,
+        pets: this.searchParams.pets,
+      },
+    });
   }
 
   contactHost(propertyId: string): void {
