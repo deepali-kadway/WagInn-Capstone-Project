@@ -13,7 +13,7 @@ import { UserRegistrationPersonalInfo } from './components/userRegistration/user
 import { UserRegistrationPetInfo } from './components/userRegistration/user-registration-pet-info/user-registration-pet-info';
 import { UserDashboard } from './components/Dashboard/user-dashboard/user-dashboard';
 import { UserSignInPage } from './components/userSignIn/user-sign-in-page/user-sign-in-page';
-import { UserFetchProperties } from './services/userDashboard/user-fetch-properties';
+import { UserFetchProperties } from './services/userDashboard/userFetch_Property/user-fetch-properties';
 import { OpenPropertyDetails } from './components/Dashboard/open-property-details/open-property-details';
 
 const routes: Routes = [

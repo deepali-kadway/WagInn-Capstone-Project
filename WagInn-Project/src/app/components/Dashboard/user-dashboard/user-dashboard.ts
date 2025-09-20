@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UserFetchProperties } from '../../../services/userDashboard/user-fetch-properties';
+import { UserFetchProperties } from '../../../services/userDashboard/userFetch_Property/user-fetch-properties';
 import { Router } from '@angular/router';
 
 @Component({
