@@ -133,7 +133,7 @@
 
       <!-- Dynamic Content Based on Active Section -->
       <div class="content-body">
-        <div *ngIf="activeSection === 'profile'" class="section-content">
+        <!-- <div *ngIf="activeSection === 'profile'" class="section-content">
           <h2>Profile Management</h2>
           <p>Manage your personal information and preferences</p>
         </div>
@@ -146,6 +146,150 @@
         <div *ngIf="activeSection === 'chats'" class="section-content">
           <h2>Messages</h2>
           <p>Chat with hosts and manage your conversations</p>
+        </div> -->
+
+        <!-- Search Results Section -->
+        <div *ngIf="activeSection === 'search-results'" class="section-content">
+          <div class="search-results-header">
+            <h2>
+              <i class="bi bi-house-heart-fill"></i>
+              Search Results
+            </h2>
+            <button class="back-btn" (click)="setActiveSection('dashboard')">
+              <i class="bi bi-arrow-left"></i> Back to Dashboard
+            </button>
+          </div>
+
+          <!-- Loading State -->
+          <div *ngIf="isSearching" class="loading-container">
+            <div class="spinner"></div>
+            <p>Searching for pet-friendly properties...</p>
+          </div>
+
+          <!-- Error Message -->
+          <div *ngIf="searchError && !isSearching" class="error-message">
+            <i class="bi bi-exclamation-triangle"></i>
+            {{ searchError }}
+          </div>
+
+          <!-- Search Results -->
+          <div
+            *ngIf="!isSearching && searchResults.length > 0"
+            class="properties-container"
+          >
+            <p class="results-count">
+              Found {{ searchResults.length }} pet-friendly properties
+            </p>
+
+            <div class="properties-grid">
+              <div *ngFor="let property of searchResults" class="property-card">
+                <!-- Property Header -->
+                <div class="property-header">
+                  <h3>{{ property.propertyTitle }}</h3>
+                  <span class="property-type">{{
+                    property.propertyType | titlecase
+                  }}</span>
+                </div>
+
+                <!-- Property Location -->
+                <div class="property-location">
+                  <i class="bi bi-geo-alt-fill"></i>
+                  {{ property.city }}, {{ property.province }},
+                  {{ property.zipCode }},
+                  {{ property.country }}
+                </div>
+
+                <!-- Property Details -->
+                <div class="property-details">
+                  <div class="detail-item">
+                    <i class="bi bi-people-fill"></i>
+                    Up to {{ property.guests }} guests
+                  </div>
+                  <div class="detail-item">
+                    <i class="bi bi-house-door-fill"></i>
+                    <!-- property.bedrooms !== 1 ? "s" : "" -> ternary operator. If property.bedrooms !== 1 → true → append "s", else ""-->
+                    {{ property.bedrooms }} bed{{
+                      property.bedrooms !== 1 ? "s" : ""
+                    }}, {{ property.bathrooms }} bath{{
+                      property.bathrooms !== 1 ? "s" : ""
+                    }}
+                  </div>
+                  <div class="detail-item">
+                    <i class="bi bi-heart-fill"></i>
+                    Up to {{ property.pets }} pets allowed
+                  </div>
+                </div>
+
+                <!-- Amenities -->
+                <div class="amenities" *ngIf="property.ammenities">
+                  <h4><i class="bi bi-check-circle"></i> Amenities:</h4>
+                  <p>{{ property.ammenities }}</p>
+                </div>
+
+                <!-- Pet Amenities -->
+                <div class="pet-amenities" *ngIf="property.ammenitiesPets">
+                  <h4><i class="bi bi-check-circle"></i> Pet Amenities:</h4>
+                  <p>{{ property.ammenitiesPets }}</p>
+                </div>
+
+                <!-- Allowed Pets -->
+                <div class="allowed-pets" *ngIf="property.allowedPetsType">
+                  <h4><i class="bi bi-check-circle"></i> Allowed Pets:</h4>
+                  <p>{{ property.allowedPetsType }}</p>
+                </div>
+
+                <!-- Price -->
+                <div class="property-price">
+                  <span class="base-price">${{ property.totalGuestPrice }}</span> per
+                  night
+                  <br />
+                </div>
+
+                <!-- Host Info -->
+                <div class="host-info">
+                  <i class="bi bi-person-circle"></i>
+                  Hosted by {{ property.firstName }} {{ property.lastName }}
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="property-actions">
+                  <button
+                    class="btn btn-primary"
+                    (click)="viewProperty(property.id)"
+                  >
+                    <i class="bi bi-eye"></i> View Details
+                  </button>
+                  <button
+                    class="btn btn-secondary"
+                    (click)="contactHost(property.id)"
+                  >
+                    <i class="bi bi-chat"></i> Contact Host
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- No Results -->
+          <div
+            *ngIf="!isSearching && searchResults.length === 0 && !searchError"
+            class="no-results"
+          >
+            <i class="bi bi-house-x-fill"></i>
+            <h3>No properties found</h3>
+            <p>Try adjusting your search criteria:</p>
+            <ul>
+              <li>Search a different city or area</li>
+              <li>Reduce the number of guests</li>
+              <li>Reduce the number of pets</li>
+            </ul>
+            <button
+              class="btn btn-primary"
+              (click)="setActiveSection('dashboard')"
+            >
+              <i class="bi bi-search"></i> Try Another Search
+            </button>
+          </div>
         </div>
 
         <div

@@ -334,7 +334,7 @@
   /* background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); */
   background: linear-gradient(to right, #11a08d 0%, #25b9a6 50%, #04a58f 100%);
   color: white;
-  padding: 30px;
+  padding: 10px;
   text-align: center;
 }
 
@@ -835,5 +835,305 @@
   .sidebar-link {
     padding: 18px 20px;
     font-size: 15px;
+  }
+}
+
+/* Search Results Styles */
+.search-results-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding: 10px;
+  background-color: #eff3f3;
+  color: white;
+  border-radius: 12px;
+}
+
+.search-results-header h2 {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.back-btn {
+  background: rgba(41, 38, 38, 0.2);
+  color: rgb(58, 57, 57);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+}
+
+.back-btn:hover {
+  background: rgba(146, 145, 145, 0.3);
+  transform: translateY(-2px);
+}
+
+.loading-container {
+  text-align: center;
+  padding: 60px 20px;
+  color: #6c757d;
+}
+
+.error-message {
+  background: #f8d7da;
+  color: #721c24;
+  padding: 15px 20px;
+  border-radius: 8px;
+  border: 1px solid #f5c6cb;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.results-count {
+  font-size: 18px;
+  color: #495057;
+  margin-bottom: 25px;
+  font-weight: 500;
+}
+
+.properties-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 25px;
+  margin-top: 20px;
+}
+
+.property-card {
+  background: white;
+  border-radius: 16px;
+  padding: 25px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e9ecef;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.property-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+}
+
+.property-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 15px;
+}
+
+.property-header h3 {
+  margin: 0;
+  color: #2c3e50;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.property-type {
+  background-color: #11a08d;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.property-location {
+  color: #6c757d;
+  margin-bottom: 20px;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.property-details {
+  margin-bottom: 20px;
+}
+
+.detail-item {
+  margin: 12px 0;
+  color: #495057;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 15px;
+}
+
+.detail-item i {
+  color: #11776a;
+  width: 20px;
+}
+
+.amenities,
+.property-card .pet-amenities,
+.allowed-pets {
+  margin: 15px 0;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border-left: 4px solid #04a58f;
+}
+
+.amenities h4,
+.property-card .pet-amenities h4,
+.allowed-pets h4 {
+  margin: 0 0 8px 0;
+  color: #2c3e50;
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.amenities p,
+.property-card .pet-amenities p,
+.allowed-pets p {
+  margin: 0;
+  color: #6c757d;
+  font-size: 14px;
+  line-height: 1.4;
+  margin-left: 28px; /* Indent text to align with heading */
+  text-align: left;
+}
+
+/* Override conflicting pet-amenities rule for search results. unset !important to remove the inherited flexbox propertie */
+.property-card .pet-amenities {
+  display: block !important;
+  gap: unset !important;
+  justify-content: unset !important;
+  flex-wrap: unset !important;
+  margin: 15px 0;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border-left: 4px solid #04a58f;
+}
+
+.property-price {
+  font-size: 22px;
+  font-weight: bold;
+  color: #fbfffd;
+  margin: 20px 0;
+  padding: 8px;
+  background-color: #434444;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.property-price small {
+  color: #6c757d;
+  font-weight: normal;
+  font-size: 14px;
+}
+
+.host-info {
+  color: #6c757d;
+  margin: 15px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  padding: 10px;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.property-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.btn {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-primary {
+  background-color: #11a08d;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #097c6d;
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  background-color: #95a5a6;
+  color: white;
+}
+
+.btn-secondary:hover {
+  background-color: #34495e;
+  transform: translateY(-2px);
+}
+
+.no-results {
+  text-align: center;
+  padding: 60px 20px;
+  color: #6c757d;
+}
+
+.no-results i {
+  font-size: 64px;
+  color: #dee2e6;
+  margin-bottom: 20px;
+}
+
+.no-results h3 {
+  color: #495057;
+  margin-bottom: 15px;
+}
+
+.no-results ul {
+  text-align: left;
+  max-width: 300px;
+  margin: 20px auto;
+}
+
+.no-results .btn {
+  margin-top: 20px;
+  max-width: 200px;
+}
+
+/* Responsive Design for Search Results */
+@media (max-width: 768px) {
+  .properties-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .search-results-header {
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+  }
+
+  .property-actions {
+    flex-direction: column;
   }
 }

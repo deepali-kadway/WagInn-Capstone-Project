@@ -47,14 +47,12 @@ router.get("/properties", async (req, res) => {
     const hostProperties = await Host.findAll({
       where: whereClause,
       attributes: [
-        "id",
         "firstName",
         "lastName",
-        "email",
         "city",
         "province",
         "country",
-        "streetAddress",
+        "zipCode",
         "propertyTitle",
         "propertyType",
         "ammenities",
@@ -68,7 +66,6 @@ router.get("/properties", async (req, res) => {
         "petSizeRestrictions",
         "houseRules",
         "requiredVaccinations",
-        "basePrice",
         "totalGuestPrice",
         "propertyPhotos",
       ],

@@ -55,10 +55,12 @@ export class UserDashboard implements OnInit {
       return;
     }
 
+    // Convert to numbers to ensure proper addition (HTML forms return strings)
     const totalGuests =
-      this.searchParams.adults +
-      this.searchParams.children +
-      this.searchParams.infants;
+      +this.searchParams.adults +
+      +this.searchParams.children +
+      +this.searchParams.infants;
+
     if (totalGuests === 0) {
       this.searchError = 'At least one guest is required';
       return;
@@ -69,8 +71,19 @@ export class UserDashboard implements OnInit {
     this.isSearching = true;
     this.searchResults = [];
 
+    // Create search object with properly converted numeric values
+    const searchData = {
+      destination: this.searchParams.destination,
+      adults: +this.searchParams.adults,
+      children: +this.searchParams.children,
+      infants: +this.searchParams.infants,
+      pets: +this.searchParams.pets,
+    };
+
+    console.log('Search data being sent:', searchData);
+
     //call service
-    this.service.searchProperties(this.searchParams).subscribe({
+    this.service.searchProperties(searchData).subscribe({
       next: (response: any) => {
         console.log('API Response:', response);
         this.searchResults = response.properties || response.data || response;
@@ -114,5 +127,18 @@ export class UserDashboard implements OnInit {
     console.log('Logout clicked');
     this.closeSidebar();
     // Logout logic will be implemented later
+  }
+
+  // Property action methods
+  viewProperty(propertyId: string): void {
+    console.log('View property:', propertyId);
+    // TODO: Navigate to property details page or show property details modal
+    // For now, just log the action
+  }
+
+  contactHost(propertyId: string): void {
+    console.log('Contact host for property:', propertyId);
+    // TODO: Open contact form, messaging system, or navigate to host contact page
+    // For now, just log the action
   }
 }
