@@ -1,0 +1,284 @@
+<div class="booking-container">
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-container">
+    <i class="bi bi-hourglass-split"></i>
+    <h3>Loading booking details...</h3>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error" class="error-container">
+    <i class="bi bi-exclamation-triangle"></i>
+    <h3>{{ error }}</h3>
+    <button class="btn btn-primary" (click)="goBack()">
+      <i class="bi bi-arrow-left"></i> Back to Property
+    </button>
+  </div>
+
+  <!-- Booking Content -->
+  <div *ngIf="!loading && !error && property" class="booking-content">
+    <!-- Header -->
+    <div class="booking-header">
+      <button class="back-btn" (click)="goBack()">
+        <i class="bi bi-arrow-left"></i> Back to Property
+      </button>
+      <h1>Complete Your Booking</h1>
+    </div>
+
+    <div class="booking-main">
+      <!-- Booking Summary -->
+      <div class="booking-summary-card">
+        <h3>Booking Summary</h3>
+
+        <div class="property-info">
+          <h4>{{ property.propertyTitle }}</h4>
+          <p class="property-location">
+            <i class="bi bi-geo-alt"></i>
+            {{ property.city }}, {{ property.province }}, {{ property.country }}
+          </p>
+          <p class="property-type">{{ property.propertyType }}</p>
+        </div>
+
+        <div class="stay-details">
+          <div class="detail-row">
+            <span class="label">Check-in:</span>
+            <span class="value">{{
+              bookingDetails.checkIn | date : "mediumDate"
+            }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="label">Check-out:</span>
+            <span class="value">{{
+              bookingDetails.checkOut | date : "mediumDate"
+            }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="label">Nights:</span>
+            <span class="value">{{ bookingDetails.totalNights }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="label">Guests:</span>
+            <span class="value">
+              {{
+                bookingDetails.adults +
+                  bookingDetails.children +
+                  bookingDetails.infants
+              }}
+              ({{ bookingDetails.adults }} adults
+              <span *ngIf="bookingDetails.children > 0"
+                >, {{ bookingDetails.children }} children</span
+              >
+              <span *ngIf="bookingDetails.infants > 0"
+                >, {{ bookingDetails.infants }} infants</span
+              >)
+            </span>
+          </div>
+          <div class="detail-row" *ngIf="bookingDetails.pets > 0">
+            <span class="label">Pets:</span>
+            <span class="value">{{ bookingDetails.pets }}</span>
+          </div>
+        </div>
+
+        <div class="pricing-details">
+          <div class="price-row">
+            <span
+              >${{ property.totalGuestPrice }} x
+              {{ bookingDetails.totalNights }} nights</span
+            >
+            <span>${{ bookingDetails.totalPrice }}</span>
+          </div>
+          <div class="total-row">
+            <span>Total</span>
+            <span>${{ bookingDetails.totalPrice }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Payment Form -->
+      <div class="payment-form-card">
+        <h3>Payment Information</h3>
+        <p class="payment-note">
+          <i class="bi bi-shield-check"></i>
+          This is a mock payment form for demonstration purposes only.
+        </p>
+
+        <form class="payment-form">
+          <!-- Card Information -->
+          <div class="form-section">
+            <h4>Card Details</h4>
+
+            <div class="form-group">
+              <label for="cardNumber">Card Number</label>
+              <div class="card-input-wrapper">
+                <input
+                  type="text"
+                  id="cardNumber"
+                  [(ngModel)]="paymentForm.cardNumber"
+                  (input)="formatCardNumber($event)"
+                  placeholder="1234 5678 9012 3456"
+                  maxlength="19"
+                  name="cardNumber"
+                  class="form-control card-input"
+                  required
+                />
+                <span class="card-type" *ngIf="paymentForm.cardNumber">{{
+                  getCardType()
+                }}</span>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="expiryMonth">Expiry Month</label>
+                <select
+                  id="expiryMonth"
+                  [(ngModel)]="paymentForm.expiryMonth"
+                  name="expiryMonth"
+                  class="form-control"
+                  required
+                >
+                  <option value="">Month</option>
+                  <option *ngFor="let month of months" [value]="month">
+                    {{ month }}
+                  </option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="expiryYear">Expiry Year</label>
+                <select
+                  id="expiryYear"
+                  [(ngModel)]="paymentForm.expiryYear"
+                  name="expiryYear"
+                  class="form-control"
+                  required
+                >
+                  <option value="">Year</option>
+                  <option *ngFor="let year of years" [value]="year">
+                    {{ year }}
+                  </option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="cvv">CVV</label>
+                <input
+                  type="text"
+                  id="cvv"
+                  [(ngModel)]="paymentForm.cvv"
+                  (input)="formatCVV($event)"
+                  placeholder="123"
+                  maxlength="3"
+                  name="cvv"
+                  class="form-control"
+                  required
+                />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="cardholderName">Cardholder Name</label>
+              <input
+                type="text"
+                id="cardholderName"
+                [(ngModel)]="paymentForm.cardholderName"
+                placeholder="John Doe"
+                name="cardholderName"
+                class="form-control"
+                required
+              />
+            </div>
+          </div>
+
+          <!-- Billing Address -->
+          <div class="form-section">
+            <h4>Billing Address</h4>
+
+            <div class="form-group">
+              <label for="street">Street Address</label>
+              <input
+                type="text"
+                id="street"
+                [(ngModel)]="paymentForm.billingAddress.street"
+                placeholder="123 Main Street"
+                name="street"
+                class="form-control"
+                required
+              />
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="city">City</label>
+                <input
+                  type="text"
+                  id="city"
+                  [(ngModel)]="paymentForm.billingAddress.city"
+                  placeholder="Toronto"
+                  name="city"
+                  class="form-control"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="state">State/Province</label>
+                <input
+                  type="text"
+                  id="state"
+                  [(ngModel)]="paymentForm.billingAddress.state"
+                  placeholder="Ontario"
+                  name="state"
+                  class="form-control"
+                  required
+                />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="zipCode">ZIP/Postal Code</label>
+                <input
+                  type="text"
+                  id="zipCode"
+                  [(ngModel)]="paymentForm.billingAddress.zipCode"
+                  placeholder="M5V 3A8"
+                  name="zipCode"
+                  class="form-control"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="country">Country</label>
+                <input
+                  type="text"
+                  id="country"
+                  [(ngModel)]="paymentForm.billingAddress.country"
+                  placeholder="Canada"
+                  name="country"
+                  class="form-control"
+                  required
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="form-actions">
+            <button
+              type="button"
+              class="confirm-booking-btn"
+              (click)="processPayment()"
+              [disabled]="!isFormValid() || isProcessing"
+            >
+              <span *ngIf="!isProcessing">
+                <i class="bi bi-credit-card"></i>
+                Confirm & Pay ${{ bookingDetails.totalPrice }}
+              </span>
+              <span *ngIf="isProcessing">
+                <i class="bi bi-hourglass-split"></i>
+                Processing Payment...
+              </span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

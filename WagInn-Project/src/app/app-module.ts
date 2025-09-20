@@ -21,6 +21,7 @@ import { UserRegistrationPetInfo } from './components/userRegistration/user-regi
 import { UserDashboard } from './components/Dashboard/user-dashboard/user-dashboard';
 import { UserSignInPage } from './components/userSignIn/user-sign-in-page/user-sign-in-page';
 import { OpenPropertyDetails } from './components/Dashboard/open-property-details/open-property-details';
+import { BookStay } from './components/Dashboard/book-stay/book-stay';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { OpenPropertyDetails } from './components/Dashboard/open-property-detail
     UserDashboard,
     UserSignInPage,
     OpenPropertyDetails,
+    BookStay,
   ],
   imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule, FormsModule],
   providers: [

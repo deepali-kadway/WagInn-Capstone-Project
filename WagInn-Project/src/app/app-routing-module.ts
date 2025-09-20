@@ -14,6 +14,7 @@ import { UserRegistrationPetInfo } from './components/userRegistration/user-regi
 import { UserDashboard } from './components/Dashboard/user-dashboard/user-dashboard';
 import { UserSignInPage } from './components/userSignIn/user-sign-in-page/user-sign-in-page';
 import { OpenPropertyDetails } from './components/Dashboard/open-property-details/open-property-details';
+import { BookStay } from './components/Dashboard/book-stay/book-stay';
 
 const routes: Routes = [
   { path: '', component: HostRegistrationPersonalInfo },
@@ -41,6 +42,12 @@ const routes: Routes = [
   {
     path: 'propertyDetailsDashboard/:id',
     component: OpenPropertyDetails,
+    canActivate: [authGuard],
+    data: { role: 'user' },
+  },
+  {
+    path: 'bookStay/:propertyId',
+    component: BookStay,
     canActivate: [authGuard],
     data: { role: 'user' },
   },

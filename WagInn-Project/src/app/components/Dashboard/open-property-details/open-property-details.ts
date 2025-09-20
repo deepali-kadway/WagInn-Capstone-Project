@@ -157,26 +157,19 @@ export class OpenPropertyDetails implements OnInit {
       return;
     }
 
-    const bookingData = {
-      propertyId: this.property.id,
-      hostId: this.property.hostId,
-      checkInDate: this.bookingParams.checkIn,
-      checkOutDate: this.bookingParams.checkOut,
-      totalGuests:
-        this.bookingParams.adults +
-        this.bookingParams.children +
-        this.bookingParams.infants,
-      adults: this.bookingParams.adults,
-      children: this.bookingParams.children,
-      infants: this.bookingParams.infants,
-      pets: this.bookingParams.pets,
-      totalNights: this.bookingParams.totalNights,
-      totalPrice: this.bookingParams.totalPrice,
-    };
-
-    // For now, just console log - implement booking service later
-    console.log('Booking data:', bookingData);
-    alert('Booking functionality will be implemented in the next phase');
+    // Navigate to booking page with all necessary data
+    this.router.navigate(['/bookStay', this.property.id], {
+      queryParams: {
+        checkIn: this.bookingParams.checkIn,
+        checkOut: this.bookingParams.checkOut,
+        adults: this.bookingParams.adults,
+        children: this.bookingParams.children,
+        infants: this.bookingParams.infants,
+        pets: this.bookingParams.pets,
+        totalNights: this.bookingParams.totalNights,
+        totalPrice: this.bookingParams.totalPrice,
+      },
+    });
   }
 
   goBack(): void {
