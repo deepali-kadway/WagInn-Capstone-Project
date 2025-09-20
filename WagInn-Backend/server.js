@@ -7,8 +7,10 @@ import hostSignIn from "./routes/hostSignIn_Routes.js";
 import userRegRoute from "./routes/userRegistration_Routes.js";
 import userSignIn from "./routes/userSignIn_Routes.js";
 import fetchProperty from "./routes/userPropertySearch_Routes.js";
+import bookingRoutes from "./routes/booking_routes.js";
 import "./models/associations.js";
 import dotenv from "dotenv";
+import Booking from "./models/bookings_Model.js";
 
 dotenv.config();
 const app = express();
@@ -58,6 +60,7 @@ app.use("/host", hostSignIn);
 app.use("/user", userRegRoute);
 app.use("/user", userSignIn);
 app.use("/host", fetchProperty);
+app.use("/api/bookings", bookingRoutes);
 
 //Test DB connection
 sequelize
@@ -73,9 +76,9 @@ sequelize
 console.log("About to sync models...");
 
 sequelize
-  .sync({ force: false })
+  .sync({ force: false, alter: true })
   .then(() => {
-    console.log("Database tables created successfully");
+    console.log("All database tables synced successfully");
   })
   .catch((error) => {
     console.log("Error in creating DB tables: ", error.message);

@@ -1,0 +1,200 @@
+﻿<div class="confirmation-container">
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-container">
+    <i class="bi bi-hourglass-split"></i>
+    <h3>Loading confirmation details...</h3>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error" class="error-container">
+    <i class="bi bi-exclamation-triangle"></i>
+    <h3>{{ error }}</h3>
+    <button class="btn btn-primary" (click)="backToDashboard()">
+      <i class="bi bi-house"></i> Back to Dashboard
+    </button>
+  </div>
+
+  <!-- Confirmation Content -->
+  <div *ngIf="!loading && !error && booking" class="confirmation-content">
+    <!-- Success Header -->
+    <div class="success-header">
+      <div class="success-icon">
+        <i class="bi bi-check-circle-fill"></i>
+      </div>
+      <h1>Booking Confirmed!</h1>
+      <p>Your pet-friendly accommodation has been successfully booked.</p>
+    </div>
+
+    <!-- Confirmation Details -->
+    <div class="confirmation-main">
+      <!-- Confirmation Number Card -->
+      <div class="confirmation-card">
+        <div class="confirmation-number">
+          <h3>Confirmation Number</h3>
+          <div class="number-display">{{ booking.confirmationNumber }}</div>
+          <p>Please save this number for your records</p>
+        </div>
+      </div>
+
+      <!-- Booking Details Card -->
+      <div class="booking-details-card">
+        <h3>Booking Details</h3>
+
+        <div class="property-summary">
+          <h4>{{ booking.propertyTitle }}</h4>
+          <p class="property-location">
+            <i class="bi bi-geo-alt"></i>
+            {{ booking.location }}
+          </p>
+          <p class="property-type">{{ booking.propertyType }}</p>
+          <p class="host-info">
+            <i class="bi bi-person-circle"></i>
+            Hosted by {{ booking.hostName }}
+          </p>
+        </div>
+
+        <div class="stay-summary">
+          <div class="summary-section">
+            <h5>Stay Details</h5>
+            <div class="detail-grid">
+              <div class="detail-item">
+                <span class="label">Check-in:</span>
+                <span class="value">{{
+                  booking.checkIn | date : "fullDate"
+                }}</span>
+              </div>
+              <div class="detail-item">
+                <span class="label">Check-out:</span>
+                <span class="value">{{
+                  booking.checkOut | date : "fullDate"
+                }}</span>
+              </div>
+              <div class="detail-item">
+                <span class="label">Duration:</span>
+                <span class="value">{{ booking.totalNights }} night(s)</span>
+              </div>
+              <div class="detail-item">
+                <span class="label">Booked on:</span>
+                <span class="value">{{
+                  booking.bookingDate | date : "medium"
+                }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="summary-section">
+            <h5>Guest Information</h5>
+            <div class="detail-grid">
+              <div class="detail-item">
+                <span class="label">Adults:</span>
+                <span class="value">{{ booking.adults }}</span>
+              </div>
+              <div class="detail-item" *ngIf="booking.children > 0">
+                <span class="label">Children:</span>
+                <span class="value">{{ booking.children }}</span>
+              </div>
+              <div class="detail-item" *ngIf="booking.infants > 0">
+                <span class="label">Infants:</span>
+                <span class="value">{{ booking.infants }}</span>
+              </div>
+              <div class="detail-item" *ngIf="booking.pets > 0">
+                <span class="label">Pets:</span>
+                <span class="value">{{ booking.pets }}</span>
+              </div>
+              <div class="detail-item">
+                <span class="label">Total Guests:</span>
+                <span class="value">{{
+                  booking.adults + booking.children + booking.infants
+                }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="summary-section">
+            <h5>Payment Summary</h5>
+            <div class="payment-breakdown">
+              <div class="payment-row">
+                <span
+                  >${{ booking.pricePerNight }} x
+                  {{ booking.totalNights }} nights</span
+                >
+                <span>${{ booking.totalPrice }}</span>
+              </div>
+              <div class="payment-total">
+                <span>Total Paid</span>
+                <span>${{ booking.totalPrice }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Important Information -->
+      <div class="info-card">
+        <h3>Important Information</h3>
+        <div class="info-list">
+          <div class="info-item">
+            <i class="bi bi-clock"></i>
+            <div>
+              <strong>Check-in Time:</strong>
+              <p>
+                Standard check-in time is 3:00 PM. Please contact your host if
+                you need to arrange an earlier check-in.
+              </p>
+            </div>
+          </div>
+          <div class="info-item">
+            <i class="bi bi-clock-history"></i>
+            <div>
+              <strong>Check-out Time:</strong>
+              <p>
+                Standard check-out time is 11:00 AM. Late check-out may be
+                available upon request.
+              </p>
+            </div>
+          </div>
+          <div class="info-item">
+            <i class="bi bi-heart"></i>
+            <div>
+              <strong>Pet Policy:</strong>
+              <p>
+                Please ensure your pet(s) comply with the property's pet
+                policies. Contact your host if you have any questions.
+              </p>
+            </div>
+          </div>
+          <div class="info-item">
+            <i class="bi bi-telephone"></i>
+            <div>
+              <strong>Contact Host:</strong>
+              <p>
+                Your host's contact information will be provided 24 hours before
+                check-in.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+      <button class="btn btn-primary" (click)="viewAllBookings()">
+        <i class="bi bi-calendar-check"></i>
+        View All My Bookings
+      </button>
+      <button class="btn btn-secondary" (click)="printConfirmation()">
+        <i class="bi bi-printer"></i>
+        Print Confirmation
+      </button>
+      <button class="btn btn-outline" (click)="shareBooking()">
+        <i class="bi bi-share"></i>
+        Share
+      </button>
+      <button class="btn btn-outline" (click)="backToDashboard()">
+        <i class="bi bi-house"></i>
+        Back to Dashboard
+      </button>
+    </div>
+  </div>
+</div>

@@ -15,6 +15,8 @@ import { UserDashboard } from './components/Dashboard/user-dashboard/user-dashbo
 import { UserSignInPage } from './components/userSignIn/user-sign-in-page/user-sign-in-page';
 import { OpenPropertyDetails } from './components/Dashboard/open-property-details/open-property-details';
 import { BookStay } from './components/Dashboard/book-stay/book-stay';
+import { BookingConfirmation } from './components/Dashboard/booking-confirmation/booking-confirmation';
+import { MyUserBookings } from './components/UserBookings/my-user-bookings/my-user-bookings';
 
 const routes: Routes = [
   { path: '', component: HostRegistrationPersonalInfo },
@@ -48,6 +50,18 @@ const routes: Routes = [
   {
     path: 'bookStay/:propertyId',
     component: BookStay,
+    canActivate: [authGuard],
+    data: { role: 'user' },
+  },
+  {
+    path: 'bookingConfirmation',
+    component: BookingConfirmation,
+    canActivate: [authGuard],
+    data: { role: 'user' },
+  },
+  {
+    path: 'myBookings',
+    component: MyUserBookings,
     canActivate: [authGuard],
     data: { role: 'user' },
   },

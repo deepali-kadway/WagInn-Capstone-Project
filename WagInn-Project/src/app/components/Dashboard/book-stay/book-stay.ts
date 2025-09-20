@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GetDetailSelectedProperty } from '../../../services/userDashboard/get-detail-selected-property';
+import { BookingManagementService } from '../../../services/booking/booking-management.service';
 
 @Component({
   selector: 'app-book-stay',
@@ -64,7 +65,8 @@ export class BookStay implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private propertyService: GetDetailSelectedProperty
+    private propertyService: GetDetailSelectedProperty,
+    private bookingService: BookingManagementService
   ) {
     // Generate years for expiry dropdown (current year + 10 years)
     for (let i = 0; i < 11; i++) {
@@ -172,18 +174,24 @@ export class BookStay implements OnInit {
       console.log('Booking Details:', this.bookingDetails);
       console.log('Payment Details:', this.paymentForm);
 
-      // In a real application, you would send this data to your payment processor
-      // and then to your booking service
+      // Create booking using BookingManagementService
+      this.bookingService
+        .addBooking(this.bookingDetails, this.property)
+        .subscribe({
+          next: (confirmationNumber) => {
+            this.isProcessing = false;
 
-      this.isProcessing = false;
-
-      // Redirect to confirmation page (to be created later)
-      alert(
-        'Payment successful! Booking confirmed. (Confirmation page will be implemented next)'
-      );
-
-      // For now, redirect back to user dashboard
-      this.router.navigate(['/userDashboard']);
+            // Navigate to confirmation page with confirmation number
+            this.router.navigate(['/bookingConfirmation'], {
+              queryParams: { confirmation: confirmationNumber },
+            });
+          },
+          error: (error) => {
+            console.error('Error creating booking:', error);
+            this.isProcessing = false;
+            alert('Failed to create booking. Please try again.');
+          },
+        });
     }, 2000); // 2 second delay to simulate processing
   }
 

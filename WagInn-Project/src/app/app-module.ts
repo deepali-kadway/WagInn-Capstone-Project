@@ -1,5 +1,6 @@
 import { NgModule, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { CommonModule } from '@angular/common';
 
 import { AppRoutingModule } from './app-routing-module';
 import { App } from './app';
@@ -22,6 +23,8 @@ import { UserDashboard } from './components/Dashboard/user-dashboard/user-dashbo
 import { UserSignInPage } from './components/userSignIn/user-sign-in-page/user-sign-in-page';
 import { OpenPropertyDetails } from './components/Dashboard/open-property-details/open-property-details';
 import { BookStay } from './components/Dashboard/book-stay/book-stay';
+import { BookingConfirmation } from './components/Dashboard/booking-confirmation/booking-confirmation';
+import { MyUserBookings } from './components/UserBookings/my-user-bookings/my-user-bookings';
 
 @NgModule({
   declarations: [
@@ -42,8 +45,16 @@ import { BookStay } from './components/Dashboard/book-stay/book-stay';
     UserSignInPage,
     OpenPropertyDetails,
     BookStay,
+    BookingConfirmation,
+    MyUserBookings,
   ],
-  imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule, FormsModule],
+  imports: [
+    BrowserModule,
+    CommonModule,
+    AppRoutingModule,
+    ReactiveFormsModule,
+    FormsModule,
+  ],
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideHttpClient(withInterceptors([authInterceptor])),
