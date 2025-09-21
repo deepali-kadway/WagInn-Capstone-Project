@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-host-dashboard',
@@ -6,17 +6,19 @@ import { Component } from '@angular/core';
   templateUrl: './host-dashboard.html',
   styleUrl: './host-dashboard.css',
 })
-export class HostDashboard {
+export class HostDashboard implements OnInit {
   // Navigation state
   activeSection: string = 'dashboard';
   sidebarOpen: boolean = false;
 
-  // Host information (will be populated from auth service later)
-  currentHost: any = {
-    firstName: 'Sarah',
-    email: 'host@example.com',
-  };
-
+  // Host information (populated from auth service later)
+  currentHost: any = null;
+  ngOnInit(): void {
+    const hostData = localStorage.getItem('USER_INFO');
+    if (hostData) {
+      this.currentHost = JSON.parse(hostData);
+    }
+  }
   // Dashboard stats (mock data for now)
   dashboardStats = {
     totalProperties: 1,
