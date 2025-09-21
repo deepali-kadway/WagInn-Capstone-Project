@@ -55,7 +55,7 @@ export class BookingConfirmation implements OnInit {
   }
 
   viewAllBookings(): void {
-    this.router.navigate(['myBookings']);
+    this.router.navigate(['myBookingsUser']);
   }
 
   backToDashboard(): void {

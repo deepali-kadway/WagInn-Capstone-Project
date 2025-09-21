@@ -5,6 +5,7 @@ import {
   HostDashboardStats,
 } from '../../../services/hostDashboard/host-fetch-details';
 import { Router } from '@angular/router';
+import { HostSignInService } from '../../../services/hostSignIn/host-sign-in-service';
 
 @Component({
   selector: 'app-host-dashboard',
@@ -33,7 +34,11 @@ export class HostDashboard implements OnInit {
   loadingBookings: boolean = false;
   bookingsError: string | null = null;
 
-  constructor(private service: HostFetchDetails, private router: Router) {}
+  constructor(
+    private service: HostFetchDetails,
+    private router: Router,
+    private authService: HostSignInService
+  ) {}
 
   ngOnInit(): void {
     const hostData = localStorage.getItem('USER_INFO');
@@ -166,7 +171,29 @@ export class HostDashboard implements OnInit {
   onLogout(): void {
     console.log('Logout clicked');
     this.closeSidebar();
-    // Logout logic will be implemented later
+
+    // Show confirmation dialog
+    const confirmLogout = confirm('Are you sure you want to logout?');
+
+    if (confirmLogout) {
+      console.log('Logout confirmed, clearing authentication...');
+
+      // Clear storage FIRST before calling auth service
+      localStorage.clear();
+      sessionStorage.clear();
+
+      console.log('Storage cleared, calling auth service logout...');
+
+      // Call the logout method from auth service AFTER clearing storage
+      this.authService.logout();
+
+      console.log('Auth service logout called, navigating...');
+
+      // Force complete page reload to break any Angular state (same as user logout)
+      window.location.replace('/hostSignIn');
+
+      console.log('Host logged out successfully');
+    }
   }
 
   // Booking management methods

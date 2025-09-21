@@ -107,7 +107,7 @@
 }
 
 .card-header {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(to right, #11a08d 0%, #25b9a6 50%, #04a58f 100%);
   color: white;
   padding: 20px;
   display: flex;
@@ -178,7 +178,6 @@
 }
 
 .confirmation-number {
-  font-family: "Courier New", monospace;
   background: #f8f9fa;
   padding: 8px 12px;
   border-radius: 6px;
@@ -202,7 +201,7 @@
 
 .guest-avatar i {
   font-size: 4rem;
-  color: #667eea;
+  color: #11a08d;
 }
 
 .guest-basic-info h3 {
@@ -263,7 +262,7 @@
   padding: 15px;
   background: #f8f9fa;
   border-radius: 8px;
-  border-left: 4px solid #667eea;
+  border-left: 4px solid #11a08d;
 }
 
 .pets-grid {
@@ -296,7 +295,7 @@
 
 .pet-icon i {
   font-size: 2.5rem;
-  color: #667eea;
+  color: #11a08d;
 }
 
 .pet-basic-info h4 {
@@ -419,7 +418,7 @@
 }
 
 .price-item.total {
-  border-top: 2px solid #667eea;
+  border-top: 2px solid #11a08d;
   margin-top: 10px;
   padding-top: 20px;
   font-size: 1.1rem;

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserFetchProperties } from '../../../services/userDashboard/user-fetch-properties';
 import { Router } from '@angular/router';
+import { UserSignInService } from '../../../services/userSignIn_Service/user-sign-in-service';
 
 @Component({
   selector: 'app-user-dashboard',
@@ -27,7 +28,11 @@ export class UserDashboard implements OnInit {
   activeSection: string = 'dashboard';
   sidebarOpen: boolean = false;
 
-  constructor(private service: UserFetchProperties, private router: Router) {}
+  constructor(
+    private service: UserFetchProperties,
+    private router: Router,
+    private authService: UserSignInService
+  ) {}
 
   // User information (will be populated from auth service later)
   currentUser: any = null;
@@ -133,7 +138,25 @@ export class UserDashboard implements OnInit {
   onLogout(): void {
     console.log('Logout clicked');
     this.closeSidebar();
-    // Logout logic will be implemented later
+
+    // Show confirmation dialog
+    const confirmLogout = confirm('Are you sure you want to logout?');
+
+    if (confirmLogout) {
+      console.log('Logout confirmed, clearing authentication...');
+
+      // Call the logout method from auth service
+      this.authService.logout();
+
+      // Clear any additional local storage items that might cause conflicts
+      localStorage.clear();
+      sessionStorage.clear();
+
+      // Force complete page reload to break any Angular state
+      window.location.replace('/userSignIn');
+
+      console.log('User logged out successfully');
+    }
   }
 
   // Display details of select property, send search parameters along with property id

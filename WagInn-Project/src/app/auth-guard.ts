@@ -30,7 +30,6 @@ export const authGuard: CanActivateFn = (route, state) => {
       return false;
     }
   }
-  // Default: no role specified
-  router.navigate(['/']);
-  return false;
+  // Default: allow access if no role specified (for public routes like sign-in pages)
+  return true;
 };
