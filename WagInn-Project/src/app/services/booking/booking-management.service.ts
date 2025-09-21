@@ -29,7 +29,7 @@ export interface Booking {
   totalPrice: number;
   pricePerNight: number;
   bookingDate: string;
-  status: 'confirmed' | 'pending' | 'cancelled';
+  status: 'confirmed' | 'pending' | 'cancelled' | 'completed';
   confirmationNumber: string;
 }
 
@@ -48,7 +48,69 @@ export class BookingManagementService {
   }
 
   getUserBookings(): Observable<Booking[]> {
-    return this.bookings$;
+    // First return local bookings for immediate display
+    const localBookings = this.bookings$;
+
+    // Also fetch fresh data from API
+    this.fetchUserBookingsFromAPI();
+
+    return localBookings;
+  }
+
+  fetchUserBookingsFromAPI(): void {
+    try {
+      const userId = this.getCurrentUserId();
+      const url = `${environment.apiUrlGetUserBookings}/${userId}`;
+
+      console.log('🔍 Fetching user bookings from API:', url);
+
+      this.http.get<any>(url).subscribe({
+        next: (response) => {
+          console.log('📋 API Response for user bookings:', response);
+
+          if (response.success && response.bookings) {
+            // Transform API response to match our Booking interface
+            const bookings: Booking[] = response.bookings.map(
+              (booking: any) => ({
+                id: booking.id,
+                propertyId: booking.property_id,
+                propertyTitle: booking.property_title,
+                propertyType: booking.property_type,
+                hostName: booking.host_name,
+                location: booking.location,
+                checkIn: booking.check_in,
+                checkOut: booking.check_out,
+                totalNights: booking.total_nights,
+                adults: booking.adults,
+                children: booking.children || 0,
+                infants: booking.infants || 0,
+                pets: booking.pets || 0,
+                totalPrice: booking.total_price,
+                pricePerNight: booking.price_per_night,
+                bookingDate: booking.booking_date || booking.createdAt,
+                status: booking.status,
+                confirmationNumber: booking.confirmation_number,
+              })
+            );
+
+            // Update the subject with fresh data
+            this.bookingsSubject.next(bookings);
+
+            // Also save to localStorage for offline access
+            this.saveBookingsToStorage(bookings);
+
+            console.log('✅ Updated bookings from API:', bookings);
+          }
+        },
+        error: (error) => {
+          console.error('❌ Error fetching user bookings from API:', error);
+          // If API fails, we'll still show local bookings
+        },
+      });
+    } catch (error) {
+      console.error('❌ Error getting user ID for bookings fetch:', error);
+      // If user not logged in, we'll still show local bookings (empty)
+    }
   }
 
   addBooking(bookingData: any, propertyData: any): Observable<string> {

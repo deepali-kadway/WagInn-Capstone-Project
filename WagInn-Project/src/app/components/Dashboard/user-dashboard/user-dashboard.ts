@@ -113,6 +113,12 @@ export class UserDashboard implements OnInit {
     this.closeSidebar(); // Close sidebar when section is selected
   }
 
+  navigateToMyBookings(): void {
+    console.log('Navigating to My Bookings');
+    this.closeSidebar();
+    this.router.navigate(['/myBookingsUser']);
+  }
+
   toggleSidebar(): void {
     console.log('Toggle sidebar clicked. Current state:', this.sidebarOpen);
     this.sidebarOpen = !this.sidebarOpen;

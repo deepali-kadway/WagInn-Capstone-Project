@@ -240,8 +240,10 @@
 
                 <!-- Price -->
                 <div class="property-price">
-                  <span class="base-price">${{ property.totalGuestPrice }}</span> per
-                  night
+                  <span class="base-price"
+                    >${{ property.totalGuestPrice }}</span
+                  >
+                  per night
                   <br />
                 </div>
 
@@ -569,34 +571,54 @@
 
     <ul class="sidebar-menu">
       <li class="sidebar-item" [class.active]="activeSection === 'profile'">
-        <a href="#" (click)="setActiveSection('profile')" class="sidebar-link">
+        <button
+          type="button"
+          (click)="setActiveSection('profile')"
+          class="sidebar-link"
+        >
           <i class="bi bi-person-fill"></i>
           <span>Profile</span>
-        </a>
+        </button>
       </li>
       <li class="sidebar-item" [class.active]="activeSection === 'pets'">
-        <a href="#" (click)="setActiveSection('pets')" class="sidebar-link">
+        <button
+          type="button"
+          (click)="setActiveSection('pets')"
+          class="sidebar-link"
+        >
           <i class="bi bi-heart-fill"></i>
           <span>My Pets</span>
-        </a>
+        </button>
       </li>
-      <li class="sidebar-item" [class.active]="activeSection === 'bookings'">
-        <a href="#" (click)="setActiveSection('bookings')" class="sidebar-link">
+      <li class="sidebar-item">
+        <button
+          type="button"
+          (click)="navigateToMyBookings()"
+          class="sidebar-link"
+        >
           <i class="bi bi-calendar-check-fill"></i>
           <span>My Bookings</span>
-        </a>
+        </button>
       </li>
       <li class="sidebar-item" [class.active]="activeSection === 'chats'">
-        <a href="#" (click)="setActiveSection('chats')" class="sidebar-link">
+        <button
+          type="button"
+          (click)="setActiveSection('chats')"
+          class="sidebar-link"
+        >
           <i class="bi-chat-dots-fill"></i>
           <span>Chats</span>
-        </a>
+        </button>
       </li>
       <li class="sidebar-item logout-item">
-        <a href="#" (click)="onLogout()" class="sidebar-link logout-link">
+        <button
+          type="button"
+          (click)="onLogout()"
+          class="sidebar-link logout-link"
+        >
           <i class="bi-box-arrow-left"></i>
           <span>Logout</span>
-        </a>
+        </button>
       </li>
     </ul>
   </nav>

@@ -26,6 +26,7 @@ import { BookStay } from './components/Dashboard/book-stay/book-stay';
 import { BookingConfirmation } from './components/Dashboard/booking-confirmation/booking-confirmation';
 import { MyUserBookings } from './components/UserBookings/my-user-bookings/my-user-bookings';
 import { HostBookingDetails } from './components/Dashboard/host-booking-details/host-booking-details';
+import { MyBookingsUser } from './components/Dashboard/my-bookings-user/my-bookings-user';
 
 @NgModule({
   declarations: [
@@ -49,6 +50,7 @@ import { HostBookingDetails } from './components/Dashboard/host-booking-details/
     BookingConfirmation,
     MyUserBookings,
     HostBookingDetails,
+    MyBookingsUser,
   ],
   imports: [
     BrowserModule,
