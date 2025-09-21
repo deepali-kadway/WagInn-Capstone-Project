@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserFetchProperties } from '../../../services/userDashboard/user-fetch-properties';
 import { GetDetailSelectedProperty } from '../../../services/userDashboard/get-detail-selected-property';
+import { PropertyAvailabilityService } from '../../../services/availability/property-availability.service';
 
 @Component({
   selector: 'app-open-property-details',
@@ -30,10 +31,20 @@ export class OpenPropertyDetails implements OnInit {
   currentImageIndex = 0;
   images: string[] = [];
 
+  // Blocked dates for availability
+  blockedDates: string[] = [];
+  loadingDates: boolean = false;
+
+  // Calendar display
+  currentMonth: Date = new Date();
+  calendarDates: any[] = [];
+  showCalendar: boolean = false;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private propertyService: GetDetailSelectedProperty
+    private propertyService: GetDetailSelectedProperty,
+    private availabilityService: PropertyAvailabilityService
   ) {}
 
   ngOnInit(): void {
@@ -66,6 +77,7 @@ export class OpenPropertyDetails implements OnInit {
         this.property = response.data || response;
         this.setupImages();
         this.calculateStayDetails();
+        this.loadBlockedDates(propertyId); // Load blocked dates
         this.loading = false;
       },
       error: (error) => {
@@ -124,12 +136,20 @@ export class OpenPropertyDetails implements OnInit {
     if (this.bookingParams.checkIn && this.bookingParams.checkOut) {
       const checkIn = new Date(this.bookingParams.checkIn);
       const checkOut = new Date(this.bookingParams.checkOut);
-      const timeDiff = checkOut.getTime() - checkIn.getTime();
-      this.bookingParams.totalNights = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
-      if (this.property && this.property.totalGuestPrice) {
-        this.bookingParams.totalPrice =
-          this.bookingParams.totalNights * this.property.totalGuestPrice;
+      if (checkOut > checkIn) {
+        const timeDiff = checkOut.getTime() - checkIn.getTime();
+        this.bookingParams.totalNights = Math.ceil(
+          timeDiff / (1000 * 3600 * 24)
+        );
+
+        if (this.property && this.property.totalGuestPrice) {
+          this.bookingParams.totalPrice =
+            this.bookingParams.totalNights * this.property.totalGuestPrice;
+        }
+      } else {
+        this.bookingParams.totalNights = 0;
+        this.bookingParams.totalPrice = 0;
       }
     }
   }
@@ -157,6 +177,17 @@ export class OpenPropertyDetails implements OnInit {
       return;
     }
 
+    // Validate dates are not blocked
+    if (this.isDateDisabled(this.bookingParams.checkIn)) {
+      alert('Check-in date is not available. Please select a different date.');
+      return;
+    }
+
+    if (this.isDateDisabled(this.bookingParams.checkOut)) {
+      alert('Check-out date is not available. Please select a different date.');
+      return;
+    }
+
     // Navigate to booking page with all necessary data
     this.router.navigate(['/bookStay', this.property.id], {
       queryParams: {
@@ -174,6 +205,147 @@ export class OpenPropertyDetails implements OnInit {
 
   goBack(): void {
     this.router.navigate(['/userDashboard']);
+  }
+
+  // Load blocked dates for the property
+  loadBlockedDates(propertyId: string): void {
+    this.loadingDates = true;
+    this.availabilityService.getBlockedDates(propertyId).subscribe({
+      next: (blockedDates) => {
+        this.blockedDates = blockedDates;
+        this.loadingDates = false;
+        if (this.showCalendar) {
+          this.generateCalendar(); // Refresh calendar with blocked dates
+        }
+      },
+      error: (error) => {
+        console.error('Error loading blocked dates:', error);
+        this.loadingDates = false;
+      },
+    });
+  }
+
+  // Check if a date should be disabled
+  isDateDisabled(date: string): boolean {
+    if (!date) return false;
+    return this.blockedDates.includes(date);
+  }
+
+  // Get current date for min attribute
+  getCurrentDate(): string {
+    return new Date().toISOString().split('T')[0];
+  }
+
+  // Get minimum checkout date (day after check-in)
+  getMinCheckoutDate(): string {
+    if (this.bookingParams.checkIn) {
+      const checkIn = new Date(this.bookingParams.checkIn);
+      checkIn.setDate(checkIn.getDate() + 1);
+      return checkIn.toISOString().split('T')[0];
+    }
+    return this.getCurrentDate();
+  }
+
+  // Calendar methods
+  toggleCalendar(): void {
+    this.showCalendar = !this.showCalendar;
+    if (this.showCalendar) {
+      this.generateCalendar();
+    }
+  }
+
+  generateCalendar(): void {
+    const year = this.currentMonth.getFullYear();
+    const month = this.currentMonth.getMonth();
+
+    // Get first day of month and how many days in month
+    const firstDay = new Date(year, month, 1);
+    const lastDay = new Date(year, month + 1, 0);
+    const daysInMonth = lastDay.getDate();
+    const startDate = firstDay.getDay(); // 0 = Sunday
+
+    this.calendarDates = [];
+
+    // Add empty cells for days before month starts
+    for (let i = 0; i < startDate; i++) {
+      this.calendarDates.push({ day: '', isCurrentMonth: false });
+    }
+
+    // Add days of current month
+    for (let day = 1; day <= daysInMonth; day++) {
+      const dateStr = `${year}-${(month + 1).toString().padStart(2, '0')}-${day
+        .toString()
+        .padStart(2, '0')}`;
+      const isBlocked = this.blockedDates.includes(dateStr);
+      const isToday = dateStr === this.getCurrentDate();
+      const isPast = new Date(dateStr) < new Date(this.getCurrentDate());
+
+      this.calendarDates.push({
+        day: day,
+        dateStr: dateStr,
+        isCurrentMonth: true,
+        isBlocked: isBlocked,
+        isToday: isToday,
+        isPast: isPast,
+        isSelected:
+          dateStr === this.bookingParams.checkIn ||
+          dateStr === this.bookingParams.checkOut,
+      });
+    }
+  }
+
+  selectDate(dateObj: any): void {
+    if (!dateObj.isCurrentMonth || dateObj.isPast || dateObj.isBlocked) {
+      return;
+    }
+
+    // If no check-in selected, set as check-in
+    if (!this.bookingParams.checkIn) {
+      this.bookingParams.checkIn = dateObj.dateStr;
+    }
+    // If check-in selected but no check-out, set as check-out
+    else if (!this.bookingParams.checkOut) {
+      if (new Date(dateObj.dateStr) > new Date(this.bookingParams.checkIn)) {
+        this.bookingParams.checkOut = dateObj.dateStr;
+      } else {
+        // If selected date is before check-in, reset and set as new check-in
+        this.bookingParams.checkIn = dateObj.dateStr;
+        this.bookingParams.checkOut = '';
+      }
+    }
+    // If both selected, reset and start over
+    else {
+      this.bookingParams.checkIn = dateObj.dateStr;
+      this.bookingParams.checkOut = '';
+    }
+
+    this.generateCalendar(); // Refresh to update selected dates
+    this.calculateStayDetails();
+  }
+
+  nextMonth(): void {
+    this.currentMonth = new Date(
+      this.currentMonth.getFullYear(),
+      this.currentMonth.getMonth() + 1,
+      1
+    );
+    this.generateCalendar();
+  }
+
+  prevMonth(): void {
+    this.currentMonth = new Date(
+      this.currentMonth.getFullYear(),
+      this.currentMonth.getMonth() - 1,
+      1
+    );
+    this.generateCalendar();
+  }
+
+  getMonthYear(): string {
+    return this.currentMonth.toLocaleDateString('en-US', {
+      month: 'long',
+      year: 'numeric',
+    });
   }
 
   contactHost(): void {

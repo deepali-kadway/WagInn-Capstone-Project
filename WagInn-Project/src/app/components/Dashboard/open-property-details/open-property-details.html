@@ -153,24 +153,102 @@
           <div class="booking-form">
             <h4>Select your dates</h4>
 
-            <div class="date-inputs">
-              <div class="date-group">
-                <label>Check-in</label>
-                <input
-                  type="date"
-                  [(ngModel)]="bookingParams.checkIn"
-                  (change)="calculateStayDetails()"
-                  class="date-input"
-                />
+            <div class="date-selection-container">
+              <!-- Date Display and Calendar Toggle -->
+              <div class="selected-dates-display">
+                <div class="selected-date">
+                  <label>Check-in</label>
+                  <div class="date-value" (click)="toggleCalendar()">
+                    {{ bookingParams.checkIn || "Select date" }}
+                    <i class="bi bi-calendar3"></i>
+                  </div>
+                </div>
+                <div class="selected-date">
+                  <label>Check-out</label>
+                  <div class="date-value" (click)="toggleCalendar()">
+                    {{ bookingParams.checkOut || "Select date" }}
+                    <i class="bi bi-calendar3"></i>
+                  </div>
+                </div>
               </div>
-              <div class="date-group">
-                <label>Check-out</label>
-                <input
-                  type="date"
-                  [(ngModel)]="bookingParams.checkOut"
-                  (change)="calculateStayDetails()"
-                  class="date-input"
-                />
+
+              <!-- Visual Calendar -->
+              <div class="calendar-container" *ngIf="showCalendar">
+                <div class="calendar-header">
+                  <button class="nav-btn" (click)="prevMonth()">
+                    <i class="bi bi-chevron-left"></i>
+                  </button>
+                  <h4>{{ getMonthYear() }}</h4>
+                  <button class="nav-btn" (click)="nextMonth()">
+                    <i class="bi bi-chevron-right"></i>
+                  </button>
+                </div>
+
+                <div class="calendar-weekdays">
+                  <div class="weekday">Sun</div>
+                  <div class="weekday">Mon</div>
+                  <div class="weekday">Tue</div>
+                  <div class="weekday">Wed</div>
+                  <div class="weekday">Thu</div>
+                  <div class="weekday">Fri</div>
+                  <div class="weekday">Sat</div>
+                </div>
+
+                <div class="calendar-grid">
+                  <div
+                    *ngFor="let dateObj of calendarDates"
+                    class="calendar-date"
+                    [class.other-month]="!dateObj.isCurrentMonth"
+                    [class.blocked]="dateObj.isBlocked"
+                    [class.past]="dateObj.isPast"
+                    [class.today]="dateObj.isToday"
+                    [class.selected]="dateObj.isSelected"
+                    [class.available]="
+                      dateObj.isCurrentMonth &&
+                      !dateObj.isPast &&
+                      !dateObj.isBlocked
+                    "
+                    (click)="selectDate(dateObj)"
+                  >
+                    <span [class.strikethrough]="dateObj.isBlocked">{{
+                      dateObj.day
+                    }}</span>
+                  </div>
+                </div>
+
+                <div class="calendar-legend">
+                  <div class="legend-item">
+                    <div class="legend-color available"></div>
+                    <span>Available</span>
+                  </div>
+                  <div class="legend-item">
+                    <div class="legend-color blocked"></div>
+                    <span>Booked</span>
+                  </div>
+                  <div class="legend-item">
+                    <div class="legend-color selected"></div>
+                    <span>Selected</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Availability Info -->
+            <div
+              class="availability-info"
+              *ngIf="loadingDates || blockedDates.length > 0"
+            >
+              <div *ngIf="loadingDates" class="loading-dates">
+                <i class="bi bi-hourglass-split"></i>
+                Loading availability...
+              </div>
+              <div
+                *ngIf="!loadingDates && blockedDates.length > 0"
+                class="blocked-dates-info"
+              >
+                <i class="bi bi-info-circle text-warning"></i>
+                Some dates may not be available. You'll be notified if your
+                selected dates conflict with existing bookings.
               </div>
             </div>
 

@@ -46,6 +46,135 @@ router.get("/debug/tables", async (req, res) => {
   }
 });
 
+// GET /api/bookings/availability/:propertyId - Check property availability for given dates
+router.get("/availability/:propertyId", async (req, res) => {
+  try {
+    const { propertyId } = req.params;
+    const { checkIn, checkOut } = req.query;
+
+    console.log(
+      `🔍 Checking availability for property ${propertyId} from ${checkIn} to ${checkOut}`
+    );
+
+    // If no dates provided, return all blocked dates for this property
+    if (!checkIn || !checkOut) {
+      const allBookings = await Booking.findAll({
+        where: {
+          property_id: propertyId,
+          status: ["confirmed", "pending"], // Include pending bookings too
+        },
+        attributes: ["check_in", "check_out", "status"],
+        order: [["check_in", "ASC"]],
+      });
+
+      const blockedDates = [];
+      allBookings.forEach((booking) => {
+        const start = new Date(booking.check_in);
+        const end = new Date(booking.check_out);
+
+        // Add each date in the range to blocked dates
+        for (
+          let date = new Date(start);
+          date < end;
+          date.setDate(date.getDate() + 1)
+        ) {
+          blockedDates.push(date.toISOString().split("T")[0]);
+        }
+      });
+
+      return res.json({
+        success: true,
+        property_id: propertyId,
+        blocked_dates: [...new Set(blockedDates)], // Remove duplicates
+        total_bookings: allBookings.length,
+      });
+    }
+
+    // Check if specific date range is available
+    const checkInDate = new Date(checkIn);
+    const checkOutDate = new Date(checkOut);
+
+    // Validate dates
+    if (checkInDate >= checkOutDate) {
+      return res.status(400).json({
+        success: false,
+        message: "Check-out date must be after check-in date",
+      });
+    }
+
+    // Find conflicting bookings
+    const conflictingBookings = await Booking.findAll({
+      where: {
+        property_id: propertyId,
+        status: ["confirmed", "pending"],
+        [Booking.sequelize.Sequelize.Op.or]: [
+          // New booking starts during existing booking
+          {
+            check_in: {
+              [Booking.sequelize.Sequelize.Op.lte]: checkIn,
+            },
+            check_out: {
+              [Booking.sequelize.Sequelize.Op.gt]: checkIn,
+            },
+          },
+          // New booking ends during existing booking
+          {
+            check_in: {
+              [Booking.sequelize.Sequelize.Op.lt]: checkOut,
+            },
+            check_out: {
+              [Booking.sequelize.Sequelize.Op.gte]: checkOut,
+            },
+          },
+          // New booking completely encompasses existing booking
+          {
+            check_in: {
+              [Booking.sequelize.Sequelize.Op.gte]: checkIn,
+            },
+            check_out: {
+              [Booking.sequelize.Sequelize.Op.lte]: checkOut,
+            },
+          },
+        ],
+      },
+      attributes: [
+        "id",
+        "check_in",
+        "check_out",
+        "confirmation_number",
+        "status",
+      ],
+    });
+
+    const isAvailable = conflictingBookings.length === 0;
+
+    res.json({
+      success: true,
+      property_id: propertyId,
+      check_in: checkIn,
+      check_out: checkOut,
+      is_available: isAvailable,
+      conflicting_bookings: conflictingBookings.map((booking) => ({
+        id: booking.id,
+        check_in: booking.check_in,
+        check_out: booking.check_out,
+        confirmation_number: booking.confirmation_number,
+        status: booking.status,
+      })),
+      message: isAvailable
+        ? "Property is available for selected dates"
+        : `Property is not available. Found ${conflictingBookings.length} conflicting booking(s)`,
+    });
+  } catch (error) {
+    console.error("Error checking availability:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to check availability",
+      error: error.message,
+    });
+  }
+});
+
 // POST /api/bookings - Create a new booking
 router.post("/", async (req, res) => {
   try {
@@ -119,6 +248,74 @@ router.post("/", async (req, res) => {
         message: `Property with ID ${property_id} does not exist`,
       });
     }
+
+    // Check property availability for the requested dates
+    console.log(
+      `🔍 Checking availability for property ${property_id} from ${check_in} to ${check_out}`
+    );
+
+    const conflictingBookings = await Booking.findAll({
+      where: {
+        property_id: property_id,
+        status: ["confirmed", "pending"],
+        [Booking.sequelize.Sequelize.Op.or]: [
+          // New booking starts during existing booking
+          {
+            check_in: {
+              [Booking.sequelize.Sequelize.Op.lte]: check_in,
+            },
+            check_out: {
+              [Booking.sequelize.Sequelize.Op.gt]: check_in,
+            },
+          },
+          // New booking ends during existing booking
+          {
+            check_in: {
+              [Booking.sequelize.Sequelize.Op.lt]: check_out,
+            },
+            check_out: {
+              [Booking.sequelize.Sequelize.Op.gte]: check_out,
+            },
+          },
+          // New booking completely encompasses existing booking
+          {
+            check_in: {
+              [Booking.sequelize.Sequelize.Op.gte]: check_in,
+            },
+            check_out: {
+              [Booking.sequelize.Sequelize.Op.lte]: check_out,
+            },
+          },
+        ],
+      },
+      attributes: [
+        "id",
+        "check_in",
+        "check_out",
+        "confirmation_number",
+        "status",
+      ],
+    });
+
+    // If there are conflicting bookings, reject the request
+    if (conflictingBookings.length > 0) {
+      console.log(
+        `❌ Property not available - found ${conflictingBookings.length} conflicting bookings`
+      );
+      return res.status(409).json({
+        success: false,
+        message: "Property is not available for the selected dates",
+        error_code: "DATES_NOT_AVAILABLE",
+        conflicting_bookings: conflictingBookings.map((booking) => ({
+          check_in: booking.check_in,
+          check_out: booking.check_out,
+          confirmation_number: booking.confirmation_number,
+          status: booking.status,
+        })),
+      });
+    }
+
+    console.log(`✅ Property is available for booking`);
 
     // Create the booking
     const booking = await Booking.create({

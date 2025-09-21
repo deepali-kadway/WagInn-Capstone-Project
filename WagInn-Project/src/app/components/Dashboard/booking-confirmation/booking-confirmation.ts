@@ -37,7 +37,7 @@ export class BookingConfirmation implements OnInit {
 
   private loadBookingDetails(confirmationNumber: string): void {
     this.bookingService.getBookingByConfirmation(confirmationNumber).subscribe({
-      next: (booking) => {
+      next: (booking: Booking | null) => {
         if (booking) {
           this.booking = booking;
         } else {
@@ -46,7 +46,7 @@ export class BookingConfirmation implements OnInit {
         }
         this.loading = false;
       },
-      error: (error) => {
+      error: (error: any) => {
         this.error = 'Error loading booking details';
         console.error('Error loading booking:', error);
         this.loading = false;
