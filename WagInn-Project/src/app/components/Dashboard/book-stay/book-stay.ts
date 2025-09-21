@@ -220,6 +220,15 @@ export class BookStay implements OnInit {
             console.error('Error creating booking:', error);
             this.isProcessing = false;
 
+            // Handle login required error
+            if (error.message && error.message.includes('log in')) {
+              alert(
+                'You must be logged in to make a booking. Redirecting to login page...'
+              );
+              this.router.navigate(['/userSignIn']);
+              return;
+            }
+
             // Show more specific error message
             let errorMessage = 'Failed to create booking. Please try again.';
             if (error.message && error.message.includes('Bad Request')) {

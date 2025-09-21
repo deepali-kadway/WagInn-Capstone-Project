@@ -53,16 +53,23 @@ export class BookingManagementService {
 
   addBooking(bookingData: any, propertyData: any): Observable<string> {
     const confirmationNumber = this.generateConfirmationNumber();
-    const userId = this.getCurrentUserId();
 
-    console.log(' Debug - Creating booking with user ID:', userId);
+    let userId: string;
+    try {
+      userId = this.getCurrentUserId();
+    } catch (error) {
+      console.error('User not logged in:', error);
+      return throwError(() => new Error('Please log in to make a booking'));
+    }
+
+    console.log('🔍 Debug - Creating booking with user ID:', userId);
 
     if (!bookingData.propertyId) {
-      console.error(' No property ID found in booking data');
+      console.error('❌ No property ID found in booking data');
       throw new Error('Property ID is required');
     }
 
-    console.log(' Checking property availability before creating booking...');
+    console.log('🔍 Checking property availability before creating booking...');
 
     return this.availabilityService
       .checkAvailability(
@@ -215,7 +222,18 @@ export class BookingManagementService {
   }
 
   private getCurrentUserId(): string {
-    return sessionStorage.getItem('userId') || 'guest_user';
+    const userInfo = localStorage.getItem('USER_INFO');
+    if (userInfo) {
+      try {
+        const user = JSON.parse(userInfo);
+        return user.id || user.user_id || user.userId;
+      } catch (error) {
+        console.error('Error parsing user info:', error);
+      }
+    }
+
+    // If no user info found, throw an error instead of using guest_user
+    throw new Error('User not logged in. Please log in to make a booking.');
   }
 
   private saveBookingsToStorage(bookings: Booking[]): void {
