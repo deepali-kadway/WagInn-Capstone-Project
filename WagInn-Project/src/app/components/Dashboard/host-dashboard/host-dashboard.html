@@ -15,7 +15,8 @@
       *ngIf="!activeSection || activeSection === 'dashboard'"
       class="dashboard-content"
     >
-      <!-- Quick Stats Section -->
+      <!-- Quick Stats Section - Commented out for now -->
+      <!-- 
       <section class="stats-section">
         <h2 class="section-title">
           <i class="bi bi-graph-up-arrow"></i>
@@ -69,6 +70,7 @@
           </div>
         </div>
       </section>
+      -->
 
       <!-- Booking Management Section -->
       <section class="booking-management">
@@ -80,9 +82,9 @@
           <div class="bookings-header">
             <div class="booking-filters">
               <button class="filter-btn active">All Bookings</button>
-              <button class="filter-btn">Pending</button>
+              <!-- <button class="filter-btn">Pending</button>
               <button class="filter-btn">Confirmed</button>
-              <button class="filter-btn">Completed</button>
+              <button class="filter-btn">Completed</button> -->
             </div>
           </div>
 
@@ -97,47 +99,97 @@
               <div class="booking-cell">Actions</div>
             </div>
 
+            <!-- Loading state -->
+            <div *ngIf="loadingBookings" class="booking-row">
+              <div
+                class="booking-cell"
+                colspan="7"
+                style="text-align: center; padding: 20px"
+              >
+                <i class="bi bi-hourglass-split"></i> Loading bookings...
+              </div>
+            </div>
+
+            <!-- Error state -->
+            <div
+              *ngIf="bookingsError && !loadingBookings"
+              class="booking-row error-row"
+            >
+              <div
+                class="booking-cell"
+                colspan="7"
+                style="text-align: center; padding: 20px"
+              >
+                <i class="bi bi-exclamation-triangle"></i> {{ bookingsError }}
+              </div>
+            </div>
+
+            <!-- No bookings state -->
+            <div
+              *ngIf="
+                !loadingBookings &&
+                !bookingsError &&
+                recentBookings.length === 0
+              "
+              class="booking-row"
+            >
+              <div
+                class="booking-cell"
+                colspan="7"
+                style="text-align: center; padding: 20px"
+              >
+                <i class="bi bi-calendar-x"></i> No bookings found for your
+                property.
+              </div>
+            </div>
+
+            <!-- Booking rows -->
             <div class="booking-row" *ngFor="let booking of recentBookings">
               <div class="booking-cell">
-                <span class="booking-id">{{ booking.id }}</span>
+                <span class="booking-id">{{
+                  booking.confirmation_number
+                }}</span>
               </div>
 
               <div class="booking-cell">
                 <div class="guest-info">
-                  <div class="guest-name">{{ booking.guestName }}</div>
+                  <div class="guest-name">{{ getGuestName(booking) }}</div>
                   <div class="pet-info">
                     <i class="bi bi-heart-fill"></i>
-                    {{ booking.petInfo }}
+                    {{ getPetInfo(booking) }}
                   </div>
                 </div>
               </div>
 
               <div class="booking-cell">
-                <div class="property-name">{{ booking.property }}</div>
+                <div class="property-name">{{ booking.property_title }}</div>
               </div>
 
               <div class="booking-cell">
                 <div class="date-range">
                   <div class="check-in">
                     <i class="bi bi-calendar-plus"></i>
-                    {{ booking.checkIn }}
+                    {{ booking.check_in }}
                   </div>
                   <div class="check-out">
                     <i class="bi bi-calendar-minus"></i>
-                    {{ booking.checkOut }}
+                    {{ booking.check_out }}
                   </div>
-                  <div class="nights">{{ booking.nights }} nights</div>
+                  <div class="nights">{{ booking.total_nights }} nights</div>
                 </div>
               </div>
 
               <div class="booking-cell">
-                <span class="status-badge" [ngClass]="booking.status">
+                <span
+                  class="status-badge"
+                  [ngClass]="getStatusClass(booking.status)"
+                >
                   {{ booking.status | titlecase }}
                 </span>
               </div>
 
               <div class="booking-cell">
-                <div class="revenue-amount">${{ booking.revenue }}</div>
+                <div class="revenue-amount">${{ booking.total_price }}</div>
               </div>
 
               <div class="booking-cell">

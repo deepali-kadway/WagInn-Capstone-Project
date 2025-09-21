@@ -102,8 +102,27 @@ export class BookStay implements OnInit {
   loadPropertyDetails(propertyId: string): void {
     this.propertyService.getPropertyDetails(propertyId).subscribe({
       next: (response) => {
-        console.log('Property details for booking:', response);
+        console.log('🏠 Property details for booking:', response);
         this.property = response.data || response;
+
+        // Validate that we have all required property fields
+        if (
+          !this.property.propertyTitle ||
+          !this.property.propertyType ||
+          !this.property.firstName ||
+          !this.property.lastName ||
+          !this.property.city ||
+          !this.property.province ||
+          !this.property.country ||
+          !this.property.totalGuestPrice
+        ) {
+          console.error('❌ Property data is incomplete:', this.property);
+          this.error =
+            'Property data is incomplete. Cannot proceed with booking.';
+        } else {
+          console.log('✅ Property data is complete for booking');
+        }
+
         this.loading = false;
       },
       error: (error) => {
@@ -166,6 +185,16 @@ export class BookStay implements OnInit {
       return;
     }
 
+    // Check if user is logged in
+    const userInfo = localStorage.getItem('USER_INFO');
+    if (!userInfo) {
+      alert(
+        'You must be logged in to make a booking. Please log in and try again.'
+      );
+      this.router.navigate(['/userSignIn']);
+      return;
+    }
+
     this.isProcessing = true;
 
     // Mock payment processing delay
@@ -173,6 +202,7 @@ export class BookStay implements OnInit {
       console.log('Mock payment processed successfully');
       console.log('Booking Details:', this.bookingDetails);
       console.log('Payment Details:', this.paymentForm);
+      console.log('User Info:', JSON.parse(userInfo));
 
       // Create booking using BookingManagementService
       this.bookingService
@@ -189,7 +219,16 @@ export class BookStay implements OnInit {
           error: (error) => {
             console.error('Error creating booking:', error);
             this.isProcessing = false;
-            alert('Failed to create booking. Please try again.');
+
+            // Show more specific error message
+            let errorMessage = 'Failed to create booking. Please try again.';
+            if (error.message && error.message.includes('Bad Request')) {
+              errorMessage = error.message;
+            } else if (error.message) {
+              errorMessage = error.message;
+            }
+
+            alert(errorMessage);
           },
         });
     }, 2000); // 2 second delay to simulate processing

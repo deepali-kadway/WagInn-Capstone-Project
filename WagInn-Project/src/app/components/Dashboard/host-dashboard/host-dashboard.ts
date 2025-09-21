@@ -1,4 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import {
+  HostFetchDetails,
+  HostBooking,
+  HostDashboardStats,
+} from '../../../services/hostDashboard/host-fetch-details';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-host-dashboard',
@@ -13,67 +19,132 @@ export class HostDashboard implements OnInit {
 
   // Host information (populated from auth service later)
   currentHost: any = null;
+
+  // Dashboard stats (will be populated from API)
+  dashboardStats: HostDashboardStats = {
+    totalProperties: 1,
+    activeBookings: 0,
+    lastMonthRevenue: 0,
+    pendingRequests: 0,
+  };
+
+  // Booking data (will come from backend)
+  recentBookings: HostBooking[] = [];
+  loadingBookings: boolean = false;
+  bookingsError: string | null = null;
+
+  constructor(private service: HostFetchDetails, private router: Router) {}
+
   ngOnInit(): void {
     const hostData = localStorage.getItem('USER_INFO');
     if (hostData) {
       this.currentHost = JSON.parse(hostData);
+      this.loadHostData();
     }
   }
-  // Dashboard stats (mock data for now)
-  dashboardStats = {
-    totalProperties: 1,
-    activeBookings: 8,
-    lastMonthRevenue: 1450,
-    pendingRequests: 3,
-  };
 
-  // Sample booking data (will come from backend later)
-  recentBookings = [
-    {
-      id: 'BK001',
-      guestName: 'John Smith',
-      petInfo: 'Golden Retriever - Max',
-      property: 'Cozy Downtown Apartment',
-      checkIn: '2025-09-25',
-      checkOut: '2025-09-28',
-      status: 'confirmed',
-      revenue: 320,
-      nights: 3,
-    },
-    {
-      id: 'BK002',
-      guestName: 'Emily Johnson',
-      petInfo: 'Labrador & Cat - Luna & Whiskers',
-      property: 'Pet-Friendly Beach House',
-      checkIn: '2025-09-22',
-      checkOut: '2025-09-24',
-      status: 'pending',
-      revenue: 280,
-      nights: 2,
-    },
-    {
-      id: 'BK003',
-      guestName: 'Mike Wilson',
-      petInfo: 'French Bulldog - Buddy',
-      property: 'Modern City Loft',
-      checkIn: '2025-09-20',
-      checkOut: '2025-09-23',
-      status: 'completed',
-      revenue: 450,
-      nights: 3,
-    },
-    {
-      id: 'BK004',
-      guestName: 'Lisa Anderson',
-      petInfo: 'Border Collie - Rex',
-      property: 'Suburban Family Home',
-      checkIn: '2025-09-30',
-      checkOut: '2025-10-03',
-      status: 'confirmed',
-      revenue: 375,
-      nights: 3,
-    },
-  ];
+  // Load host dashboard data
+  private loadHostData(): void {
+    if (!this.currentHost?.id) {
+      this.bookingsError = 'Host information not found';
+      return;
+    }
+
+    this.loadingBookings = true;
+    this.bookingsError = null;
+
+    // Load dashboard statistics (commented out - UI section disabled)
+    // this.service.getHostDashboardStats(this.currentHost.id).subscribe({
+    //   next: (stats) => {
+    //     this.dashboardStats = stats;
+    //   },
+    //   error: (error) => {
+    //     console.error('Error loading dashboard stats:', error);
+    //   },
+    // });
+
+    // Load host bookings
+    this.service.getHostBookings(this.currentHost.id).subscribe({
+      next: (bookings) => {
+        console.log('Received bookings:', bookings);
+        bookings.forEach((booking) => {
+          console.log('Booking user:', booking.user);
+          console.log('User pets:', booking.user?.pets);
+        });
+        this.recentBookings = bookings;
+        this.loadingBookings = false;
+      },
+      error: (error) => {
+        console.error('Error loading host bookings:', error);
+        this.bookingsError = 'Failed to load bookings';
+        this.loadingBookings = false;
+      },
+    });
+  }
+
+  // Helper method to get guest name from booking
+  getGuestName(booking: HostBooking): string {
+    if (booking.user) {
+      return `${booking.user.firstName} ${booking.user.lastName}`;
+    }
+    return 'Guest Information Not Available';
+  }
+
+  // Helper method to get pet info
+  getPetInfo(booking: HostBooking): string {
+    console.log('getPetInfo called with booking:', booking);
+    console.log('booking.user:', booking.user);
+    console.log('booking.user?.pets:', booking.user?.pets);
+    console.log('booking.pets count:', booking.pets);
+
+    // Check if user has pets data from the API
+    if (booking.user?.pets && booking.user.pets.length > 0) {
+      const petNames = booking.user.pets.map((pet) => pet.petName).join(', ');
+      console.log('Pet names found:', petNames);
+      return `${petNames} (${booking.user.pets.length} pet${
+        booking.user.pets.length > 1 ? 's' : ''
+      })`;
+    }
+    // Fallback to pets count if no detailed pet data
+    else if (booking.pets > 0) {
+      console.log('Using fallback pets count');
+      return `${booking.pets} Pet${booking.pets > 1 ? 's' : ''}`;
+    }
+    console.log('No pets found, returning No Pets');
+    return 'No Pets';
+  }
+
+  // Helper method to format dates
+  formatDateRange(checkIn: string, checkOut: string): string {
+    const checkInDate = new Date(checkIn);
+    const checkOutDate = new Date(checkOut);
+
+    const options: Intl.DateTimeFormatOptions = {
+      month: 'short',
+      day: 'numeric',
+    };
+
+    return `${checkInDate.toLocaleDateString(
+      'en-US',
+      options
+    )} - ${checkOutDate.toLocaleDateString('en-US', options)}`;
+  }
+
+  // Helper method to get status class for styling
+  getStatusClass(status: string): string {
+    switch (status.toLowerCase()) {
+      case 'confirmed':
+        return 'status-confirmed';
+      case 'pending':
+        return 'status-pending';
+      case 'completed':
+        return 'status-completed';
+      case 'cancelled':
+        return 'status-cancelled';
+      default:
+        return 'status-default';
+    }
+  }
 
   // Methods for UI interactions
   setActiveSection(section: string): void {
@@ -100,14 +171,10 @@ export class HostDashboard implements OnInit {
 
   // Booking management methods
   viewBookingDetails(bookingId: string): void {
-    console.log('View booking details:', bookingId);
-    // Logic will be implemented later
+    this.router.navigate(['/hostBookingDetails', bookingId]);
   }
 
-  messageGuest(bookingId: string): void {
-    console.log('Message guest for booking:', bookingId);
-    // Logic will be implemented later
-  }
+  messageGuest(bookingId: string): void {}
 
   updateBookingStatus(bookingId: string, status: string): void {
     console.log('Update booking status:', bookingId, status);

@@ -46,9 +46,46 @@ export class BookingManagementService {
     const confirmationNumber = this.generateConfirmationNumber();
     const userId = this.getCurrentUserId();
 
-    console.log('Creating booking with user ID:', userId);
-    console.log('Booking data:', bookingData);
-    console.log('Property data:', propertyData);
+    console.log('🔍 Debug - Creating booking with user ID:', userId);
+    console.log(
+      '🔍 Debug - Property ID (from booking data):',
+      bookingData.propertyId
+    );
+    console.log('🔍 Debug - Booking data:', bookingData);
+    console.log('🔍 Debug - Property data:', propertyData);
+
+    // Check if userId is valid
+    if (!userId) {
+      const userInfo = localStorage.getItem('USER_INFO');
+      if (userInfo) {
+        try {
+          const user = JSON.parse(userInfo);
+          if (user.role === 'host' || user.propertyTitle || user.hostEarnings) {
+            console.error(
+              '❌ Host account detected - hosts cannot book properties'
+            );
+            alert(
+              'Hosts cannot book properties with their host account. Please log in with a user account to make bookings.'
+            );
+            throw new Error('Host accounts cannot make bookings');
+          }
+        } catch (e) {
+          // Continue with generic error below
+        }
+      }
+
+      console.error('❌ No user ID found - user must be logged in to book');
+      alert(
+        'You must be logged in with a user account to make a booking. Please log in and try again.'
+      );
+      throw new Error('User not logged in');
+    }
+
+    // Validate that we have a property ID
+    if (!bookingData.propertyId) {
+      console.error('❌ No property ID found in booking data');
+      throw new Error('Property ID is required');
+    }
 
     // Prepare booking data for API
     const bookingPayload = {
@@ -71,7 +108,10 @@ export class BookingManagementService {
       status: 'confirmed',
     };
 
-    console.log('Sending booking payload to API:', bookingPayload);
+    console.log(
+      '📤 Sending booking payload to API:',
+      JSON.stringify(bookingPayload, null, 2)
+    );
 
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
@@ -115,8 +155,21 @@ export class BookingManagementService {
           }
         }),
         catchError((error) => {
-          console.error('Error creating booking:', error);
-          throw error;
+          console.error('❌ Error creating booking:', error);
+          console.error('❌ Error status:', error.status);
+          console.error('❌ Error body:', error.error);
+
+          // Provide more specific error message
+          let errorMessage = 'Failed to create booking';
+          if (error.status === 400) {
+            errorMessage = `Bad Request: ${
+              error.error?.message || 'Invalid data provided'
+            }`;
+          } else if (error.status === 500) {
+            errorMessage = 'Server error occurred while creating booking';
+          }
+
+          throw new Error(errorMessage);
         })
       );
   }
@@ -207,15 +260,43 @@ export class BookingManagementService {
 
   // Get current user ID from localStorage
   private getCurrentUserId(): string | null {
+    console.log('🔍 Checking localStorage for USER_INFO...');
     const userInfo = localStorage.getItem('USER_INFO');
+    console.log('🔍 USER_INFO from localStorage:', userInfo);
+
     if (userInfo) {
       try {
         const user = JSON.parse(userInfo);
-        return user.id || user.email; // Use ID or email as fallback
+        console.log('🔍 Parsed user object:', user);
+
+        // Check if this is a host token (has host-specific properties)
+        if (user.role === 'host' || user.propertyTitle || user.hostEarnings) {
+          console.log('❌ Current session is for a HOST, not a USER');
+          console.log(
+            '❌ Users must log in with a USER account to make bookings'
+          );
+          return null;
+        }
+
+        // Check if this is a user token (has user-specific properties)
+        if (
+          user.role === 'user' ||
+          user.pets ||
+          (!user.propertyTitle && !user.hostEarnings)
+        ) {
+          const userId = user.id || user.email; // Use ID or email as fallback
+          console.log('✅ Found USER session, user ID:', userId);
+          return userId;
+        }
+
+        console.log('⚠️ Unknown user type in localStorage');
+        return user.id || user.email;
       } catch (error) {
         console.error('Error parsing user info:', error);
       }
     }
+
+    console.log('❌ No user info found in localStorage');
     return null;
   }
 

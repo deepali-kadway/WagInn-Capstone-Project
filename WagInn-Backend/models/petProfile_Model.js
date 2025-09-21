@@ -11,7 +11,7 @@ const Pet = sequelize.define("Pet_Profile", {
     type: DataTypes.UUID,
     allowNull: false,
     references: {
-      model: "User_Profiles", //name as per db table name
+      model: "user_profiles", //corrected to match actual table name
       key: "id",
     },
   },
@@ -53,6 +53,9 @@ const Pet = sequelize.define("Pet_Profile", {
   concerns: {
     type: DataTypes.TEXT,
   },
+}, {
+  tableName: "pet_profiles",
+  timestamps: true,
 });
 
 export default Pet;

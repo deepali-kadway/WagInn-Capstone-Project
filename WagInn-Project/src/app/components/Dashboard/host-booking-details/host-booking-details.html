@@ -1,0 +1,305 @@
+<div class="booking-details-container">
+  <!-- Header -->
+  <div class="page-header">
+    <button class="back-button" (click)="goBack()">
+      <i class="bi bi-arrow-left"></i>
+      Back to Dashboard
+    </button>
+    <h1>Booking Details</h1>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-container">
+    <div class="loading-spinner"></div>
+    <p>Loading booking details...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error && !loading" class="error-container">
+    <i class="bi bi-exclamation-triangle"></i>
+    <h3>Error</h3>
+    <p>{{ error }}</p>
+    <button class="retry-button" (click)="loadBookingDetails()">
+      Try Again
+    </button>
+  </div>
+
+  <!-- Booking Details Content -->
+  <div *ngIf="booking && !loading" class="booking-content">
+    <!-- Booking Summary Card -->
+    <div class="booking-card">
+      <div class="card-header">
+        <h2>Booking Summary</h2>
+        <span class="status-badge" [class]="getStatusClass()">
+          {{ booking.status | titlecase }}
+        </span>
+      </div>
+
+      <div class="booking-info-grid">
+        <div class="info-item">
+          <label>Confirmation Number</label>
+          <span class="confirmation-number">{{
+            booking.confirmation_number
+          }}</span>
+        </div>
+
+        <div class="info-item">
+          <label>Property</label>
+          <span>{{ booking.property_title }}</span>
+        </div>
+
+        <div class="info-item">
+          <label>Property Type</label>
+          <span>{{ booking.property_type | titlecase }}</span>
+        </div>
+
+        <div class="info-item">
+          <label>Location</label>
+          <span>{{ booking.location }}</span>
+        </div>
+
+        <div class="info-item">
+          <label>Check-in</label>
+          <span>{{ formatDate(booking.check_in) }}</span>
+        </div>
+
+        <div class="info-item">
+          <label>Check-out</label>
+          <span>{{ formatDate(booking.check_out) }}</span>
+        </div>
+
+        <div class="info-item">
+          <label>Total Nights</label>
+          <span>{{ booking.total_nights }}</span>
+        </div>
+
+        <div class="info-item">
+          <label>Booking Date</label>
+          <span>{{ formatDate(booking.booking_date) }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Guest Information Card -->
+    <div class="guest-card">
+      <div class="card-header">
+        <h2>Guest Information</h2>
+      </div>
+
+      <div class="guest-info" *ngIf="booking.user">
+        <div class="guest-details">
+          <div class="guest-avatar">
+            <i class="bi bi-person-circle"></i>
+          </div>
+          <div class="guest-basic-info">
+            <h3>{{ getGuestName() }}</h3>
+            <p class="guest-email">{{ booking.user?.email }}</p>
+            <p class="guest-phone" *ngIf="getUserPhone()">
+              {{ getUserPhone() }}
+            </p>
+          </div>
+        </div>
+
+        <!-- Guest Count -->
+        <div class="guest-count-section">
+          <h4>Guest Count</h4>
+          <div class="count-grid">
+            <div class="count-item">
+              <span class="count-label">Adults</span>
+              <span class="count-value">{{ booking.adults }}</span>
+            </div>
+            <div class="count-item" *ngIf="booking.children > 0">
+              <span class="count-label">Children</span>
+              <span class="count-value">{{ booking.children }}</span>
+            </div>
+            <div class="count-item" *ngIf="booking.infants > 0">
+              <span class="count-label">Infants</span>
+              <span class="count-value">{{ booking.infants }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="!booking.user" class="no-guest-info">
+        <i class="bi bi-person-x"></i>
+        <p>Guest information not available</p>
+      </div>
+    </div>
+
+    <!-- Pet Information Card -->
+    <div class="pet-card">
+      <div class="card-header">
+        <h2>Pet Information</h2>
+      </div>
+
+      <div *ngIf="hasPets()" class="pets-section">
+        <div class="pet-summary">
+          <p>
+            <strong>{{ getPetsCount() }}</strong> pet(s) included in this
+            booking
+          </p>
+        </div>
+
+        <div class="pets-grid">
+          <div *ngFor="let pet of getUserPets()" class="pet-item">
+            <div class="pet-header">
+              <div class="pet-icon">
+                <i
+                  class="bi"
+                  [class]="pet.petType === 'dog' ? 'bi-heart-fill' : 'bi-heart'"
+                ></i>
+              </div>
+              <div class="pet-basic-info">
+                <h4>{{ pet.petName }}</h4>
+                <p class="pet-type">
+                  {{ pet.petType | titlecase }} - {{ pet.breed }}
+                </p>
+                <div class="pet-specs">
+                  <span class="pet-spec">{{ pet.size | titlecase }}</span>
+                  <span class="pet-spec"
+                    >{{ pet.age }} year{{ pet.age !== 1 ? "s" : "" }} old</span
+                  >
+                </div>
+              </div>
+            </div>
+
+            <!-- Pet Health & Care Information -->
+            <div class="pet-health-info">
+              <h5>Health & Care Information</h5>
+
+              <div class="health-grid">
+                <div class="health-item">
+                  <span class="health-label">Vaccinated:</span>
+                  <span
+                    class="health-value"
+                    [class]="
+                      pet.isVaccinated === 'yes'
+                        ? 'status-positive'
+                        : 'status-negative'
+                    "
+                  >
+                    {{ pet.isVaccinated | titlecase }}
+                  </span>
+                </div>
+
+                <div
+                  class="health-item"
+                  *ngIf="pet.isVaccinated === 'yes' && pet.vaccinations"
+                >
+                  <span class="health-label">Vaccinations:</span>
+                  <span class="health-value">
+                    <span *ngIf="isArray(pet.vaccinations)">
+                      {{ pet.vaccinations.join(", ") }}
+                    </span>
+                    <span *ngIf="!isArray(pet.vaccinations)">
+                      {{ pet.vaccinations }}
+                    </span>
+                  </span>
+                </div>
+
+                <div class="health-item">
+                  <span class="health-label">Neutered/Spayed:</span>
+                  <span
+                    class="health-value"
+                    [class]="
+                      pet.isNeutered === 'yes'
+                        ? 'status-positive'
+                        : 'status-negative'
+                    "
+                  >
+                    {{ pet.isNeutered | titlecase }}
+                  </span>
+                </div>
+
+                <div class="health-item">
+                  <span class="health-label">Flea/Tick Prevention:</span>
+                  <span
+                    class="health-value"
+                    [class]="
+                      pet.isFleaTickPrevented === 'yes'
+                        ? 'status-positive'
+                        : 'status-negative'
+                    "
+                  >
+                    {{ pet.isFleaTickPrevented | titlecase }}
+                  </span>
+                </div>
+
+                <div class="health-item" *ngIf="pet.concerns">
+                  <span class="health-label">Special Concerns:</span>
+                  <span class="health-value concerns">{{ pet.concerns }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="!hasPets()" class="no-pets">
+        <i class="bi bi-x-circle"></i>
+        <p>No pets included in this booking</p>
+      </div>
+    </div>
+
+    <!-- Pricing Information Card -->
+    <div class="pricing-card">
+      <div class="card-header">
+        <h2>Pricing Details</h2>
+      </div>
+
+      <div class="pricing-breakdown">
+        <div class="price-item">
+          <span>Price per night</span>
+          <span class="price">${{ booking.price_per_night }}</span>
+        </div>
+        <div class="price-item">
+          <span>{{ booking.total_nights }} nights</span>
+          <span class="price"
+            >${{
+              (booking.price_per_night * booking.total_nights).toFixed(2)
+            }}</span
+          >
+        </div>
+        <div class="price-item total">
+          <span><strong>Total Amount</strong></span>
+          <span class="price"
+            ><strong>${{ booking.total_price }}</strong></span
+          >
+        </div>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-section">
+      <div *ngIf="canCompleteBooking" class="complete-booking-section">
+        <div class="completion-notice">
+          <i class="bi bi-info-circle"></i>
+          <p>
+            The checkout date has passed. You can now mark this booking as
+            completed.
+          </p>
+        </div>
+        <button
+          class="complete-booking-btn"
+          [disabled]="completingBooking"
+          (click)="completeBooking()"
+        >
+          <i class="bi bi-check-circle"></i>
+          {{ completingBooking ? "Completing..." : "Mark as Completed" }}
+        </button>
+      </div>
+
+      <div *ngIf="booking.status === 'completed'" class="completed-notice">
+        <i class="bi bi-check-circle-fill"></i>
+        <p>This booking has been completed successfully.</p>
+      </div>
+
+      <div class="other-actions">
+        <button class="action-btn secondary" (click)="goBack()">
+          <i class="bi bi-arrow-left"></i>
+          Back to Dashboard
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

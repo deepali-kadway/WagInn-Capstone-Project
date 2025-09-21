@@ -76,7 +76,7 @@ sequelize
 console.log("About to sync models...");
 
 sequelize
-  .sync({ force: false, alter: true })
+  .sync({ force: false, alter: false })
   .then(() => {
     console.log("All database tables synced successfully");
   })
