@@ -52,6 +52,8 @@ export class OpenPropertyDetails implements OnInit {
     this.currentMonth = new Date();
 
     // Get property ID from route params
+    // .snapshot - provide static snapshot of route information at the time of access. Used when ypu need route data once and don't need to react to changes
+    // .paramMap - contains all route parameters from the URL path
     const propertyId = this.route.snapshot.paramMap.get('id');
 
     // Get booking parameters from query params
@@ -142,6 +144,7 @@ export class OpenPropertyDetails implements OnInit {
 
       if (checkOut > checkIn) {
         const timeDiff = checkOut.getTime() - checkIn.getTime();
+        //ceil - rounds a number up to nearest whole number
         this.bookingParams.totalNights = Math.ceil(
           timeDiff / (1000 * 3600 * 24)
         );
