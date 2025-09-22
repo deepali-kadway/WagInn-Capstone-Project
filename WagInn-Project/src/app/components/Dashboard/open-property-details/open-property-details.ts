@@ -264,36 +264,42 @@ export class OpenPropertyDetails implements OnInit {
 
     console.log('Generating calendar for:', year, month + 1, 'Today:', today);
 
-    // Get first day of month and how many days in month
-    const firstDay = new Date(year, month, 1);
-    const lastDay = new Date(year, month + 1, 0);
-    const daysInMonth = lastDay.getDate();
-    const startDate = firstDay.getDay(); // 0 = Sunday
+    // Get first day of month and how many days in month. Months marked from 0
+    const firstDay = new Date(year, month, 1); // (2025, 8, 1) - 1st Sept 2025
+    const lastDay = new Date(year, month + 1, 0); // (2025, 9, 0) - This is 9th is October, but since 0 it will return 1 day before 1st Oct
+    const daysInMonth = lastDay.getDate(); // 30
+    const startDate = firstDay.getDay(); // 0 = Sunday, 1 = Monday. Sept starts on Monday so 1.
 
     this.calendarDates = [];
 
     // Add empty cells for days before month starts
     for (let i = 0; i < startDate; i++) {
       this.calendarDates.push({ day: '', isCurrentMonth: false });
+      //Loop from 0 to starting day. If Sept 1st is monday, create 1 empty cell for Sunday.
+      // day: '' is empty sting - no day number to display
+      // isCurrentMonth: false - marks as not part of current month (for styling)
     }
 
     // Add days of current month
     for (let day = 1; day <= daysInMonth; day++) {
+      //year: 2025, month:09 (add 0 using padstart) - day: 01 (add 0 using padstart)
       const dateStr = `${year}-${(month + 1).toString().padStart(2, '0')}-${day
         .toString()
         .padStart(2, '0')}`;
+      // thus dateStr = "2025-09-01"
+
       const currentDate = new Date(year, month, day);
-      const isBlocked = this.blockedDates.includes(dateStr);
+      const isBlocked = this.blockedDates.includes(dateStr); // check if current date is in blockedArray
       const isToday = this.isSameDate(currentDate, today);
       const isPast = currentDate < today && !isToday; // Past but not today
 
       this.calendarDates.push({
-        day: day,
-        dateStr: dateStr,
-        isCurrentMonth: true,
-        isBlocked: isBlocked,
-        isToday: isToday,
-        isPast: isPast,
+        day: day, //say 15, day number
+        dateStr: dateStr, // "2025-09-25". ISO date string
+        isCurrentMonth: true, //part of displayed month
+        isBlocked: isBlocked, //false, blocked by other bookings
+        isToday: isToday, // false, if it;s todays date
+        isPast: isPast, // false, is before today
         isSelected:
           dateStr === this.bookingParams.checkIn ||
           dateStr === this.bookingParams.checkOut,
