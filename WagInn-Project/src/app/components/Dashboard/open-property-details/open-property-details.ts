@@ -36,9 +36,9 @@ export class OpenPropertyDetails implements OnInit {
   loadingDates: boolean = false;
 
   // Calendar display
-  currentMonth: Date = new Date();
-  calendarDates: any[] = [];
-  showCalendar: boolean = false;
+  currentMonth: Date = new Date(); // Current displayed month
+  calendarDates: any[] = []; // Array of date objects
+  showCalendar: boolean = false; // Calendar visibility
 
   constructor(
     private route: ActivatedRoute,
@@ -48,6 +48,9 @@ export class OpenPropertyDetails implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    // Initialize calendar to current month
+    this.currentMonth = new Date();
+
     // Get property ID from route params
     const propertyId = this.route.snapshot.paramMap.get('id');
 
@@ -257,6 +260,9 @@ export class OpenPropertyDetails implements OnInit {
   generateCalendar(): void {
     const year = this.currentMonth.getFullYear();
     const month = this.currentMonth.getMonth();
+    const today = new Date();
+
+    console.log('Generating calendar for:', year, month + 1, 'Today:', today);
 
     // Get first day of month and how many days in month
     const firstDay = new Date(year, month, 1);
@@ -276,9 +282,10 @@ export class OpenPropertyDetails implements OnInit {
       const dateStr = `${year}-${(month + 1).toString().padStart(2, '0')}-${day
         .toString()
         .padStart(2, '0')}`;
+      const currentDate = new Date(year, month, day);
       const isBlocked = this.blockedDates.includes(dateStr);
-      const isToday = dateStr === this.getCurrentDate();
-      const isPast = new Date(dateStr) < new Date(this.getCurrentDate());
+      const isToday = this.isSameDate(currentDate, today);
+      const isPast = currentDate < today && !isToday; // Past but not today
 
       this.calendarDates.push({
         day: day,
@@ -292,53 +299,112 @@ export class OpenPropertyDetails implements OnInit {
           dateStr === this.bookingParams.checkOut,
       });
     }
+
+    console.log(
+      'Generated calendar dates:',
+      this.calendarDates.length,
+      'dates'
+    );
+  }
+
+  // Helper method to compare dates accurately
+  private isSameDate(date1: Date, date2: Date): boolean {
+    return (
+      date1.getFullYear() === date2.getFullYear() &&
+      date1.getMonth() === date2.getMonth() &&
+      date1.getDate() === date2.getDate()
+    );
   }
 
   selectDate(dateObj: any): void {
-    if (!dateObj.isCurrentMonth || dateObj.isPast || dateObj.isBlocked) {
+    console.log('Date clicked:', dateObj);
+
+    // Don't allow selection of past dates, today, blocked dates, or dates from other months
+    if (
+      !dateObj.isCurrentMonth ||
+      dateObj.isPast ||
+      dateObj.isToday ||
+      dateObj.isBlocked
+    ) {
+      console.log('Date selection blocked:', {
+        isCurrentMonth: dateObj.isCurrentMonth,
+        isPast: dateObj.isPast,
+        isToday: dateObj.isToday,
+        isBlocked: dateObj.isBlocked,
+      });
       return;
     }
+
+    console.log('Date selection allowed');
 
     // If no check-in selected, set as check-in
     if (!this.bookingParams.checkIn) {
       this.bookingParams.checkIn = dateObj.dateStr;
+      console.log('Check-in set to:', dateObj.dateStr);
     }
     // If check-in selected but no check-out, set as check-out
     else if (!this.bookingParams.checkOut) {
       if (new Date(dateObj.dateStr) > new Date(this.bookingParams.checkIn)) {
         this.bookingParams.checkOut = dateObj.dateStr;
+        console.log('Check-out set to:', dateObj.dateStr);
+        this.calculateStayDetails(); // Calculate stay details when both dates are selected
       } else {
         // If selected date is before check-in, reset and set as new check-in
         this.bookingParams.checkIn = dateObj.dateStr;
         this.bookingParams.checkOut = '';
+        console.log('Reset - new check-in set to:', dateObj.dateStr);
       }
     }
     // If both selected, reset and start over
     else {
       this.bookingParams.checkIn = dateObj.dateStr;
       this.bookingParams.checkOut = '';
+      console.log(
+        'Both dates were selected - reset, new check-in:',
+        dateObj.dateStr
+      );
     }
 
     this.generateCalendar(); // Refresh to update selected dates
-    this.calculateStayDetails();
   }
 
   nextMonth(): void {
+    console.log('Next month clicked - current month:', this.currentMonth);
     this.currentMonth = new Date(
       this.currentMonth.getFullYear(),
       this.currentMonth.getMonth() + 1,
       1
     );
+    console.log('New month set to:', this.currentMonth);
     this.generateCalendar();
   }
 
   prevMonth(): void {
-    this.currentMonth = new Date(
+    console.log('Previous month clicked - current month:', this.currentMonth);
+    const today = new Date();
+    const currentMonthStart = new Date(
+      today.getFullYear(),
+      today.getMonth(),
+      1
+    );
+    const prevMonthStart = new Date(
       this.currentMonth.getFullYear(),
       this.currentMonth.getMonth() - 1,
       1
     );
-    this.generateCalendar();
+
+    console.log('Today:', today);
+    console.log('Current month start:', currentMonthStart);
+    console.log('Previous month start:', prevMonthStart);
+
+    // Don't allow going to months before current month
+    if (prevMonthStart >= currentMonthStart) {
+      this.currentMonth = prevMonthStart;
+      console.log('Allowed to go to previous month:', this.currentMonth);
+      this.generateCalendar();
+    } else {
+      console.log('Not allowed to go to previous month');
+    }
   }
 
   getMonthYear(): string {

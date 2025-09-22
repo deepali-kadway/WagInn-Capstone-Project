@@ -38,14 +38,14 @@
             (error)="onImageError($event)"
           />
           <button
-            class="nav-btn prev-btn"
+            class="image-nav-btn prev-btn"
             (click)="prevImage()"
             *ngIf="images.length > 1"
           >
             <i class="bi bi-chevron-left"></i>
           </button>
           <button
-            class="nav-btn next-btn"
+            class="image-nav-btn next-btn"
             (click)="nextImage()"
             *ngIf="images.length > 1"
           >
@@ -175,11 +175,11 @@
               <!-- Visual Calendar -->
               <div class="calendar-container" *ngIf="showCalendar">
                 <div class="calendar-header">
-                  <button class="nav-btn" (click)="prevMonth()">
+                  <button class="calendar-nav-btn" (click)="prevMonth()">
                     <i class="bi bi-chevron-left"></i>
                   </button>
                   <h4>{{ getMonthYear() }}</h4>
-                  <button class="nav-btn" (click)="nextMonth()">
+                  <button class="calendar-nav-btn" (click)="nextMonth()">
                     <i class="bi bi-chevron-right"></i>
                   </button>
                 </div>
