@@ -9,6 +9,8 @@
           <i class="bi bi-list"></i>
         </button>
       </div>
+      <!-- Used two way data binding instead of FormGroup. Search forms are typically simpler and don't require complex validations.
+       Two way binding provides immediate data binding, instant update to component property. -->
       <form class="search-form">
         <!-- Destination -->
         <div class="form-row">
@@ -259,13 +261,13 @@
                     class="btn btn-primary"
                     (click)="viewProperty(property.id)"
                   >
-                    <i class="bi bi-eye"></i> View Details
+                    <i class="bi bi-eye-fill"></i> View Details
                   </button>
                   <button
                     class="btn btn-secondary"
                     (click)="contactHost(property.id)"
                   >
-                    <i class="bi bi-chat"></i> Contact Host
+                    <i class="bi bi-chat-fill"></i> Contact Host
                   </button>
                 </div>
               </div>
@@ -552,6 +554,7 @@
     [class.active]="sidebarOpen"
     (click)="closeSidebar()"
   ></div>
+  <!-- When sidebarOpen = true, adds active class. When false, removes active class-->
   <nav class="slide-sidebar" [class.open]="sidebarOpen">
     <div class="sidebar-header">
       <div class="user-info">

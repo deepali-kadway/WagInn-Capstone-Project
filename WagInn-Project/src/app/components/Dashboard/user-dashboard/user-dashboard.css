@@ -55,7 +55,7 @@
   justify-content: center;
   transition: all 0.3s ease;
   box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-  position: absolute;
+  position: absolute; /*relative to parent's position (search-header)*/
   right: 0;
 }
 
@@ -81,7 +81,7 @@
   display: flex;
   gap: 20px;
   margin-bottom: 20px;
-  flex-wrap: wrap;
+  flex-wrap: wrap; /* flex items wrap into new lines when they cannot fit within the container on a single line*/
 }
 
 .form-row:last-child {
@@ -90,12 +90,12 @@
 }
 
 .form-group {
-  flex: 1;
+  flex: 1; /*Takes up 1 unit of available space, all fields (dates, guests, etc) gets equal width.*/
   min-width: 200px;
 }
 
 .destination-group {
-  flex: 2;
+  flex: 2; /* takes upto 2 units of available space, twice width as other elements. Destination field needs more space*/
   min-width: 300px;
 }
 
@@ -166,7 +166,7 @@
 .slide-sidebar {
   position: fixed;
   top: 0;
-  right: -350px; /* Hidden by default */
+  right: -350px; /* Hidden off-screen by default */
   width: 350px;
   height: 100vh;
   background: white;
@@ -177,26 +177,26 @@
 }
 
 .slide-sidebar.open {
-  right: 0; /* Slide in when open */
+  right: 0; /* Slides into view when open */
 }
 
-/* Sidebar Overlay */
+/* Side Navbar Overlay */
 .sidebar-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
   z-index: 9998; /* Just below sidebar */
   opacity: 0;
-  visibility: hidden;
+  visibility: hidden; /* Hidden by default */
   transition: all 0.3s ease;
 }
 
 .sidebar-overlay.active {
   opacity: 1;
-  visibility: visible;
+  visibility: visible; /* Visible when active */
 }
 
 /* Sidebar Header */
@@ -908,7 +908,10 @@
 
 .properties-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(400px, 1fr)
+  ); /* fills row with as many columns fit. each col must be 400px wide but can grow upto 1fr(fraction of available space)*/
   gap: 25px;
   margin-top: 20px;
 }
@@ -994,7 +997,7 @@
 .amenities h4,
 .property-card .pet-amenities h4,
 .allowed-pets h4 {
-  margin: 0 0 8px 0;
+  margin: 0 0 8px 0; /*top right bottom left; Adds 8px of space below the element*/
   color: #2c3e50;
   font-size: 14px;
   font-weight: 600;

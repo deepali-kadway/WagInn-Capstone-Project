@@ -119,7 +119,6 @@ export class UserDashboard implements OnInit {
   }
 
   navigateToMyBookings(): void {
-    console.log('Navigating to My Bookings');
     this.closeSidebar();
     this.router.navigate(['/myBookingsUser']);
   }
@@ -175,7 +174,5 @@ export class UserDashboard implements OnInit {
 
   contactHost(propertyId: string): void {
     console.log('Contact host for property:', propertyId);
-    // TODO: Open contact form, messaging system, or navigate to host contact page
-    // For now, just log the action
   }
 }

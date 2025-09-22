@@ -76,7 +76,7 @@ router.get("/properties", async (req, res) => {
 
     // Process property photos for all properties
     const processedProperties = hostProperties.map((property) => {
-      const propertyData = property.toJSON();
+      const propertyData = property.toJSON(); // convert sequelize mode to plain JS object
 
       // Handle propertyPhotos field
       if (propertyData.propertyPhotos) {
@@ -88,7 +88,7 @@ router.get("/properties", async (req, res) => {
             photos = JSON.parse(photos);
           }
 
-          // If it's an array of objects with secureFilename, extract filenames
+          // Process Array of Photo Objects. If it's an array of objects with secureFilename, extract filenames
           if (Array.isArray(photos)) {
             propertyData.propertyPhotos = photos
               .map((photo) => {
