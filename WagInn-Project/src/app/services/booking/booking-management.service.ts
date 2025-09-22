@@ -47,6 +47,7 @@ export class BookingManagementService {
     this.loadBookingsFromStorage();
   }
 
+  // Get all bookings for current user
   getUserBookings(): Observable<Booking[]> {
     // First return local bookings for immediate display
     const localBookings = this.bookings$;
@@ -113,6 +114,7 @@ export class BookingManagementService {
     }
   }
 
+  // Add new booking
   addBooking(bookingData: any, propertyData: any): Observable<string> {
     const confirmationNumber = this.generateConfirmationNumber();
 

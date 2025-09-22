@@ -135,6 +135,8 @@ export class BookStay implements OnInit {
 
   // Format card number with spaces
   formatCardNumber(event: any): void {
+    //(\s/g, '') - remove all white space characters; (/[^0-9]/gi, '') - removes all non numeric characters
+    // value.match(/.{1,4}/g) - splits the string into groups of 1-4 charcters
     let value = event.target.value.replace(/\s/g, '').replace(/[^0-9]/gi, '');
     const formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
     if (formattedValue.length <= 19) {
