@@ -218,6 +218,7 @@
 
 .booking-row {
   display: grid;
+  /* create 7 columns: C1-100px fixed width, c2-1fr flexible width, C3-1fr Flexible width, C4-150px..and so on*/
   grid-template-columns: 100px 1fr 1fr 150px 120px 100px 120px;
   gap: 15px;
   padding: 20px 25px;

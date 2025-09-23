@@ -1,7 +1,7 @@
 /* Main Container Styles */
 .main-content {
-  padding-top: 140px !important;
-  padding-bottom: 13.5rem;
+  padding-top: 120px !important;
+  margin-bottom: 35rem !important; /* Remove bottom margin since we're controlling footer margin */
 }
 
 /* Registration Card */

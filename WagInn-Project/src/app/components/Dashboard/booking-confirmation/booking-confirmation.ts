@@ -65,38 +65,4 @@ export class BookingConfirmation implements OnInit {
   printConfirmation(): void {
     window.print();
   }
-
-  shareBooking(): void {
-    if (this.booking) {
-      const shareText = `My WagInn booking confirmation:\n\nProperty: ${
-        this.booking.propertyTitle
-      }\nLocation: ${this.booking.location}\nCheck-in: ${new Date(
-        this.booking.checkIn
-      ).toLocaleDateString()}\nCheck-out: ${new Date(
-        this.booking.checkOut
-      ).toLocaleDateString()}\nConfirmation: ${
-        this.booking.confirmationNumber
-      }`;
-
-      if (navigator.share) {
-        navigator
-          .share({
-            title: 'WagInn Booking Confirmation',
-            text: shareText,
-            url: window.location.href,
-          })
-          .catch((err) => console.log('Error sharing:', err));
-      } else {
-        navigator.clipboard
-          .writeText(shareText)
-          .then(() => {
-            alert('Booking details copied to clipboard!');
-          })
-          .catch((err) => {
-            console.log('Error copying to clipboard:', err);
-            alert(`Share this booking:\n\n${shareText}`);
-          });
-      }
-    }
-  }
 }
