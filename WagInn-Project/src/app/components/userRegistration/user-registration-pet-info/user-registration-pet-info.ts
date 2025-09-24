@@ -95,6 +95,8 @@ export class UserRegistrationPetInfo {
     return this.userRegistrationForm.get('pets') as FormArray;
   }
 
+  //function to check validations for each pet profile
+  //index will be number, controlName will be fields
   getPetControl(index: number, controlName: string) {
     return this.pets.at(index).get(controlName);
   }
@@ -133,7 +135,7 @@ export class UserRegistrationPetInfo {
             pet.isVaccinated === 'yes'
               ? Array.isArray(pet.vaccinations)
                 ? pet.vaccinations.join(', ')
-                : pet.vaccinations
+                : pet.vaccinations //scenario 3: pet is vaccinated & vaccinations is already a string, return as is
               : null,
         })),
       };
