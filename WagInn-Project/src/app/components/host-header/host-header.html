@@ -1,0 +1,129 @@
+<!-- Host Navigation Header -->
+<nav class="host-navbar">
+  <div class="host-nav-container">
+    <!-- Left Side - Logo & Property Info -->
+    <div class="host-brand-section">
+      <div class="host-logo">
+        <div class="logo-icon">
+          <i class="bi bi-house-heart-fill"></i>
+        </div>
+        <div class="logo-text">
+          <span class="brand-name">WagInn</span>
+          <span class="brand-subtitle">Host Panel</span>
+        </div>
+      </div>
+
+      <div class="property-indicator">
+        <div class="property-info">
+          <span class="property-name">{{ getPropertyTitle() }}</span>
+          <span class="property-location">{{ getPropertyLocation() }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Center - Navigation Links -->
+    <!-- <div class="host-nav-links">
+      <a href="#" class="nav-link" (click)="navigateToSection('bookings')">
+        <i class="bi bi-calendar-check"></i>
+        <span>Bookings</span>
+        <div class="notification-badge" *ngIf="newBookingsCount > 0">
+          {{ newBookingsCount }}
+        </div>
+      </a>
+      <a href="#" class="nav-link" (click)="navigateToSection('earnings')">
+        <i class="bi bi-graph-up-arrow"></i>
+        <span>Earnings</span>
+      </a>
+      <a href="#" class="nav-link" (click)="navigateToSection('messages')">
+        <i class="bi bi-chat-dots"></i>
+        <span>Messages</span>
+        <div class="notification-badge" *ngIf="newMessagesCount > 0">
+          {{ newMessagesCount }}
+        </div>
+      </a>
+    </div> -->
+
+    <!-- Right Side - Host Profile & Actions -->
+    <div class="host-profile-section">
+      <!-- Quick Stats -->
+      <!-- <div class="quick-stats">
+        <div class="stat-item">
+          <div class="stat-value">${{ totalEarnings }}</div>
+          <div class="stat-label">Today</div>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <div class="stat-value">{{ totalBookings }}</div>
+          <div class="stat-label">Bookings</div>
+        </div>
+      </div> -->
+
+      <!-- Notifications -->
+      <div class="notification-center">
+        <!-- Host Profile Dropdown -->
+        <div class="host-profile-dropdown">
+          <button class="profile-trigger" (click)="toggleProfileMenu()">
+            <div class="host-avatar">
+              <img
+                *ngIf="hostProfileImage"
+                [src]="hostProfileImage"
+                alt="Host Avatar"
+              />
+              <div *ngIf="!hostProfileImage" class="avatar-placeholder">
+                <i class="bi bi-person-circle"></i>
+              </div>
+            </div>
+            <div class="host-info">
+              <span class="host-name">{{ getHostDisplayName() }}</span>
+              <span class="host-status">Host</span>
+            </div>
+            <i
+              class="bi bi-chevron-down dropdown-arrow"
+              [class.rotated]="showProfileMenu"
+            ></i>
+          </button>
+
+          <!-- Profile Dropdown Menu -->
+          <div class="profile-menu" *ngIf="showProfileMenu">
+            <div class="menu-header">
+              <div class="host-avatar-large">
+                <img
+                  *ngIf="hostProfileImage"
+                  [src]="hostProfileImage"
+                  alt="Host Avatar"
+                />
+                <div *ngIf="!hostProfileImage" class="avatar-placeholder-large">
+                  <i class="bi bi-person-circle"></i>
+                </div>
+              </div>
+              <div class="host-details">
+                <span class="host-name-large">{{ getHostDisplayName() }}</span>
+                <span class="host-email">{{ getHostEmail() }}</span>
+              </div>
+            </div>
+
+            <div class="menu-items">
+              <button class="menu-item" (click)="navigateToProfile()">
+                <i class="bi bi-person-gear"></i>
+                <span>Host Profile</span>
+              </button>
+              <button class="menu-item" (click)="navigateToSettings()">
+                <i class="bi bi-gear"></i>
+                <span>Settings</span>
+              </button>
+              <button class="menu-item" (click)="navigateToHelp()">
+                <i class="bi bi-question-circle"></i>
+                <span>Help & Support</span>
+              </button>
+              <div class="menu-divider"></div>
+              <button class="menu-item logout-item" (click)="onLogout()">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Logout</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
