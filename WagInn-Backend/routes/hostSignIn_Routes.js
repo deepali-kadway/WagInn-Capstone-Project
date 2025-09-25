@@ -104,6 +104,11 @@ router.post("/login", async (req, res) => {
         email: host.email,
         firstName: host.firstName,
         lastName: host.lastName,
+        city: host.city,
+        streetAddress: host.streetAddress,
+        country: host.country,
+        province: host.province,
+        zipCode: host.zipCode,
         registrationStatus: host.registrationStatus,
       },
     });

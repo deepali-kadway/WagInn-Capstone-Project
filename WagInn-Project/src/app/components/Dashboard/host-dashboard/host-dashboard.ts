@@ -119,6 +119,48 @@ export class HostDashboard implements OnInit {
     return 'No Pets';
   }
 
+  // Helper methods for host dashboard header
+  getHostDisplayName(): string {
+    if (
+      this.currentHost &&
+      this.currentHost.firstName &&
+      this.currentHost.lastName
+    ) {
+      return `${this.currentHost.firstName} ${this.currentHost.lastName}`;
+    }
+    return 'Host';
+  }
+
+  getPropertyLocation(): string {
+    if (this.currentHost) {
+      const city = this.currentHost.city || '';
+      const province = this.currentHost.province || '';
+      const country = this.currentHost.country || '';
+
+      // Build location string dynamically
+      const locationParts = [city, province, country].filter(
+        (part) => part.trim() !== ''
+      );
+      return locationParts.join(', ') || 'Location not specified';
+    }
+    return 'Location not available';
+  }
+
+  getStreetAddress(): string {
+    if (this.currentHost && this.currentHost.streetAddress) {
+      const street = this.currentHost.streetAddress;
+      const zipC = this.currentHost.zipCode;
+
+      const combinedAddress = [street, zipC].filter(
+        (part) => part.trim() != '' //remove whitespaces from beginning & end of the string. Checks if result is NOT equal to an empty string
+      );
+
+      return combinedAddress.join(', ') || 'Address not specified';
+    }
+    return 'Property title not available';
+  }
+
+
   // Helper method to format dates
   formatDateRange(checkIn: string, checkOut: string): string {
     const checkInDate = new Date(checkIn);

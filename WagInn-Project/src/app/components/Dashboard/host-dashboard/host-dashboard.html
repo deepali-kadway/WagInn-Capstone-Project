@@ -10,6 +10,38 @@
 
   <!-- Main Content Area -->
   <div class="main-content">
+    <!-- Host Dashboard Header -->
+    <div class="host-header-section">
+      <div class="host-welcome-card">
+        <div class="host-avatar">
+          <i class="bi bi-person-circle"></i>
+        </div>
+        <div class="host-info">
+          <h1 class="host-name">
+            {{ getHostDisplayName() }}
+            <span class="host-badge">
+              <i class="bi bi-house-heart-fill"></i>
+              Host
+            </span>
+          </h1>
+          <div class="property-location">
+            <i class="bi bi-geo-alt-fill"></i>
+            <span>{{ getPropertyLocation() }}</span>
+          </div>
+          <div class="property-location">
+            <i class="bi bi-building"></i>
+            <span>{{ getStreetAddress() }}</span>
+          </div>
+        </div>
+        <!-- <div class="host-stats-mini">
+          <div class="mini-stat">
+            <div class="mini-stat-number">{{ recentBookings.length }}</div>
+            <div class="mini-stat-label">Total Bookings</div>
+          </div>
+        </div> -->
+      </div>
+    </div>
+
     <!-- Dashboard Overview Section -->
     <div
       *ngIf="!activeSection || activeSection === 'dashboard'"
