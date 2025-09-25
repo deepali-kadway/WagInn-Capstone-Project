@@ -16,10 +16,17 @@ export class App implements OnInit {
 
   ngOnInit(): void {
     // Listen to route changes to determine which header to show
-    this.router.events
+    this.router.events // observable that emits various router events. Router events include: NavigationStart, NavigatioEnd, NavigationCancel, NavigationError, etc
+      //pipe(): allows to apply operators to transform observable stream
+      //filter(): RxJS operator that only lets certain events pass through
+      // event instanceof NavigationEnd: checks if it is a NavigationEnd event, because we want to update the header only after navigation is complete not during.
+      // Eg: Navigation from /userDashboard to /hostDashboard, NavigationEnd event fires with URL /hostDashboard
       .pipe(filter((event) => event instanceof NavigationEnd))
+      //When a NavigationEnd event occurs, this callback function runs
+      //event.url contains the new URL after navigation is complete
       .subscribe((event: NavigationEnd) => {
         this.checkRoute(event.url);
+        // Eg continued: subscribe() callback runs → this.checkRoute('/hostDashboard')
       });
 
     // Check initial route
