@@ -26,7 +26,7 @@ build-frontend:
   stage: build
   script:
     - cd WagInn-Project
-    - npm run build
+    - npx ng build
   artifacts:
     paths:
       - WagInn-Project/dist/
