@@ -1,1 +1,1 @@
-web: npm start
+web: node WagInn-Backend/server.js
