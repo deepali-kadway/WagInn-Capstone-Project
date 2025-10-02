@@ -22,6 +22,7 @@ install-dependencies:
 # Build frontend
 build-frontend:
   stage: build
+  image: node:20
   script:
     - cd WagInn-Project
     - npm install #install Angular CLI locally too
@@ -33,6 +34,7 @@ build-frontend:
 # Run backend + frontend tests
 run-tests:
   stage: test
+  image: node:20
   script:
     - cd WagInn-Backend && npm test || echo "No backend tests found"
     - cd ../WagInn-Project && npm test || echo "No frontend tests found"
@@ -40,6 +42,7 @@ run-tests:
 # Deploy to Heroku (only on main branch)
 deploy-to-heroku:
   stage: deploy
+  image: node:20
   script:
     - echo "Deploying to Heroku..."
     - curl https://cli-assets.heroku.com/install.sh | sh
