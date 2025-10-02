@@ -89,6 +89,5 @@ console.log("Available models:", Object.keys(sequelize.models));
 console.log("Connected to database:", sequelize.config.database);
 
 //Listen on Port 8080
-app.listen(8080, () => {
-  console.log("Server is running on port 8080");
-});
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server running on ${PORT}`));
