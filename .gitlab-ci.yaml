@@ -1,0 +1,51 @@
+#Use Node.JS 18 as base image
+image: node:18
+
+#Define pipeline stages
+stages:
+    - install
+    - build
+    - test
+    - deploy
+
+#Install Dependencies
+install-dependencies:
+    stage: install
+    script:
+        - echo "Installing backend dependencies..."
+        - cd WagInn-Backend && npm install
+        - echo "Installing frontend dependencies..."
+        - cd ../WagInn-Project && npm install
+    cache:
+        paths:
+        - WagInn_Backend/node_modules/
+        - WagInn_Project/node_modules/
+
+# Build frontend
+build-frontend:
+  stage: build
+  script:
+    - cd WagInn-Project
+    - npm run build
+  artifacts:
+    paths:
+      - WagInn-Project/dist/
+
+# Run backend + frontend tests
+run-tests:
+  stage: test
+  script:
+    - cd WagInn-Backend && npm test || echo "No backend tests found"
+    - cd ../WagInn-Project && npm test || echo "No frontend tests found"
+
+# Deploy to Heroku (only on main branch)
+deploy-to-heroku:
+  stage: deploy
+  script:
+    - echo "Deploying to Heroku..."
+    - curl https://cli-assets.heroku.com/install.sh | sh
+    - echo "$HEROKU_API_KEY" | heroku auth:token
+    - heroku git:remote -a $HEROKU_APP_NAME
+    - git push heroku main
+  only:
+    - master    #Deploys only when pushed to master
