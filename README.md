@@ -1,7 +1,7 @@
 # WagInn 🐾  
 *A Pet-Friendly Stay Booking System*  
 
-WagInn is a web application that allows pet owners to search, book, and manage **pet-friendly stays** with ease. It’s designed to simplify the process of finding accommodations that welcome furry companions, making travel stress-free for both owners and pets.  
+WagInn is a web application that allows pet owners to search, book, and manage **pet-friendly stays** with ease. It is designed to simplify the process of finding accommodations that welcome furry companions, making travel stress-free for both owners and pets.  
 
 ---
 
