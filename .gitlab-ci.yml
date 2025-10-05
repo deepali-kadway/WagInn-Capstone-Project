@@ -102,13 +102,23 @@ build-frontend:
     paths:
       - WagInn-Project/dist/
 
-# Run backend + frontend tests
-run-tests:
+# Test backend (runs in parallel with frontend tests)
+test-backend:
   stage: test
   image: node:20
   script:
-    - cd WagInn-Backend && npm test || echo "No backend tests found"
-    - cd ../WagInn-Project && npm test || echo "No frontend tests found"
+    - cd WagInn-Backend
+    - npm install
+    - npm test || echo "No backend tests found"
+
+# Test frontend (runs in parallel with backend tests)
+test-frontend:
+  stage: test
+  image: node:20
+  script:
+    - cd WagInn-Project
+    - npm install
+    - npm test || echo "No frontend tests found"
 
 # Deploy to Heroku (only on main branch)
 deploy-to-heroku:
