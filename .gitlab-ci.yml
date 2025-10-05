@@ -135,7 +135,7 @@ deploy-to-heroku:
     - git config --global user.email "ci@gitlab.com"
     - git config --global user.name "GitLab CI"
     # Deploy
-    - heroku git:remote -a $HEROKU_APP_NAME
+    - heroku git:remote -a "node-js-wagInn"
     - git push heroku HEAD:main --force
   only:
     - master    #Deploys only when pushed to master
