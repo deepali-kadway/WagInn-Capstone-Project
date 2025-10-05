@@ -28,7 +28,71 @@ build-frontend:
     # Clean install to ensure consistent state
     - rm -rf node_modules package-lock.json
     - npm install #install Angular CLI locally too
-    # - npm audit fix --force
+    # Create environment files from GitLab variables
+    - mkdir -p src/environments
+    - |
+      cat > src/environments/environment.ts << 'EOF'
+      export const environment = {
+        production: false,
+        apiUrlHostRegister: '$API_URL_HOST_REGISTER',
+        apiUrlHostSignIn: '$API_URL_HOST_SIGNIN',
+        apiUrlUserRegister: '$API_URL_USER_REGISTER',
+        apiUrlUserSignIn: '$API_URL_USER_SIGNIN',
+        apiUrlFetchProperty: '$API_URL_FETCH_PROPERTY',
+        apiUrlCreateBooking: '$API_URL_CREATE_BOOKING',
+        apiUrlGetUserBookings: '$API_URL_GET_USER_BOOKINGS',
+        apiUrlGetHostBookings: '$API_URL_GET_HOST_BOOKINGS',
+        apiUrlGetBookingByConfirmation: '$API_URL_GET_BOOKING_BY_CONFIRMATION',
+        apiUrlCancelBooking: '$API_URL_CANCEL_BOOKING',
+        apiUrlGetBookingDetails: '$API_URL_GET_BOOKING_DETAILS',
+        apiUrlCheckAvailability: '$API_URL_CHECK_AVAILABILITY',
+      };
+      EOF
+    - |
+      cat > src/environments/environment.prod.ts << 'EOF'
+      export const environment = {
+        production: true,
+        apiUrlHostRegister: '$API_URL_HOST_REGISTER',
+        apiUrlHostSignIn: '$API_URL_HOST_SIGNIN',
+        apiUrlUserRegister: '$API_URL_USER_REGISTER',
+        apiUrlUserSignIn: '$API_URL_USER_SIGNIN',
+        apiUrlFetchProperty: '$API_URL_FETCH_PROPERTY',
+        apiUrlCreateBooking: '$API_URL_CREATE_BOOKING',
+        apiUrlGetUserBookings: '$API_URL_GET_USER_BOOKINGS',
+        apiUrlGetHostBookings: '$API_URL_GET_HOST_BOOKINGS',
+        apiUrlGetBookingByConfirmation: '$API_URL_GET_BOOKING_BY_CONFIRMATION',
+        apiUrlCancelBooking: '$API_URL_CANCEL_BOOKING',
+        apiUrlGetBookingDetails: '$API_URL_GET_BOOKING_DETAILS',
+        apiUrlCheckAvailability: '$API_URL_CHECK_AVAILABILITY',
+      };
+      EOF
+    # Replace placeholders with actual GitLab variables
+    - sed -i "s|\$API_URL_HOST_REGISTER|$API_URL_HOST_REGISTER|g" src/environments/environment.ts
+    - sed -i "s|\$API_URL_HOST_SIGNIN|$API_URL_HOST_SIGNIN|g" src/environments/environment.ts
+    - sed -i "s|\$API_URL_USER_REGISTER|$API_URL_USER_REGISTER|g" src/environments/environment.ts
+    - sed -i "s|\$API_URL_USER_SIGNIN|$API_URL_USER_SIGNIN|g" src/environments/environment.ts
+    - sed -i "s|\$API_URL_FETCH_PROPERTY|$API_URL_FETCH_PROPERTY|g" src/environments/environment.ts
+    - sed -i "s|\$API_URL_CREATE_BOOKING|$API_URL_CREATE_BOOKING|g" src/environments/environment.ts
+    - sed -i "s|\$API_URL_GET_USER_BOOKINGS|$API_URL_GET_USER_BOOKINGS|g" src/environments/environment.ts
+    - sed -i "s|\$API_URL_GET_HOST_BOOKINGS|$API_URL_GET_HOST_BOOKINGS|g" src/environments/environment.ts
+    - sed -i "s|\$API_URL_GET_BOOKING_BY_CONFIRMATION|$API_URL_GET_BOOKING_BY_CONFIRMATION|g" src/environments/environment.ts
+    - sed -i "s|\$API_URL_CANCEL_BOOKING|$API_URL_CANCEL_BOOKING|g" src/environments/environment.ts
+    - sed -i "s|\$API_URL_GET_BOOKING_DETAILS|$API_URL_GET_BOOKING_DETAILS|g" src/environments/environment.ts
+    - sed -i "s|\$API_URL_CHECK_AVAILABILITY|$API_URL_CHECK_AVAILABILITY|g" src/environments/environment.ts
+    # Do the same for production environment
+    - sed -i "s|\$API_URL_HOST_REGISTER|$API_URL_HOST_REGISTER|g" src/environments/environment.prod.ts
+    - sed -i "s|\$API_URL_HOST_SIGNIN|$API_URL_HOST_SIGNIN|g" src/environments/environment.prod.ts
+    - sed -i "s|\$API_URL_USER_REGISTER|$API_URL_USER_REGISTER|g" src/environments/environment.prod.ts
+    - sed -i "s|\$API_URL_USER_SIGNIN|$API_URL_USER_SIGNIN|g" src/environments/environment.prod.ts
+    - sed -i "s|\$API_URL_FETCH_PROPERTY|$API_URL_FETCH_PROPERTY|g" src/environments/environment.prod.ts
+    - sed -i "s|\$API_URL_CREATE_BOOKING|$API_URL_CREATE_BOOKING|g" src/environments/environment.prod.ts
+    - sed -i "s|\$API_URL_GET_USER_BOOKINGS|$API_URL_GET_USER_BOOKINGS|g" src/environments/environment.prod.ts
+    - sed -i "s|\$API_URL_GET_HOST_BOOKINGS|$API_URL_GET_HOST_BOOKINGS|g" src/environments/environment.prod.ts
+    - sed -i "s|\$API_URL_GET_BOOKING_BY_CONFIRMATION|$API_URL_GET_BOOKING_BY_CONFIRMATION|g" src/environments/environment.prod.ts
+    - sed -i "s|\$API_URL_CANCEL_BOOKING|$API_URL_CANCEL_BOOKING|g" src/environments/environment.prod.ts
+    - sed -i "s|\$API_URL_GET_BOOKING_DETAILS|$API_URL_GET_BOOKING_DETAILS|g" src/environments/environment.prod.ts
+    - sed -i "s|\$API_URL_CHECK_AVAILABILITY|$API_URL_CHECK_AVAILABILITY|g" src/environments/environment.prod.ts
+    # Verify environment files exist
      # Verify environment files exist
     - test -f src/environments/environment.ts || (echo "Environment file missing!" && exit 1)
     - test -f src/environments/environment.prod.ts || (echo "Production environment file missing!" && exit 1)
