@@ -25,9 +25,15 @@ build-frontend:
   image: node:20
   script:
     - cd WagInn-Project
+    # Clean install to ensure consistent state
+    - rm -rf node_modules package-lock.json
     - npm install #install Angular CLI locally too
     # - npm audit fix --force
-    - npx ng build
+     # Verify environment files exist
+    - test -f src/environments/environment.ts || (echo "Environment file missing!" && exit 1)
+    - test -f src/environments/environment.prod.ts || (echo "Production environment file missing!" && exit 1)
+     # Build with verbose output for debugging
+    - npx ng build --verbose
   artifacts:
     paths:
       - WagInn-Project/dist/
