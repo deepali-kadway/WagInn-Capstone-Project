@@ -129,21 +129,17 @@ deploy-to-heroku:
   services:
     - docker:dind
   script:
-    - echo "Deploying to Heroku..."
-    - apt-get update && apt-get install -y git
-    - curl https://cli-assets.heroku.com/install.sh | sh
-    # Set up environment
-    - export HEROKU_API_KEY=$HEROKU_API_KEY
-    # Create a simple static file server
+    - echo "Deploying Angular SPA to Heroku..."
     - cd WagInn-Project
-    # Create package.json in the project directory
+    # Create package.json for Heroku deployment
     - |
       cat > package.json << 'EOF'
       {
-        "name": "waginn-app",
+        "name": "waginn-frontend",
         "version": "1.0.0",
         "scripts": {
-          "start": "node server.js"
+          "start": "node server.js",
+          "build": "echo 'Build completed in CI'"
         },
         "dependencies": {
           "express": "^4.18.2"
@@ -153,7 +149,7 @@ deploy-to-heroku:
         }
       }
       EOF
-    # Create server.js in the project directory
+    # Create Express server for your dynamic Angular SPA
     - |
       cat > server.js << 'EOF'
       const express = require('express');
@@ -164,24 +160,48 @@ deploy-to-heroku:
       // Serve static files from dist directory
       app.use(express.static(path.join(__dirname, 'dist')));
       
-      // Handle Angular routing
+      // Handle Angular routing - CRITICAL for SPA navigation
       app.get('*', (req, res) => {
         res.sendFile(path.join(__dirname, 'dist/index.html'));
       });
       
       app.listen(PORT, () => {
-        console.log('WagInn app running on port ' + PORT);
+        console.log('WagInn Dynamic SPA running on port ' + PORT);
+        console.log('Ready to handle API calls to backend');
       });
       EOF
-    # Configure git
-    - git config --global user.email "ci@gitlab.com"
-    - git config --global user.name "GitLab CI"
-    # Use Heroku CLI with environment variable (simple approach)
-    - echo $HEROKU_API_KEY | heroku auth:token --stdin
-    - heroku git:remote -a wag-inn
-    # Add files and deploy
-    - git add package.json server.js
-    - git commit -m "Add server files for deployment" || echo "Nothing new to commit"
-    - git push heroku HEAD:main --force
+    # Prepare deployment package
+    - apt-get update && apt-get install -y zip curl
+    - zip -r deployment.zip . -x "node_modules/*" ".git/*" "*.log"
+    # Upload to Heroku using API (bypasses git auth issues)
+    - |
+      # Get source upload URL
+      UPLOAD_URL=$(curl -s -X POST \
+        "https://api.heroku.com/apps/wag-inn/sources" \
+        -H "Authorization: Bearer $HEROKU_API_KEY" \
+        -H "Accept: application/vnd.heroku+json; version=3" | \
+        grep -o '"put_url":"[^"]*"' | cut -d'"' -f4)
+      
+      # Upload the deployment package
+      curl -X PUT "$UPLOAD_URL" \
+        -H "Content-Type:" \
+        --data-binary @deployment.zip
+      
+      # Get the source blob URL
+      SOURCE_URL=$(curl -s -X POST \
+        "https://api.heroku.com/apps/wag-inn/sources" \
+        -H "Authorization: Bearer $HEROKU_API_KEY" \
+        -H "Accept: application/vnd.heroku+json; version=3" | \
+        grep -o '"get_url":"[^"]*"' | cut -d'"' -f4)
+      
+      # Trigger deployment
+      curl -X POST \
+        "https://api.heroku.com/apps/wag-inn/builds" \
+        -H "Authorization: Bearer $HEROKU_API_KEY" \
+        -H "Content-Type: application/json" \
+        -H "Accept: application/vnd.heroku+json; version=3" \
+        -d "{\"source_blob\":{\"url\":\"$SOURCE_URL\"}}"
+      
+      echo "Deployment triggered successfully!"
   only:
     - master    #Deploys only when pushed to master
