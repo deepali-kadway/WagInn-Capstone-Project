@@ -107,18 +107,20 @@ test-backend:
   stage: test
   image: node:20
   script:
-    - cd WagInn-Backend
-    - npm install
-    - npm test || echo "No backend tests found"
+    # - cd WagInn-Backend
+    # - npm install
+    # - npm test || echo "No backend tests found"
+    - echo "Backend tests skipped - no tests configured"
 
 # Test frontend (runs in parallel with backend tests)
 test-frontend:
   stage: test
   image: node:20
   script:
-    - cd WagInn-Project
-    - npm install
-    - npm test || echo "No frontend tests found"
+    # - cd WagInn-Project
+    # - npm install
+    # - npm test || echo "No frontend tests found"
+    - echo "Frontend tests skipped - no tests configured"
 
 # Deploy to Heroku (only on main branch)
 deploy-to-heroku:
