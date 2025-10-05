@@ -26,6 +26,7 @@ build-frontend:
   script:
     - cd WagInn-Project
     - npm install #install Angular CLI locally too
+    - npm audit fix --force #Fix security vulnerabilities
     - npx ng build
   artifacts:
     paths:
