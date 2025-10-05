@@ -126,23 +126,31 @@ test-frontend:
 deploy-to-heroku:
   stage: deploy
   image: node:20
+  services:
+    - docker:dind
   script:
-    - echo "Deploying to Heroku..."
+    - echo "Deploying to Heroku using Container Registry..."
+    # Install Docker in the Node.js container
+    - apt-get update
+    - apt-get install -y apt-transport-https ca-certificates curl gnupg lsb-release
+    - curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+    - echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/debian $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
+    - apt-get update
+    - apt-get install -y docker-ce-cli
+    # Install Heroku CLI
     - curl https://cli-assets.heroku.com/install.sh | sh
-     # Authenticate using .netrc file (official method for CI)
-    - echo "machine api.heroku.com login _ password $HEROKU_API_KEY" > ~/.netrc
-    - echo "machine git.heroku.com login _ password $HEROKU_API_KEY" >> ~/.netrc
-    - chmod 600 ~/.netrc
-    # Set API key as environment variable
-    # - export HEROKU_API_KEY=$HEROKU_API_KEY
-     # Configure git
-    - git config --global user.email "ci@gitlab.com"
-    - git config --global user.name "GitLab CI"
-     # Verify authentication works
-    - heroku auth:whoami || echo "Authentication check failed, proceeding anyway"
-    # Set up Heroku git remote using CLI
-    - heroku git:remote -a "wag-inn"
-    # Deploy
-    - git push heroku HEAD:main --force
+    - export HEROKU_API_KEY=$HEROKU_API_KEY
+    # Create Dockerfile for the Angular app
+    - |
+      cat > Dockerfile << 'EOF'
+      FROM nginx:alpine
+      COPY WagInn-Project/dist/ /usr/share/nginx/html/
+      EXPOSE $PORT
+      CMD sed -i -e 's/$PORT/'"$PORT"'/g' /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'
+      EOF
+    # Deploy using container
+    - heroku container:login
+    - heroku container:push web -a wag-inn
+    - heroku container:release web -a wag-inn
   only:
     - master    #Deploys only when pushed to master
