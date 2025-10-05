@@ -130,12 +130,11 @@ deploy-to-heroku:
     - echo "Deploying to Heroku..."
     - curl https://cli-assets.heroku.com/install.sh | sh
     # Set API key as environment variable
-    - export HEROKU_API_KEY=$HEROKU_API_KEY
+    # - export HEROKU_API_KEY=$HEROKU_API_KEY
      # Configure git
     - git config --global user.email "ci@gitlab.com"
     - git config --global user.name "GitLab CI"
-    # Deploy
-    - heroku git:remote -a "wag-inn"
+    - git remote add heroku https://heroku:$HEROKU_API_KEY@git.heroku.com/wag-inn.git
     - git push heroku HEAD:main --force
   only:
     - master    #Deploys only when pushed to master
