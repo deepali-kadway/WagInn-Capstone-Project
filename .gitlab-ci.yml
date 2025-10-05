@@ -129,8 +129,13 @@ deploy-to-heroku:
   script:
     - echo "Deploying to Heroku..."
     - curl https://cli-assets.heroku.com/install.sh | sh
-    - echo "$HEROKU_API_KEY" | heroku auth:token
+    # Set API key as environment variable
+    - export HEROKU_API_KEY=$HEROKU_API_KEY
+     # Configure git
+    - git config --global user.email "ci@gitlab.com"
+    - git config --global user.name "GitLab CI"
+    # Deploy
     - heroku git:remote -a $HEROKU_APP_NAME
-    - git push heroku main
+    - git push heroku HEAD:main --force
   only:
     - master    #Deploys only when pushed to master
