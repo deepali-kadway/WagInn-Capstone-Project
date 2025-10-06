@@ -122,38 +122,12 @@ test-frontend:
     # - npm test || echo "No frontend tests found"
     - echo "Frontend tests skipped - no tests configured"
 
-# Deploy to Netlify (only on main branch)
 deploy-to-netlify:
   stage: deploy
   image: node:20
   script:
-    - echo "=== NETLIFY DEPLOYMENT START ==="
     - apt-get update && apt-get install -y zip curl
-    - cd WagInn-Project
-    - echo "1. Build output structure:"
-    - find dist/ -type f -name "*.html" -o -name "*.js" -o -name "*.css" | head -10
-    - cd dist/WagInn-Project/browser
-    - echo "2. Files in browser directory:"
-    - ls -la
-    - echo "3. Index.html content (first 5 lines):"
-    - head -5 index.html
-    - echo "4. Creating _redirects file:"
-    - echo "/*    /index.html   200" > _redirects
-    - cat _redirects
-    - echo "5. Files being zipped:"
-    - ls -la
-    - zip -r ../../../site.zip .
-    - cd ../../..
-    - echo "6. Zip file info:"
-    - ls -lh site.zip
-    - unzip -l site.zip | head -15
-    - echo "7. THIS IS A TEST - IF YOU SEE THIS, YAML IS WORKING"
-    - echo "Auth token check - START"
-    - test -n "$NETLIFY_AUTH_TOKEN" && echo "Auth token EXISTS" || echo "Auth token MISSING"
-    - echo "Site ID check - START"  
-    - test -n "$NETLIFY_SITE_ID" && echo "Site ID EXISTS" || echo "Site ID MISSING"
-    - echo "8. Attempting simple curl test"
-    - curl --version
-    - echo "9. DEPLOYMENT TEST COMPLETE"
+    - chmod +x deploy.sh
+    - ./deploy.sh
   only:
     - master
