@@ -129,23 +129,64 @@ deploy-to-heroku:
   services:
     - docker:dind
   script:
-    - echo "Testing Heroku credentials..."
-    - apt-get update && apt-get install -y curl jq
-    # Test API access only
+    - echo "Deploying Angular SPA to Heroku..."
+    - cd WagInn-Project
+    # Create the server files
     - |
-      RESPONSE=$(curl -s -H "Authorization: Bearer $HEROKU_API_KEY" \
+      cat > package.json << 'EOF'
+      {
+        "name": "waginn-frontend",
+        "version": "1.0.0",
+        "scripts": {
+          "start": "node server.js"
+        },
+        "dependencies": {
+          "express": "^4.18.2"
+        },
+        "engines": {
+          "node": "20.x"
+        }
+      }
+      EOF
+    - |
+      cat > server.js << 'EOF'
+      const express = require('express');
+      const path = require('path');
+      const app = express();
+      const PORT = process.env.PORT || 3000;
+      
+      app.use(express.static(path.join(__dirname, 'dist')));
+      app.get('*', (req, res) => {
+        res.sendFile(path.join(__dirname, 'dist/index.html'));
+      });
+      
+      app.listen(PORT, () => {
+        console.log('WagInn SPA running on port ' + PORT);
+      });
+      EOF
+    # Deploy using working API
+    - apt-get update && apt-get install -y zip curl jq
+    - zip -r app.zip . -x "node_modules/*" ".git/*"
+    - |
+      # Create source
+      RESPONSE=$(curl -s -X POST \
+        -H "Authorization: Bearer $HEROKU_API_KEY" \
         -H "Accept: application/vnd.heroku+json; version=3" \
-        "https://api.heroku.com/apps/wag-inn")
+        "https://api.heroku.com/apps/wag-inn/sources")
       
-      echo "API Response: $RESPONSE"
+      PUT_URL=$(echo $RESPONSE | jq -r .source_blob.put_url)
+      GET_URL=$(echo $RESPONSE | jq -r .source_blob.get_url)
       
-      if echo "$RESPONSE" | jq -e .name > /dev/null; then
-        echo "✅ API key is valid!"
-        echo "App name: $(echo $RESPONSE | jq -r .name)"
-      else
-        echo "❌ API key is invalid"
-        echo "Response: $RESPONSE"
-        exit 1
-      fi
+      # Upload and deploy
+      curl -X PUT "$PUT_URL" -T app.zip
+      
+      curl -X POST \
+        -H "Authorization: Bearer $HEROKU_API_KEY" \
+        -H "Content-Type: application/json" \
+        -H "Accept: application/vnd.heroku+json; version=3" \
+        -d "{\"source_blob\":{\"url\":\"$GET_URL\"}}" \
+        "https://api.heroku.com/apps/wag-inn/builds"
+      
+      echo "🚀 Deployment completed! Your app should be available at: https://wag-inn.herokuapp.com"
   only:
     - master    #Deploys only when pushed to master
