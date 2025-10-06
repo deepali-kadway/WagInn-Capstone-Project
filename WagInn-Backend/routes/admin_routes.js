@@ -17,7 +17,7 @@ router.get("/hosts", async (req, res) => {
         "firstName",
         "lastName",
         "email",
-        "approvalStatus",
+        "registrationStatus",
         "createdAt",
       ],
       order: [["createdAt", "DESC"]],
