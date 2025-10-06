@@ -1,23 +1,23 @@
 #Define pipeline stages
 stages:
-    - install
-    - build
-    - test
-    - deploy
+  - install
+  - build
+  - test
+  - deploy
 
 #Install Dependencies
 install-dependencies:
-    stage: install
-    image: node:20
-    script:
-        - echo "Installing backend dependencies..."
-        - cd WagInn-Backend && npm install
-        - echo "Installing frontend dependencies..."
-        - cd ../WagInn-Project && npm install
-    cache:
-        paths:
-        - WagInn_Backend/node_modules/
-        - WagInn_Project/node_modules/
+  stage: install
+  image: node:20
+  script:
+    - echo "Installing backend dependencies..."
+    - cd WagInn-Backend && npm install
+    - echo "Installing frontend dependencies..."
+    - cd ../WagInn-Project && npm install
+  cache:
+    paths:
+      - WagInn_Backend/node_modules/
+      - WagInn_Project/node_modules/
 
 # Build frontend
 build-frontend:
@@ -93,10 +93,16 @@ build-frontend:
     - sed -i "s|\$API_URL_GET_BOOKING_DETAILS|$API_URL_GET_BOOKING_DETAILS|g" src/environments/environment.prod.ts
     - sed -i "s|\$API_URL_CHECK_AVAILABILITY|$API_URL_CHECK_AVAILABILITY|g" src/environments/environment.prod.ts
     # Verify environment files exist
-     # Verify environment files exist
+    # Verify environment files exist
     - test -f src/environments/environment.ts || (echo "Environment file missing!" && exit 1)
     - test -f src/environments/environment.prod.ts || (echo "Production environment file missing!" && exit 1)
-     # Build with verbose output for debugging
+    # DEBUG: Check if variables are being replaced correctly
+    - echo "=== DEBUGGING ENVIRONMENT FILE ==="
+    - cat src/environments/environment.ts
+    - echo "=== CHECKING VARIABLES ==="
+    - echo "API_URL_USER_REGISTER=$API_URL_USER_REGISTER"
+    - echo "=== END DEBUG ==="
+      # Build with verbose output for debugging
     - npx ng build --verbose
   artifacts:
     paths:
