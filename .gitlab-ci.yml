@@ -131,7 +131,7 @@ deploy-to-heroku:
   script:
     - echo "Deploying Angular SPA to Heroku..."
     - cd WagInn-Project
-    # Create the required files (same as before)
+    # Create the required files
     - |
       cat > package.json << 'EOF'
       {
@@ -164,31 +164,53 @@ deploy-to-heroku:
         console.log('WagInn running on port ' + PORT);
       });
       EOF
-    # Install jq for JSON parsing
+    # Install tools and create package
     - apt-get update && apt-get install -y zip curl jq
     - zip -r app.zip . -x "node_modules/*" ".git/*"
-    # Simple deployment using Heroku API
+    # Debug the API response first
     - |
-      # Create source
+      echo "Testing Heroku API access..."
+      
+      # Test API access
+      curl -s -H "Authorization: Bearer $HEROKU_API_KEY" \
+        -H "Accept: application/vnd.heroku+json; version=3" \
+        "https://api.heroku.com/apps/wag-inn" | jq .
+      
+      echo "Creating source..."
+      
+      # Create source and capture full response
       RESPONSE=$(curl -s -X POST \
         -H "Authorization: Bearer $HEROKU_API_KEY" \
         -H "Accept: application/vnd.heroku+json; version=3" \
         "https://api.heroku.com/apps/wag-inn/sources")
       
-      PUT_URL=$(echo $RESPONSE | jq -r .source_blob.put_url)
-      GET_URL=$(echo $RESPONSE | jq -r .source_blob.get_url)
+      echo "API Response: $RESPONSE"
       
-      # Upload the zip file
-      curl -X PUT "$PUT_URL" -T app.zip
-      
-      # Create build
-      curl -X POST \
-        -H "Authorization: Bearer $HEROKU_API_KEY" \
-        -H "Content-Type: application/json" \
-        -H "Accept: application/vnd.heroku+json; version=3" \
-        -d "{\"source_blob\":{\"url\":\"$GET_URL\"}}" \
-        "https://api.heroku.com/apps/wag-inn/builds"
-      
-      echo "Deployment completed!"
+      # Check if response contains expected fields
+      if echo "$RESPONSE" | jq -e .source_blob.put_url > /dev/null; then
+        PUT_URL=$(echo $RESPONSE | jq -r .source_blob.put_url)
+        GET_URL=$(echo $RESPONSE | jq -r .source_blob.get_url)
+        
+        echo "PUT_URL: $PUT_URL"
+        echo "GET_URL: $GET_URL"
+        
+        # Upload the zip file
+        curl -X PUT "$PUT_URL" -T app.zip
+        
+        # Create build
+        BUILD_RESPONSE=$(curl -s -X POST \
+          -H "Authorization: Bearer $HEROKU_API_KEY" \
+          -H "Content-Type: application/json" \
+          -H "Accept: application/vnd.heroku+json; version=3" \
+          -d "{\"source_blob\":{\"url\":\"$GET_URL\"}}" \
+          "https://api.heroku.com/apps/wag-inn/builds")
+        
+        echo "Build Response: $BUILD_RESPONSE"
+        echo "Deployment initiated!"
+      else
+        echo "ERROR: Failed to get source URLs from API"
+        echo "Response was: $RESPONSE"
+        exit 1
+      fi
   only:
     - master    #Deploys only when pushed to master
