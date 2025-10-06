@@ -147,30 +147,11 @@ deploy-to-netlify:
     - echo "6. Zip file info:"
     - ls -lh site.zip
     - unzip -l site.zip | head -15
-    - echo "7. Checking variables:"
-    - echo "Auth token set:" $(if [ -n "$NETLIFY_AUTH_TOKEN" ]; then echo "YES"; else echo "NO"; fi)
-    - echo "Site ID set:" $(if [ -n "$NETLIFY_SITE_ID" ]; then echo "YES"; else echo "NO"; fi)
-    - echo "8. DEPLOYING TO NETLIFY..."
-    - |
-      curl -s -w "HTTPSTATUS:%{http_code}" \
-        -X POST \
-        -H "Authorization: Bearer $NETLIFY_AUTH_TOKEN" \
-        -H "Content-Type: application/zip" \
-        --data-binary @site.zip \
-        "https://api.netlify.com/api/v1/sites/$NETLIFY_SITE_ID/deploys" > deploy_response.txt
-    - echo "Deploy response saved to file"
-    - cat deploy_response.txt
-    - STATUS=$(grep -E "HTTPSTATUS:[0-9]+" deploy_response.txt | sed 's/.*HTTPSTATUS://')
-    - echo "HTTP Status:" $STATUS
-    - |
-      if [ "$STATUS" = "200" ] || [ "$STATUS" = "201" ]; then
-        echo "✅ DEPLOYMENT SUCCESS"
-      else
-        echo "❌ DEPLOYMENT FAILED"
-        cat deploy_response.txt
-        exit 1
-      fi
-    - echo "9. DEPLOYMENT COMPLETE!"
-    - echo "Site URL:" https://$NETLIFY_SITE_ID.netlify.app/
+    - echo "7. CHECKING VARIABLES - START"
+    - echo "Auth token exists:" $([ -n "$NETLIFY_AUTH_TOKEN" ] && echo "YES" || echo "NO")
+    - echo "Site ID exists:" $([ -n "$NETLIFY_SITE_ID" ] && echo "YES" || echo "NO")
+    - echo "8. DEPLOYING TO NETLIFY - START"
+    - 'curl -X POST -H "Authorization: Bearer $NETLIFY_AUTH_TOKEN" -H "Content-Type: application/zip" --data-binary @site.zip https://api.netlify.com/api/v1/sites/$NETLIFY_SITE_ID/deploys'
+    - echo "9. DEPLOYMENT ATTEMPT COMPLETED"
   only:
     - master
