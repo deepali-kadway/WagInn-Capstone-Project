@@ -126,8 +126,11 @@ deploy-to-netlify:
   stage: deploy
   image: node:20
   script:
-    - apt-get update && apt-get install -y zip curl
-    - chmod +x deploy.sh
-    - ./deploy.sh
+    - apt-get update && apt-get install -y curl
+    - npm install -g netlify-cli
+    - cd WagInn-Project/dist/WagInn-Project/browser
+    - echo "/*    /index.html   200" > _redirects
+    - ls -la
+    - npx netlify deploy --prod --dir=. --auth=$NETLIFY_AUTH_TOKEN --site=$NETLIFY_SITE_ID
   only:
     - master
