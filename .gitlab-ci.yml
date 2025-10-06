@@ -130,10 +130,12 @@ deploy-to-netlify:
     - echo "Deploying to Netlify via API..."
     - apt-get update && apt-get install -y zip curl
     - cd WagInn-Project
-    # Navigate to the correct build output directory (browser folder)
+    # Navigate to the correct build output directory
     - cd dist/WagInn-Project/browser
     - ls -la
-    # Create zip from the directory containing index.html
+    # Create _redirects file for Angular SPA routing
+    - echo "/*    /index.html   200" > _redirects
+    # Create zip from the directory containing index.html and _redirects
     - zip -r ../../../site.zip .
     - cd ../../..
     # Deploy via Netlify API
