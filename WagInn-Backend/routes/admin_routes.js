@@ -52,7 +52,7 @@ router.put("/hosts/:hostId/approve", async (req, res) => {
     }
 
     // Update approval status
-    await host.update({ approvalStatus: "approved" });
+    await host.update({ registrationStatus: "approved" });
 
     console.log(`Host ${hostId} approved successfully`);
 
@@ -64,7 +64,7 @@ router.put("/hosts/:hostId/approve", async (req, res) => {
         firstName: host.firstName,
         lastName: host.lastName,
         email: host.email,
-        approvalStatus: host.approvalStatus,
+        registrationStatus: host.registrationStatus,
       },
     });
   } catch (error) {
@@ -91,7 +91,7 @@ router.put("/hosts/:hostId/reject", async (req, res) => {
     }
 
     // Update approval status
-    await host.update({ approvalStatus: "rejected" });
+    await host.update({ registrationStatus: "rejected" });
 
     console.log(`Host ${hostId} rejected`);
 
@@ -103,7 +103,7 @@ router.put("/hosts/:hostId/reject", async (req, res) => {
         firstName: host.firstName,
         lastName: host.lastName,
         email: host.email,
-        approvalStatus: host.approvalStatus,
+        registrationStatus: host.registrationStatus,
       },
     });
   } catch (error) {
