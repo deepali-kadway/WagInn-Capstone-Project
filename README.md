@@ -5,7 +5,7 @@ WagInn is a web application that allows pet owners to search, book, and manage *
 
 ---
 
-## 🚀 Features  
+## 🚀 Features:  
 - 🔍 Search stays based on location, amenities, and pet rules  
 - 🏡 Property listings with details (photos, description, availability)  
 - 📅 Booking system with real-time availability  
