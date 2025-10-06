@@ -160,19 +160,48 @@ deploy-to-netlify:
     - ls -lh site.zip
     - unzip -l site.zip | head -15
     
-    # 7. Deploy and capture response
+    # 7. Deploy with proper API call and error handling
     - echo "7. Deploying to Netlify:"
+    - echo "Using site ID:" $NETLIFY_SITE_ID
     - |
-      RESPONSE=$(curl -s -w "HTTP_CODE:%{http_code}" -X POST \
+      DEPLOY_RESPONSE=$(curl -s -w "HTTPSTATUS:%{http_code}" -X POST \
         -H "Authorization: Bearer $NETLIFY_AUTH_TOKEN" \
-        -F "file=@site.zip" \
-        "https://api.netlify.com/api/v1/sites/rainbow-kitten-390820/deploys")
-      echo "Full API Response: $RESPONSE"
+        -H "Content-Type: application/zip" \
+        --data-binary @site.zip \
+        "https://api.netlify.com/api/v1/sites/$NETLIFY_SITE_ID/deploys")
+      
+      # Parse response
+      HTTP_STATUS=$(echo $DEPLOY_RESPONSE | grep -o "HTTPSTATUS:[0-9]*" | cut -d: -f2)
+      RESPONSE_BODY=$(echo $DEPLOY_RESPONSE | sed 's/HTTPSTATUS:[0-9]*$//')
+      
+      echo "HTTP Status: $HTTP_STATUS"
+      echo "Response Body: $RESPONSE_BODY"
+      
+      # Check if deployment was successful
+      if [ "$HTTP_STATUS" -eq 200 ] || [ "$HTTP_STATUS" -eq 201 ]; then
+        echo "✅ Deployment successful!"
+        DEPLOY_ID=$(echo $RESPONSE_BODY | grep -o '"id":"[^"]*"' | head -1 | cut -d'"' -f4)
+        echo "Deploy ID: $DEPLOY_ID"
+      else
+        echo "❌ Deployment failed with status: $HTTP_STATUS"
+        echo "Error details: $RESPONSE_BODY"
+        exit 1
+      fi
     
-    # 8. Wait and test
-    - echo "8. Waiting 30 seconds for deployment..."
+    # 8. Wait and test deployment
+    - echo "8. Waiting 30 seconds for deployment to propagate..."
     - sleep 30
-    - curl -I https://rainbow-kitten-390820.netlify.app/
-    - echo "Deployed"
+    - echo "9. Testing deployed site:"
+    - SITE_STATUS=$(curl -s -o /dev/null -w "%{http_code}" "https://$NETLIFY_SITE_ID.netlify.app/")
+    - echo "Site HTTP status:" $SITE_STATUS
+    - |
+      if [ "$SITE_STATUS" -eq 200 ]; then
+        echo "✅ Site is live and responding!"
+      else
+        echo "⚠️  Site returned status: $SITE_STATUS"
+        echo "Fetching site content for debugging:"
+        curl -s "https://$NETLIFY_SITE_ID.netlify.app/" | head -10
+      fi
+      - echo "🚀 Deployment complete"
   only:
     - master    #Deploys only when pushed to master
