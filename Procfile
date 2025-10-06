@@ -1,1 +1,1 @@
-web: node WagInn-Backend/server.js
+web: cd WagInn-Backend && node server.js
