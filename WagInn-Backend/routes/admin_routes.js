@@ -1,6 +1,6 @@
 import express from "express";
 const router = express.Router();
-import { Host } from "../models/associations.js";
+import Host from "../models/hostRegistration_Model.js";
 
 // Debug logs
 router.use((req, res, next) => {
