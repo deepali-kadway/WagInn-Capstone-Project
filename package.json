@@ -1,0 +1,23 @@
+{
+  "name": "waginn-fullstack",
+  "version": "1.0.0",
+  "description": "WagInn full-stack application",
+  "main": "WagInn-Backend/server.js",
+  "scripts": {
+    "start": "node WagInn-Backend/server.js",
+    "heroku-postbuild": "cd WagInn-Backend && npm install"
+  },
+  "engines": {
+    "node": "18.x",
+    "npm": "9.x"
+  },
+  "dependencies": {},
+  "devDependencies": {},
+  "keywords": [
+    "waginn",
+    "nodejs",
+    "express"
+  ],
+  "author": "",
+  "license": "ISC"
+}
