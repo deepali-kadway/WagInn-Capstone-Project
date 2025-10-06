@@ -129,17 +129,17 @@ deploy-to-netlify:
   services:
     - docker:dind
   script:
-    - echo "Deploying to Netlify..."
-    - npm install -g netlify-cli@latest
-    # Debug: Check if variables are set (fixed syntax)
-    - echo "Auth token length:" && echo $NETLIFY_AUTH_TOKEN | wc -c
-    - echo "Site ID:" $NETLIFY_SITE_ID
-    # Test API access first
-    - export NETLIFY_AUTH_TOKEN=$NETLIFY_AUTH_TOKEN
-    - netlify status --auth=$NETLIFY_AUTH_TOKEN
-    # Then try deploy
+    - echo "Deploying to Netlify via API..."
+    - apt-get update && apt-get install -y zip curl
     - cd WagInn-Project
-    - netlify deploy --prod --dir=dist --site=$NETLIFY_SITE_ID --auth=$NETLIFY_AUTH_TOKEN
+    # Create deployment package
+    - cd dist && zip -r ../site.zip . && cd ..
+    # Deploy via Netlify API (no CLI needed)
+    - |
+      curl -X POST \
+        -H "Authorization: Bearer $NETLIFY_AUTH_TOKEN" \
+        -F "file=@site.zip" \
+        "https://api.netlify.com/api/v1/sites/rainbow-kitten-390820/deploys"
     - echo "Deployed"
   only:
     - master    #Deploys only when pushed to master
