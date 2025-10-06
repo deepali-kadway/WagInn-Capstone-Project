@@ -122,8 +122,8 @@ test-frontend:
     # - npm test || echo "No frontend tests found"
     - echo "Frontend tests skipped - no tests configured"
 
-# Deploy to Heroku (only on main branch)
-deploy-to-heroku:
+# Deploy to Netlify (only on main branch)
+deploy-to-netlify:
   stage: deploy
   image: node:20
   services:
@@ -131,7 +131,11 @@ deploy-to-heroku:
   script:
     - echo "Deploying to Netlify..."
     - npm install -g netlify-cli@latest
-    - netlify deploy --prod --dir=WagInn-Project/dist --auth=$NETLIFY_AUTH_TOKEN --site=$NETLIFY_SITE_ID
-    - echo "Deployed Successfully"
+    # Set auth token as environment variable first
+    - export NETLIFY_AUTH_TOKEN=$NETLIFY_AUTH_TOKEN
+    # Use the site ID directly in the command
+    - cd WagInn-Project
+    - netlify deploy --prod --dir=dist --site=rainbow-kitten-390820 --auth=$NETLIFY_AUTH_TOKEN
+    - echo "Deployed"
   only:
     - master    #Deploys only when pushed to master
