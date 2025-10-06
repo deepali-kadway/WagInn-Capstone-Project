@@ -126,15 +126,24 @@ test-frontend:
 deploy-to-netlify:
   stage: deploy
   image: node:20
-  services:
-    - docker:dind
   script:
     - echo "Deploying to Netlify via API..."
     - apt-get update && apt-get install -y zip curl
     - cd WagInn-Project
-    # Create deployment package
-    - cd dist && zip -r ../site.zip . && cd ..
-    # Deploy via Netlify API (no CLI needed)
+    # Debug: Check what's in the dist folder
+    - echo "Contents of dist folder:"
+    - ls -la dist/
+    - find dist/ -name "index.html"
+    # Create deployment package from the correct directory
+    - cd dist
+    - ls -la
+    # Find the actual build output directory
+    - if [ -d "WagInn-Project" ]; then cd WagInn-Project; fi
+    - if [ -d "browser" ]; then cd browser; fi
+    - ls -la
+    - zip -r ../../site.zip .
+    - cd ../..
+    # Deploy via Netlify API
     - |
       curl -X POST \
         -H "Authorization: Bearer $NETLIFY_AUTH_TOKEN" \
