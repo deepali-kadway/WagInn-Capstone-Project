@@ -9,6 +9,7 @@ import userSignIn from "./routes/userSignIn_Routes.js";
 import fetchProperty from "./routes/userPropertySearch_Routes.js";
 import bookingRoutes from "./routes/booking_routes.js";
 import adminRoutes from "./routes/admin_routes.js";
+import debugRoutes from "./routes/debug_routes.js";
 import "./models/associations.js";
 import dotenv from "dotenv";
 import Booking from "./models/bookings_Model.js";
@@ -63,6 +64,7 @@ app.use("/user", userSignIn);
 app.use("/host", fetchProperty);
 app.use("/api/bookings", bookingRoutes);
 app.use("/admin", adminRoutes);
+app.use("/debug", debugRoutes);
 
 // Test route to verify server is working
 app.get("/test", (req, res) => {
