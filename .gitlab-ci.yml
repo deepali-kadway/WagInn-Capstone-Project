@@ -127,42 +127,47 @@ deploy-to-netlify:
   stage: deploy
   image: node:20
   script:
-    - echo "=== COMPREHENSIVE DEBUG - NETLIFY DEPLOYMENT ==="
+    - echo "=== NETLIFY DEPLOYMENT DEBUG ==="
+    - echo "Current branch:" $CI_COMMIT_REF_NAME
+    - echo "Checking required variables..."
+    - echo "NETLIFY_AUTH_TOKEN set:" $(if [ -n "$NETLIFY_AUTH_TOKEN" ]; then echo 'YES'; else echo 'NO'; fi)
+    - echo "NETLIFY_SITE_ID set:" $(if [ -n "$NETLIFY_SITE_ID" ]; then echo 'YES'; else echo 'NO'; fi)
+    
     - apt-get update && apt-get install -y zip curl
     - cd WagInn-Project
     
-    # 1. Check build output structure
+    # Previous steps 1-6 (same as before)
     - echo "1. Build output structure:"
     - find dist/ -type f -name "*.html" -o -name "*.js" -o -name "*.css" | head -10
-    
-    # 2. Navigate to correct directory
     - cd dist/WagInn-Project/browser
     - echo "2. Files in browser directory:"
     - ls -la
-    
-    # 3. Check if index.html exists and has content
     - echo "3. Index.html content (first 5 lines):"
     - head -5 index.html || echo "INDEX.HTML NOT FOUND!"
-    
-    # 4. Create _redirects file
     - echo "4. Creating _redirects file:"
     - echo "/*    /index.html   200" > _redirects
     - cat _redirects
-    
-    # 5. Show what we're zipping
     - echo "5. Files being zipped:"
     - ls -la
-    
-    # 6. Create and verify zip
     - zip -r ../../../site.zip .
     - cd ../../..
     - echo "6. Zip file info:"
     - ls -lh site.zip
     - unzip -l site.zip | head -15
     
-    # 7. Deploy with proper API call and error handling
-    - echo "7. Deploying to Netlify:"
-    - echo "Using site ID:" $NETLIFY_SITE_ID
+    # 7. Netlify deployment with detailed debugging
+    - echo "7. STARTING NETLIFY DEPLOYMENT..."
+    - echo "Site ID:" $NETLIFY_SITE_ID
+    - echo "Token length:" $(echo $NETLIFY_AUTH_TOKEN | wc -c)
+    - |
+      if [ -z "$NETLIFY_AUTH_TOKEN" ] || [ -z "$NETLIFY_SITE_ID" ]; then
+        echo "❌ Missing required variables!"
+        echo "NETLIFY_AUTH_TOKEN: $(if [ -n "$NETLIFY_AUTH_TOKEN" ]; then echo 'SET'; else echo 'MISSING'; fi)"
+        echo "NETLIFY_SITE_ID: $(if [ -n "$NETLIFY_SITE_ID" ]; then echo 'SET'; else echo 'MISSING'; fi)"
+        exit 1
+      fi
+    
+    - echo "8. Deploying to Netlify API..."
     - |
       DEPLOY_RESPONSE=$(curl -s -w "HTTPSTATUS:%{http_code}" -X POST \
         -H "Authorization: Bearer $NETLIFY_AUTH_TOKEN" \
@@ -170,38 +175,17 @@ deploy-to-netlify:
         --data-binary @site.zip \
         "https://api.netlify.com/api/v1/sites/$NETLIFY_SITE_ID/deploys")
       
-      # Parse response
       HTTP_STATUS=$(echo $DEPLOY_RESPONSE | grep -o "HTTPSTATUS:[0-9]*" | cut -d: -f2)
       RESPONSE_BODY=$(echo $DEPLOY_RESPONSE | sed 's/HTTPSTATUS:[0-9]*$//')
       
       echo "HTTP Status: $HTTP_STATUS"
       echo "Response Body: $RESPONSE_BODY"
       
-      # Check if deployment was successful
       if [ "$HTTP_STATUS" -eq 200 ] || [ "$HTTP_STATUS" -eq 201 ]; then
         echo "✅ Deployment successful!"
-        DEPLOY_ID=$(echo $RESPONSE_BODY | grep -o '"id":"[^"]*"' | head -1 | cut -d'"' -f4)
-        echo "Deploy ID: $DEPLOY_ID"
       else
         echo "❌ Deployment failed with status: $HTTP_STATUS"
-        echo "Error details: $RESPONSE_BODY"
         exit 1
       fi
     
-    # 8. Wait and test deployment
-    - echo "8. Waiting 30 seconds for deployment to propagate..."
-    - sleep 30
-    - echo "9. Testing deployed site:"
-    - SITE_STATUS=$(curl -s -o /dev/null -w "%{http_code}" "https://$NETLIFY_SITE_ID.netlify.app/")
-    - echo "Site HTTP status:" $SITE_STATUS
-    - |
-      if [ "$SITE_STATUS" -eq 200 ]; then
-        echo "✅ Site is live and responding!"
-      else
-        echo "⚠️  Site returned status: $SITE_STATUS"
-        echo "Fetching site content for debugging:"
-        curl -s "https://$NETLIFY_SITE_ID.netlify.app/" | head -10
-      fi
-      - echo "🚀 Deployment complete"
-  only:
-    - master    #Deploys only when pushed to master
+    - echo "9. Deployment completed!"
