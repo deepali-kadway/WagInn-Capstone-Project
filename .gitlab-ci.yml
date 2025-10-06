@@ -147,11 +147,13 @@ deploy-to-netlify:
     - echo "6. Zip file info:"
     - ls -lh site.zip
     - unzip -l site.zip | head -15
-    - echo "7. CHECKING VARIABLES - START"
-    - echo "Auth token exists:" $([ -n "$NETLIFY_AUTH_TOKEN" ] && echo "YES" || echo "NO")
-    - echo "Site ID exists:" $([ -n "$NETLIFY_SITE_ID" ] && echo "YES" || echo "NO")
-    - echo "8. DEPLOYING TO NETLIFY - START"
-    - 'curl -X POST -H "Authorization: Bearer $NETLIFY_AUTH_TOKEN" -H "Content-Type: application/zip" --data-binary @site.zip https://api.netlify.com/api/v1/sites/$NETLIFY_SITE_ID/deploys'
-    - echo "9. DEPLOYMENT ATTEMPT COMPLETED"
+    - echo "7. THIS IS A TEST - IF YOU SEE THIS, YAML IS WORKING"
+    - echo "Auth token check - START"
+    - test -n "$NETLIFY_AUTH_TOKEN" && echo "Auth token EXISTS" || echo "Auth token MISSING"
+    - echo "Site ID check - START"  
+    - test -n "$NETLIFY_SITE_ID" && echo "Site ID EXISTS" || echo "Site ID MISSING"
+    - echo "8. Attempting simple curl test"
+    - curl --version
+    - echo "9. DEPLOYMENT TEST COMPLETE"
   only:
     - master
