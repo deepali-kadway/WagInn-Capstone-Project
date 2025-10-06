@@ -51,8 +51,11 @@ router.put("/hosts/:hostId/approve", async (req, res) => {
       });
     }
 
-    // Update approval status
-    await host.update({ registrationStatus: "approved" });
+    // Update registration status to active (approved)
+    await host.update({
+      registrationStatus: "active",
+      registrationCompletedAt: new Date(),
+    });
 
     console.log(`Host ${hostId} approved successfully`);
 
