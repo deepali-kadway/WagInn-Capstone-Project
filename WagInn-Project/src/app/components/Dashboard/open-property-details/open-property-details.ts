@@ -8,7 +8,7 @@ import { PropertyAvailabilityService } from '../../../services/availability/prop
   selector: 'app-open-property-details',
   standalone: false,
   templateUrl: './open-property-details.html',
-  styleUrl: './open-property-details.css',
+  styleUrls: ['./open-property-details.css'],
 })
 export class OpenPropertyDetails implements OnInit {
   property: any = null;

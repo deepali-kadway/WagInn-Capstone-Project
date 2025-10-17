@@ -48,11 +48,6 @@ export class HostRegistrationServiceTs {
   submitRegistration(): Observable<any> {
     const formData = new FormData();
 
-    //debug the form
-    for (let [key, value] of formData.entries()) {
-      console.log(key, value);
-    }
-
     formData.append(
       'personalInfo',
       JSON.stringify(this.hostregistrationData.personalInfo)

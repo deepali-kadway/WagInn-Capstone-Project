@@ -7,7 +7,7 @@ import { BookingManagementService } from '../../../services/booking/booking-mana
   selector: 'app-book-stay',
   standalone: false,
   templateUrl: './book-stay.html',
-  styleUrl: './book-stay.css',
+  styleUrls: ['./book-stay.css'],
 })
 export class BookStay implements OnInit {
   property: any = null;

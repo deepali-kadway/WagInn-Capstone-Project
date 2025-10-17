@@ -11,7 +11,7 @@ import { HostSignInService } from '../../../services/hostSignIn/host-sign-in-ser
   selector: 'app-host-dashboard',
   standalone: false,
   templateUrl: './host-dashboard.html',
-  styleUrl: './host-dashboard.css',
+  styleUrls: ['./host-dashboard.css'],
 })
 export class HostDashboard implements OnInit {
   // Navigation state
@@ -159,7 +159,6 @@ export class HostDashboard implements OnInit {
     }
     return 'Property title not available';
   }
-
 
   // Helper method to format dates
   formatDateRange(checkIn: string, checkOut: string): string {

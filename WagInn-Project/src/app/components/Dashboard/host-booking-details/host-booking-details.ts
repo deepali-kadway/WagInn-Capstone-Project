@@ -9,7 +9,7 @@ import {
   selector: 'app-host-booking-details',
   standalone: false,
   templateUrl: './host-booking-details.html',
-  styleUrl: './host-booking-details.css',
+  styleUrls: ['./host-booking-details.css'],
 })
 export class HostBookingDetails implements OnInit {
   booking: HostBooking | null = null;

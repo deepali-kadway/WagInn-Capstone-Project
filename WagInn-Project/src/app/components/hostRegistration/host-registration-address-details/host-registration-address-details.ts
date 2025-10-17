@@ -7,7 +7,7 @@ import { HostRegistrationServiceTs } from '../../../services/hostRegistration_Se
   selector: 'app-host-registration-address-details',
   standalone: false,
   templateUrl: './host-registration-address-details.html',
-  styleUrl: './host-registration-address-details.css',
+  styleUrls: ['./host-registration-address-details.css'],
 })
 export class HostRegistrationAddressDetails {
   registrationForm!: FormGroup;

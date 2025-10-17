@@ -7,7 +7,7 @@ import { UserSignInService } from '../../../services/userSignIn_Service/user-sig
   selector: 'app-user-dashboard',
   standalone: false,
   templateUrl: './user-dashboard.html',
-  styleUrl: './user-dashboard.css',
+  styleUrls: ['./user-dashboard.css'],
 })
 export class UserDashboard implements OnInit {
   // Search parameters

@@ -8,7 +8,7 @@ import {
   selector: 'app-my-bookings-user',
   standalone: false,
   templateUrl: './my-bookings-user.html',
-  styleUrl: './my-bookings-user.css',
+  styleUrls: ['./my-bookings-user.css'],
 })
 export class MyBookingsUser implements OnInit {
   bookings: Booking[] = [];

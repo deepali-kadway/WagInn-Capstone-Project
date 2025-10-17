@@ -8,7 +8,7 @@ import { HostRegistrationData } from '../../../model/hostRegistration.interface'
   selector: 'app-host-registration-personal-info',
   standalone: false,
   templateUrl: './host-registration-personal-info.html',
-  styleUrl: './host-registration-personal-info.css',
+  styleUrls: ['./host-registration-personal-info.css'],
 })
 export class HostRegistrationPersonalInfo {
   months: string[] = [

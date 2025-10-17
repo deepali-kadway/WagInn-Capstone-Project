@@ -6,7 +6,7 @@ import { filter } from 'rxjs/operators';
   selector: 'app-root',
   templateUrl: './app.html',
   standalone: false,
-  styleUrl: './app.css',
+  styleUrls: ['./app.css'],
 })
 export class App implements OnInit {
   protected readonly title = signal('WagInn-Project');
@@ -21,10 +21,14 @@ export class App implements OnInit {
       //filter(): RxJS operator that only lets certain events pass through
       // event instanceof NavigationEnd: checks if it is a NavigationEnd event, because we want to update the header only after navigation is complete not during.
       // Eg: Navigation from /userDashboard to /hostDashboard, NavigationEnd event fires with URL /hostDashboard
-      .pipe(filter((event) => event instanceof NavigationEnd))
+      .pipe(
+        filter(
+          (event): event is NavigationEnd => event instanceof NavigationEnd
+        )
+      )
       //When a NavigationEnd event occurs, this callback function runs
       //event.url contains the new URL after navigation is complete
-      .subscribe((event: NavigationEnd) => {
+      .subscribe((event) => {
         this.checkRoute(event.url);
         // Eg continued: subscribe() callback runs → this.checkRoute('/hostDashboard')
       });

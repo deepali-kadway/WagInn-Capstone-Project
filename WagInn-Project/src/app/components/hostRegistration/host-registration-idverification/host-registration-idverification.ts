@@ -7,7 +7,7 @@ import { HostRegistrationServiceTs } from '../../../services/hostRegistration_Se
   selector: 'app-host-registration-idverification',
   standalone: false,
   templateUrl: './host-registration-idverification.html',
-  styleUrl: './host-registration-idverification.css',
+  styleUrls: ['./host-registration-idverification.css'],
 })
 export class HostRegistrationIDVerification {
   registrationForm!: FormGroup;

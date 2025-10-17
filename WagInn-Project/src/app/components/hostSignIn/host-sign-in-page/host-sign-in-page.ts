@@ -7,7 +7,7 @@ import { HostSignInService } from '../../../services/hostSignIn/host-sign-in-ser
   selector: 'app-host-sign-in-page',
   standalone: false,
   templateUrl: './host-sign-in-page.html',
-  styleUrl: './host-sign-in-page.css',
+  styleUrls: ['./host-sign-in-page.css'],
 })
 export class HostSignInPage {
   hostSignIn!: FormGroup;

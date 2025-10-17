@@ -1,0 +1,80 @@
+#File format version
+version: "3.8"
+
+services:
+  #Mysql database
+  mysql:
+    image: mysql:8.0
+    container_name: waginn-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-rootpassword}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-waginn_db}
+      MYSQL_USER: ${MYSQL_USER:-waginn_user}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-waginn_password}
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./mysql-init:/docker-entrypoint-initdb.d
+    networks:
+      - waginn-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  #Backend (Node.js/Express):
+  backend:
+    build:
+      context: ./WagInn-Backend
+      dockerfile: Dockerfile
+    container_name: waginn-backend
+    restart: unless-stopped
+    environment:
+      NODE_ENV: development
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_NAME: ${MYSQL_DATABASE}
+      DB_USER: ${MYSQL_USER}
+      DB_PASSWORD: ${MYSQL_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+      PORT: 8080
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./WagInn-Backend:/app
+      - /app/node_modules
+      - ./WagInn-Backend/uploads:/app/uploads
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - waginn-network
+
+  #Frontend (Angular):
+  frontend:
+    build:
+      context: ./WagInn-Project
+      dockerfile: Dockerfile
+      target: development
+    container_name: waginn-frontend
+    restart: unless-stopped
+    ports:
+      - "4200:4200"
+    volumes:
+      - ./WagInn-Project:/app
+      - /app/node_modules
+    environment:
+      NODE_ENV: development
+    depends_on:
+      - backend
+    networks:
+      - waginn-network
+
+volumes:
+  mysql_data:
+
+networks:
+  waginn-network:
+    driver: bridge

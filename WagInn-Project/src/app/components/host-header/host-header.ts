@@ -14,7 +14,7 @@ interface Notification {
   selector: 'app-host-header',
   standalone: false,
   templateUrl: './host-header.html',
-  styleUrl: './host-header.css',
+  styleUrls: ['./host-header.css'],
 })
 export class HostHeader implements OnInit {
   // Current host data

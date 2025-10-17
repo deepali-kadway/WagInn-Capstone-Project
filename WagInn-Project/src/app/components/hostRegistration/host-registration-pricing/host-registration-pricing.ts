@@ -7,7 +7,7 @@ import { HostRegistrationServiceTs } from '../../../services/hostRegistration_Se
   selector: 'app-host-registration-pricing',
   standalone: false,
   templateUrl: './host-registration-pricing.html',
-  styleUrl: './host-registration-pricing.css',
+  styleUrls: ['./host-registration-pricing.css'],
 })
 export class HostRegistrationPricing {
   pricingForm: FormGroup;

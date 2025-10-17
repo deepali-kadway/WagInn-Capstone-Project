@@ -14,7 +14,7 @@ import { HostRegistrationServiceTs } from '../../../services/hostRegistration_Se
   selector: 'app-host-registration-pet-info',
   standalone: false,
   templateUrl: './host-registration-pet-info.html',
-  styleUrl: './host-registration-pet-info.css',
+  styleUrls: ['./host-registration-pet-info.css'],
 })
 export class HostRegistrationPetInfo {
   registrationForm!: FormGroup;

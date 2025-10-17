@@ -13,7 +13,7 @@ import { UserSignInService } from '../../../services/userSignIn_Service/user-sig
   selector: 'app-user-sign-in-page',
   standalone: false,
   templateUrl: './user-sign-in-page.html',
-  styleUrl: './user-sign-in-page.css',
+  styleUrls: ['./user-sign-in-page.css'],
 })
 export class UserSignInPage {
   userSignIn!: FormGroup;
