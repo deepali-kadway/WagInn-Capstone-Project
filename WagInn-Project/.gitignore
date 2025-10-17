@@ -43,4 +43,17 @@ Thumbs.db
 
 # Env variables
 **/environments/environment*.ts
+../.env
+
+# Environment files (all levels)
 .env
+.env.local
+.env.development
+.env.test
+.env.production
+.env.staging
+*.env
+
+# Root level env files (parent directory)
+../.env
+../.env.*
