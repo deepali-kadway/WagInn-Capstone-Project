@@ -26,11 +26,11 @@ router.get("/properties", async (req, res) => {
     const whereClause = {
       //search by location (case-insensitive)
       [Op.or]: [
-        { city: { [Op.iLike]: `%${destination}%` } },
-        { province: { [Op.iLike]: `%${destination}%` } },
-        { propertyTitle: { [Op.iLike]: `%${destination}%` } },
-        { streetAddress: { [Op.iLike]: `%${destination}%` } },
-        { country: { [Op.iLike]: `%${destination}%` } },
+        { city: { [Op.like]: `%${destination}%` } },
+        { province: { [Op.like]: `%${destination}%` } },
+        { propertyTitle: { [Op.like]: `%${destination}%` } },
+        { streetAddress: { [Op.like]: `%${destination}%` } },
+        { country: { [Op.like]: `%${destination}%` } },
       ],
       //match guests capacity
       guests: { [Op.gte]: parseInt(totalGuests) || 1 },
