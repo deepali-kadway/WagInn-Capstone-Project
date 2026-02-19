@@ -18,17 +18,40 @@ import Booking from "./models/bookings_Model.js";
 dotenv.config();
 const app = express();
 
+// Configure CORS with environment-based allowed origins
+const getAllowedOrigins = () => {
+  const allowedOrigins = process.env.ALLOWED_ORIGINS
+    ? process.env.ALLOWED_ORIGINS.split(",").map((origin) => origin.trim())
+    : ["http://localhost:4200"]; // Default for development
+
+  console.log("CORS allowed origins:", allowedOrigins);
+  return allowedOrigins;
+};
+
+const corsOptions = {
+  origin: (origin, callback) => {
+    const allowedOrigins = getAllowedOrigins();
+
+    // Allow requests with no origin (mobile apps, Postman, etc.)
+    if (!origin) return callback(null, true);
+
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      console.warn(`CORS blocked origin: ${origin}`);
+      callback(new Error("CORS policy violation: Origin not allowed"));
+    }
+  },
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true,
+  optionsSuccessStatus: 200, // For legacy browser support
+};
+
 // Configure multer for handling multipart/form-data
 const upload = multer();
 
-app.use(
-  cors({
-    origin: true, // Allow all origins temporarily for testing
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true,
-  })
-);
+app.use(cors(corsOptions));
 
 app.use(express.json({ limit: "10mb" })); // Increased limit for safety
 app.use(express.urlencoded({ extended: true }));

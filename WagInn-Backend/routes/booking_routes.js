@@ -53,7 +53,7 @@ router.get("/availability/:propertyId", async (req, res) => {
     const { checkIn, checkOut } = req.query;
 
     console.log(
-      `🔍 Checking availability for property ${propertyId} from ${checkIn} to ${checkOut}`
+      `🔍 Checking availability for property ${propertyId} from ${checkIn} to ${checkOut}`,
     );
 
     // If no dates provided, return all blocked dates for this property
@@ -178,11 +178,13 @@ router.get("/availability/:propertyId", async (req, res) => {
 // POST /api/bookings - Create a new booking
 router.post("/", async (req, res) => {
   try {
-    // Debug: Log what we're receiving
+    // Debug: Log booking request without sensitive data
     console.log("📝 Booking request received:");
-    console.log("Headers:", req.headers);
-    console.log("Body:", req.body);
-    console.log("Query:", req.query);
+    console.log("Request originated from:", req.get("origin"));
+    console.log(
+      "User ID provided:",
+      req.body.user_id ? `${req.body.user_id.substring(0, 8)}***` : "undefined",
+    );
 
     const {
       user_id,
@@ -251,7 +253,7 @@ router.post("/", async (req, res) => {
 
     // Check property availability for the requested dates
     console.log(
-      `🔍 Checking availability for property ${property_id} from ${check_in} to ${check_out}`
+      `🔍 Checking availability for property ${property_id} from ${check_in} to ${check_out}`,
     );
 
     const conflictingBookings = await Booking.findAll({
@@ -300,7 +302,7 @@ router.post("/", async (req, res) => {
     // If there are conflicting bookings, reject the request
     if (conflictingBookings.length > 0) {
       console.log(
-        `❌ Property not available - found ${conflictingBookings.length} conflicting bookings`
+        `❌ Property not available - found ${conflictingBookings.length} conflicting bookings`,
       );
       return res.status(409).json({
         success: false,

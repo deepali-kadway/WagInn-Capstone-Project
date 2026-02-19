@@ -8,14 +8,24 @@ import dotenv from "dotenv";
 import Pet from "../models/petProfile_Model.js";
 dotenv.config();
 
-// JWT Secret
-const JWT_SECRET = process.env.JWT_SECRET || "change-jwt-key-in-prod";
+// JWT Secret - Enforce strong secret requirement
+const JWT_SECRET = (() => {
+  const secret = process.env.JWT_SECRET;
+  if (!secret || secret.length < 32) {
+    throw new Error(
+      "JWT_SECRET must be at least 32 characters long for production security",
+    );
+  }
+  return secret;
+})();
 
 router.post("/login", async (req, res) => {
   try {
-    console.log("Login request received from: ", req.get("origin"));
-    console.log("Request headers: ", req.headers);
-    console.log("Request Body: ", req.body);
+    console.log("User login request from:", req.get("origin"));
+    console.log(
+      "User login attempt for email:",
+      userName ? userName.substring(0, 3) + "***" : "undefined",
+    );
 
     const { userName, password } = req.body;
 
@@ -52,7 +62,7 @@ router.post("/login", async (req, res) => {
     //Check if user exists
     if (!user) {
       console.log(
-        "User not found with provided credentials. If new user, complete registration!"
+        "User not found with provided credentials. If new user, complete registration!",
       );
       return res.status(404).json({
         success: false,
@@ -64,10 +74,10 @@ router.post("/login", async (req, res) => {
     //compare provided password with stored hash
     const isValidPassword = await bcrypt.compare(
       req.body.password,
-      user.passwordInput
+      user.passwordInput,
     );
     if (!isValidPassword) {
-      console.log("Entered password does not match");
+      console.log("Password validation failed for user");
       return res.status(401).json({
         success: false,
         error: "INVALID_PASSWORD",

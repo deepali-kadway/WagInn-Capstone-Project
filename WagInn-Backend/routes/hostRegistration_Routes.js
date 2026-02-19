@@ -1,6 +1,7 @@
 import express from "express";
 const router = express.Router();
 import { v4 as uuidv4 } from "uuid";
+import bcrypt from "bcrypt";
 import Host from "../models/hostRegistration_Model.js";
 import upload, {
   addFileMetadata,
@@ -41,8 +42,8 @@ const flexibleUpload = upload.any(); //accepts any field names
 //Post Host registration data
 router.post("/register", flexibleUpload, addFileMetadata, async (req, res) => {
   try {
-    console.log(`Step 1: Request Body: `, req.body);
-    console.log(`Step 2: Uploaded Files: `, req.files);
+    console.log(`Step 1: Processing host registration data`);
+    console.log(`Step 2: Files uploaded:`, req.files ? req.files.length : 0);
 
     // Process files dynamically with enhanced security metadata
     const processSecureFiles = () => {
@@ -122,6 +123,7 @@ router.post("/register", flexibleUpload, addFileMetadata, async (req, res) => {
         birthDay: data.personalInfo?.birthDay,
         birthYear: data.personalInfo?.birthYear,
         email: data.personalInfo?.email,
+        passCode: data.personalInfo?.passCode, // Will be hashed before saving
 
         // Extract from addressDetails
         streetAddress: data.addressDetails?.streetAddress,
@@ -164,12 +166,25 @@ router.post("/register", flexibleUpload, addFileMetadata, async (req, res) => {
     };
     console.log("Step 5: Flattening nested data");
     const flattenedData = flattenHostData(hostData);
+
+    // Hash the passCode before saving to database
+    if (flattenedData.passCode) {
+      console.log("Step 6: Securing passCode with bcrypt hashing");
+      const SALT_ROUNDS = 12; // Production-grade salt rounds for security
+      flattenedData.passCode = await bcrypt.hash(
+        flattenedData.passCode.toString(),
+        SALT_ROUNDS,
+      );
+    } else {
+      throw new Error("PassCode is required for host registration");
+    }
+
     console.log(
-      "Step 6: Final flattened data:",
-      JSON.stringify(flattenedData, null, 2) //null -> include all properties, don't filer anything; 2 -> indentation in formated output. each nested level is indented by 2 spaces.
+      "Step 7: Final data prepared (passCode secured):",
+      JSON.stringify({ ...flattenedData, passCode: "[HASHED]" }, null, 2),
     );
 
-    console.log("Step 7: About to create database record");
+    console.log("Step 8: Creating database record");
     const newHost = await Host.create(flattenedData);
 
     res

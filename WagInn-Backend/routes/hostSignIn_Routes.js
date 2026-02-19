@@ -1,17 +1,27 @@
 import express from "express";
 import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
 const router = express.Router();
 import Host from "../models/hostRegistration_Model.js";
 
-// JWT Secret - In production, use environment variable
-const JWT_SECRET =
-  process.env.JWT_SECRET || "your-super-secret-jwt-key-change-in-production";
+// JWT Secret - Enforce strong secret requirement
+const JWT_SECRET = (() => {
+  const secret = process.env.JWT_SECRET;
+  if (!secret || secret.length < 32) {
+    throw new Error(
+      "JWT_SECRET must be at least 32 characters long for production security",
+    );
+  }
+  return secret;
+})();
 
 router.post("/login", async (req, res) => {
   try {
-    console.log("Login request received from:", req.get("origin"));
-    console.log("Request headers:", req.headers);
-    console.log("Request body:", req.body);
+    console.log("Host login request from:", req.get("origin"));
+    console.log(
+      "Host login attempt for email:",
+      userName ? userName.substring(0, 3) + "***" : "undefined",
+    );
 
     const { userName, passCode } = req.body;
 
@@ -23,17 +33,46 @@ router.post("/login", async (req, res) => {
       });
     }
 
-    // Find host by email and passcode
+    // Find host by email only (secure password comparison will follow)
     const host = await Host.findOne({
       where: {
         email: userName,
-        passCode: passCode,
       },
     });
 
-    // Check if host exists
+    // Check if host exists and verify password
     if (!host) {
-      console.log("Host not found with provided credentials");
+      console.log("Host not found for email");
+      return res.status(401).json({
+        success: false,
+        message: "Invalid email or passcode",
+      });
+    }
+
+    // Verify passCode using bcrypt - handle both new hashed and legacy numeric codes
+    let isPasswordValid = false;
+
+    try {
+      // First try bcrypt comparison for new hashed passwords
+      isPasswordValid = await bcrypt.compare(
+        passCode.toString(),
+        host.passCode,
+      );
+    } catch (error) {
+      // If bcrypt fails, check if it's a legacy numeric passCode (migration period)
+      if (
+        typeof host.passCode === "string" &&
+        host.passCode === passCode.toString()
+      ) {
+        isPasswordValid = true;
+        console.log(
+          "Legacy password detected - will be upgraded on next registration update",
+        );
+      }
+    }
+
+    if (!isPasswordValid) {
+      console.log("Invalid passcode provided");
       return res.status(401).json({
         success: false,
         message: "Invalid email or passcode",
@@ -92,7 +131,7 @@ router.post("/login", async (req, res) => {
     const token = jwt.sign(
       tokenPayload,
       JWT_SECRET,
-      { expiresIn: "24h" } // Token expires in 24 hours
+      { expiresIn: "24h" }, // Token expires in 24 hours
     );
 
     res.status(200).json({

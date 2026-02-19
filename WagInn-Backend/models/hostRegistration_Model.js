@@ -156,15 +156,18 @@ const Host = sequelize.define(
       defaultValue: true,
     },
     passCode: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       allowNull: false,
-      defaultValue: 6785,
+      validate: {
+        len: [8, 128], // Minimum 8 chars for password, max 128 for bcrypt hash
+        notEmpty: true,
+      },
     },
   },
   {
     tableName: "host_profiles",
     timestamps: true,
-  }
+  },
 );
 
 export default Host;

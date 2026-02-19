@@ -18,12 +18,8 @@ router.post("/register", async (req, res) => {
 
   try {
     // Basic debugging first
-    console.log("=== DEBUGGING REQUEST ===");
-    console.log("req.body exists:", req.body !== undefined);
-    console.log("req.body type:", typeof req.body);
-    console.log("req.body:", req.body);
-    console.log("req.headers:", req.headers);
-    console.log("========================");
+    console.log("=== User Registration Request ===");
+    console.log("Request received - body exists:", req.body !== undefined);
 
     // Check if req.body exists before proceeding
     if (!req.body) {
@@ -33,11 +29,11 @@ router.post("/register", async (req, res) => {
       });
     }
 
-    console.log(`Step 1: Request Body: `, req.body);
+    console.log(`Step 1: Processing user registration data`);
 
-    // Debug: Check raw data before parsing
-    console.log("Step 1.1: Raw personalInfo:", req.body.personalInfo);
-    console.log("Step 1.2: Raw userPetInfo:", req.body.userPetInfo);
+    // Debug: Check data structure without exposing content
+    console.log("Step 1.1: PersonalInfo received:", !!req.body.personalInfo);
+    console.log("Step 1.2: UserPetInfo received:", !!req.body.userPetInfo);
 
     //JSON Parsing
     const parseJSONFields = (data) => {
@@ -58,11 +54,11 @@ router.post("/register", async (req, res) => {
     // Debug: Check parsed data structure
     console.log(
       "Step 2.1: Parsed personalInfo:",
-      JSON.stringify(req.body.personalInfo, null, 2)
+      JSON.stringify(req.body.personalInfo, null, 2),
     );
     console.log(
       "Step 2.2: Parsed userPetInfo:",
-      JSON.stringify(req.body.userPetInfo, null, 2)
+      JSON.stringify(req.body.userPetInfo, null, 2),
     );
 
     //extract user data and pets data
@@ -73,7 +69,7 @@ router.post("/register", async (req, res) => {
     // Hash password after parsing
     const hashedPassword = await bcrypt.hash(
       req.body.personalInfo?.passwordInput,
-      10
+      10,
     );
 
     // Prepare user data (personal info only)
@@ -120,7 +116,7 @@ router.post("/register", async (req, res) => {
             isFleaTickPrevented: petData.isFleaTickPrevented,
             concerns: petData.concerns,
           },
-          { transaction }
+          { transaction },
         );
       });
 
