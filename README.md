@@ -39,5 +39,3 @@ WagInn is a web application that allows pet owners to search, book, and manage *
 - Node.js (v16+)
 - MySQL (running locally or remote instance)
 - Angular CLI
-
-# Trigger mirror sync
